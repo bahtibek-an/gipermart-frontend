@@ -7,14 +7,24 @@ import {
     TextField,
   } from "@mui/material";
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
+import { signIn } from "../../../http/UserAPI";
 
 const SignIn = ({ setRightModalStep }) => {
     const [ showPassword, setShowPassword ] = useState();
     const [ number, setNumber ] = useState('');
     const [ password, setPassword ] = useState('');
-    
+    const [ error, setError ] = useState('');
+
     const handleSubmit = (e) => {
         e.preventDefault();
+        signIn(number, password)
+            .then(data => {
+                // console.log(data);
+            })
+            .catch((err) => {
+                console.error(err)
+                setError(err);
+            })
     }
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
@@ -25,6 +35,9 @@ const SignIn = ({ setRightModalStep }) => {
         <form action="" method="post" onSubmit={handleSubmit}>
             <div className="text-2xl f-medium">
             Войти или создать профиль
+            </div>
+            <div className="text-red-500">
+                {error}
             </div>
             <div className="my-4">Номер телефона</div>
             <TextField
@@ -70,7 +83,7 @@ const SignIn = ({ setRightModalStep }) => {
             </Button>
             </div>
             <Button className="!w-full !py-3 yellow-btn-hover !capitalize !text-base !my-3" type="submit">
-            Войти
+                Войти
             </Button>
             <Button
             variant="outlined"

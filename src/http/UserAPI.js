@@ -28,6 +28,14 @@ export const signUp = async (phoneNumber, firstName, lastName, password, confirm
     }
 }
 
+export const signIn = async (number, password) => {
+    const { response } = await $host.post("user/login/", {
+        phone_number: number,
+        code: password
+    });
+    return response; 
+}
+
 export const checkAuth = async () => {
     try {
         const refreshToken = getCookie("refreshToken");

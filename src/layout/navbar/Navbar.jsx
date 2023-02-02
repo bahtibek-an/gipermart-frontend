@@ -202,7 +202,7 @@ const Navbar = ({ isAuth }) => {
                   <Link className="block logo-block" to="/">
                     <img
                       className="navbar-logo"
-                      src="https://picsum.photos/200/50"
+                      src="./logoo.svg"
                       alt="LOGO"
                     />
                   </Link>
