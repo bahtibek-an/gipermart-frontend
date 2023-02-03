@@ -20,3 +20,29 @@ export function getCookie(cname) {
     }
     return "";
 }
+
+function includesInArrayOfObj(arr, item) {
+  for(let i = 0;i < arr.length;i++) {
+      if(arr[i].id == item) {
+          return i;
+      }
+  }
+  return -1;
+}
+
+export function categoriesAlgo(array) {
+  const result = [];
+    
+  for(let i = 0;i < array.length;i++) {
+      const index = includesInArrayOfObj(result, array[i].parent_id)
+      if(index !== -1) {
+          result[index] = {...result[index], children: []}
+          result[index].children.push(array[index]);
+          continue;
+      }
+      result.push(array[i]);
+  }
+  
+  
+  return result;
+}

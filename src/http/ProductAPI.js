@@ -18,7 +18,7 @@ export const fetchAllProducts = async () => {
 
 export const fetchAllCategories = async () => {
     try {
-        const { data } = await $host.get("product/api/category/all/");
+        const { data } = await $host.get("product/category/all/");
         return data;
     } catch (error) {
         console.log(error);
@@ -26,18 +26,18 @@ export const fetchAllCategories = async () => {
 }
 
 export const fetchOneProduct = async (id) => {
-    const { data } = await $host.get(`product/products/${id}/`)
-
+    const { data } = await $host.get(`product/product-detail/${id}/`)
     return data;
 }
 
-export const appendProductToUserCart = async (userId, productId, quantity) => {
-    const { data } = await $host.post("cart/add-cart", {user: userId, product: productId, quantity });
+export const appendProductToUserCart = async (userId, productId, quantity, total) => {
+    const { data } = await $host.post("cart/add-cart", {user: userId, product: productId, quantity, total });
     return data;
 }
 
 export const fetchAllBasketCarts = async (userId) => {
     const { data } = await $host.get(`cart/user-carts/${userId}`);
+    console.log(data);
     return data;
 }
 

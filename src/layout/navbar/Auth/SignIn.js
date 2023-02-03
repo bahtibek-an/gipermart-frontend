@@ -29,7 +29,7 @@ const SignIn = ({ setRightModalStep, setRightModal }) => {
             setCookie("refreshToken", data.token.refresh, 7);
             setRightModal(false);
         } catch (error) {
-            setError(error.code);
+            // setError(error);
         }
         
     }

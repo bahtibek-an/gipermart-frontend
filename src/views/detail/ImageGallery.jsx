@@ -11,6 +11,9 @@ export default class ImageGallery extends Component {
       nav1: null,
       nav2: null,
     };
+    while(this.images.length < 4) {
+      this.images = this.images.concat(this.images);
+    }
   }
 
   componentDidMount() {
@@ -29,25 +32,11 @@ export default class ImageGallery extends Component {
           className="main-img"
           arrows={false}
         >
-          <div className="carousel-img">
-            <img src={this.images || "../macb.jpeg"} alt="" />
-          </div>
-          {/* 
-          <div className="carousel-img">
-            <img src="https://picsum.photos/490/435" alt="" />
-          </div>
-          <div className="carousel-img">
-            <img src="https://picsum.photos/490/435" alt="" />
-          </div>
-          <div className="carousel-img">
-            <img src="https://picsum.photos/490/435" alt="" />
-          </div>
-          <div className="carousel-img">
-            <img src="https://picsum.photos/490/435" alt="" />
-          </div>
-          <div className="carousel-img">
-            <img src="https://picsum.photos/490/435" alt="" />
-          </div> */}
+          {this.images?.map((item, i) => (
+            <div className="carousel-img" key={i}>
+              <img src={"https://yruoebgair.tk" + item.img_url} alt="" />
+            </div>
+          ))}
         </Slider>
         <Slider
           asNavFor={this.state.nav1}
@@ -71,24 +60,11 @@ export default class ImageGallery extends Component {
             />
           }
         >
-          {/* <div className="carousel-img">
-            <img src="https://picsum.photos/123/80" alt="" />
-          </div>
-          <div className="carousel-img">
-            <img src="https://picsum.photos/123/80" alt="" />
-          </div>
-          <div className="carousel-img">
-            <img src="https://picsum.photos/123/80" alt="" />
-          </div>
-          <div className="carousel-img">
-            <img src="https://picsum.photos/123/80" alt="" />
-          </div>
-          <div className="carousel-img">
-            <img src="https://picsum.photos/123/80" alt="" />
-          </div>
-          <div className="carousel-img">
-            <img src="https://picsum.photos/123/80" alt="" />
-          </div> */}
+          {this.images?.map((item, i) => (
+            <div className="carousel-img" key={i}>
+              <img src={"https://yruoebgair.tk" + item.img_url} alt="" />
+            </div>
+          ))}
         </Slider>
       </div>
     );

@@ -21,17 +21,18 @@ const Detail = ({ products, userId }) => {
   const [value, setValue] = useState("1");
   const [product, setProduct] = useState({});
   const [loading, setLoading] = useState(true);
+  const productPrice = (+product.price * counter);
 
+  const fetchProduct = async () => {
+    const [product] = await fetchOneProduct(id);
+    setProduct(product);
+  }
 
   useEffect(() => {
-    setProduct((() => {
-      for(let i = 0;i < products.length;i++) {
-        if(products[i].id == id) {
-          return products[i];
-        }
-      }
-    })());
-    setLoading(false);
+    fetchProduct()
+      .then(() => {
+        setLoading(false);
+      });
   }, []);
 
   const handleChange = (event, newValue) => {
@@ -66,17 +67,9 @@ const Detail = ({ products, userId }) => {
     },
   ];
 
-  if(loading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        Loading
-      </div>
-    );
-  }
-
   const addProductToCart = async () => {
     try {
-      await appendProductToUserCart(userId, id, counter);
+      await appendProductToUserCart(userId, id, counter, productPrice);
     } catch (error) {
       console.log(error);
     }
@@ -88,6 +81,14 @@ const Detail = ({ products, userId }) => {
     } catch (error) {
       console.log(error); 
     }
+  }
+
+  if(loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        Loading
+      </div>
+    );
   }
 
   return (
@@ -137,7 +138,7 @@ const Detail = ({ products, userId }) => {
         </div>
         <div className="grid lg:grid-cols-12 grid-cols-6 justify-between detail-box mt-8">
           <div className="xl:col-span-4 lg:col-span-6 col-span-6">
-            <ImageGallery images={product.image}/>
+            <ImageGallery images={product.media}/>
           </div>
           <div className="xl:col-span-5 lg:col-span-6 col-span-6 character-box xl:pl-8 lg:pl-14 mb-6 lg:mt-0 mt-8">
             <div className="mobile-detail-name text-2xl f-medium mb-4">
@@ -145,31 +146,17 @@ const Detail = ({ products, userId }) => {
               (A315-34-P59K) Charcoal Black
             </div>
             <div className="text-lg f-medium">Характеристики</div>
-            <div className="mt-4 flex items-center gap-x-4 gap-y-2">
-              <div className="gray">Бренд:</div>
-              <div>Acer</div>
-            </div>
-            <div className="mt-4 flex items-center gap-x-4 gap-y-2">
-              <div className="gray">Процессор:</div>
-              <div>Celeron N5030</div>
-            </div>
-            <div className="mt-4 flex items-center gap-x-4 gap-y-2">
-              <div className="gray">Оперативная память:</div>
-              <div>4 GB</div>
-            </div>
-            <div className="mt-4 flex items-center gap-x-4 gap-y-2">
-              <div className="gray">Накопитель:</div>
-              <div>HDD 500 GB</div>
-            </div>
-            <div className="mt-4 flex items-center gap-x-4 gap-y-2">
-              <div className="gray">Видеокарта:</div>
-              <div>Intel UHD Graphics</div>
-            </div>
+            {product.attributes?.map((item, i) => (
+              <div className="mt-4 flex items-center gap-x-4 gap-y-2" key={i}>
+                <div className="gray">{item.product_attribute?.name}:</div>
+                <div>{item.attribute_value}</div>
+              </div>
+            ))}
           </div>
           <div className="xl:col-span-3 lg:col-span-4 col-span-6 lg:col-start-4 lg:col-end-10 xl:mt-0 lg:mt-8">
             <div className="detail-payment rounded">
               <div className="p-4 border">
-                <div className="text-4xl f-bold">{product.price || "37 739 500 сум"} Сум</div>
+                <div className="text-4xl f-bold">{productPrice} Сум</div>
                 <div className="detail-counter grid grid-cols-3 my-4">
                   <Button onClick={minusCounter} className="minus">
                     <AiOutlineMinus size={24} fill="#C4C4C4" />
@@ -251,7 +238,7 @@ const Detail = ({ products, userId }) => {
         )}
         {value === "2" && (
           <div className="p-6">
-            <div className="mb-4" style={{ fontSize: "15px" }}>
+            {/* <div className="mb-4" style={{ fontSize: "15px" }}>
               Процессор: Intel® Pentium N5030
             </div>
             <div className="mb-4" style={{ fontSize: "15px" }}>
@@ -262,7 +249,13 @@ const Detail = ({ products, userId }) => {
             </div>
             <div className="mb-4" style={{ fontSize: "15px" }}>
               Частота процессора: 1.10-3.30 ГГц
-            </div>
+            </div> */}
+            {product.attributes.map((item, i) => (
+              <div className="mb-4" style={{ fontSize: "15px" }} key={i}>
+                {/* Процессор: Intel® Pentium N5030 */}
+                {item.product_attribute?.name}: {item.attribute_value}
+              </div>
+            ))}
             {/* {product.detail} */}
           </div>
         )}

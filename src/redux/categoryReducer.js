@@ -1,12 +1,12 @@
 import { FETCH_CATEGORIES } from "./types";
 
-const initialState = {}
+const initialState = [];
 
 
 export const categoryReducer = (state = initialState, action) => {
     switch (action.type) {
         case FETCH_CATEGORIES:
-            return { ...state, categories: action.payload };
+            return [ ...action.payload ];
         default:
             return state;
     }

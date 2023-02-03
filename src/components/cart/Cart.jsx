@@ -21,7 +21,7 @@ const Cart = ({ cart, favorite }) => {
           <div onClick={() => navigate(`/product/${cart.id}`)} className="cart-image">
             <img src={cart?.image || "./macb.jpeg"} alt="" />
           </div>
-          <div onClick={() => navigate(`/product/${cart.id}`)} className="cart-name">
+          <div onClick={() => navigate(`/product/${cart.name}`)} className="cart-name">
             { cart.title || "MacBook Pro 16-inch M2 Pro/16/512GB Space Gray 2023" }
           </div>
           <div className="rassrochka f-bold text-center">{ cart.installment_plan }</div>

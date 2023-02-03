@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Slider from "react-slick";
 import "../../assets/scss/_category.scss";
 import "slick-carousel/slick/slick.css";

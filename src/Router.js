@@ -50,7 +50,11 @@ const Router = ({ isAuth }) => {
           <Route path="/information/delivery" element={<Delivery />} />
           <Route path="/information/refund" element={<Refund />} />
           <Route path="/about-company" element={<About />} />
-          <Route path="/basket" element={<Basket />} />
+          <Route path="/basket" element={
+            <ProtectedRoute user={isAuth}>
+              <Basket />
+            </ProtectedRoute>
+            } />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/favorites" element={<Favorites />} />
           <Route path="/search" element={<SearchPage />} />

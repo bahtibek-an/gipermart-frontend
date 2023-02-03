@@ -2,7 +2,8 @@ import { HIDE_LOADER, SHOW_LOADER } from "./types";
 
 
 const initialState = {
-    isLoading: true
+    isLoading: true,
+    rightModalStep: "0"
 }
 
 export const appReducer = (state = initialState, action) => {
