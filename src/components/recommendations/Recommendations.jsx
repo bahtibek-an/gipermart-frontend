@@ -69,8 +69,8 @@ const Recommendations = ({ products: productLists, isLoading }) => {
           <Title title={"Гипермарт Рекомендует"} style="mt-8 mb-4 red" />
         </Link>
         <Slider {...settings} className="recommendations">
-            {products.map((item) => (
-              <Cart cart={item} key={item.id} />
+            {products.map((item, i) => (
+              <Cart cart={item} key={i} />
             ))}
         </Slider>
       </Container>

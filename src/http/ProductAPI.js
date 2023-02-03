@@ -6,7 +6,7 @@ import $host from "./index.js";
 export const fetchAllProducts = async () => {
     try {
         const { data } = await $host.get("product/api/products/");
-        return data;
+        return data.results;
     } catch (error) {
         // if(error.toJSON().message === 'Network Error'){
         //     render(<ServerError/>)
@@ -26,8 +26,12 @@ export const fetchAllCategories = async () => {
 }
 
 export const fetchOneProduct = async (id) => {
-    const { data } = await $host.get(`product/product-detail/${id}/`)
-    return data;
+    try {
+        const { data } = await $host.get(`product/product-detail/${id}/`)
+        return data;
+    } catch (error) {
+        console.log(error);   
+    }
 }
 
 export const appendProductToUserCart = async (userId, productId, quantity, total) => {

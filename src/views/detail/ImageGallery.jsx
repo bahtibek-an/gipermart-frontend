@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import Slider from "react-slick";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
-import { height } from "@mui/system";
 
 export default class ImageGallery extends Component {
   constructor(props) {
@@ -11,8 +10,10 @@ export default class ImageGallery extends Component {
       nav1: null,
       nav2: null,
     };
-    while(this.images.length < 4) {
-      this.images = this.images.concat(this.images);
+    if(this.images.length > 0) {
+      while(this.images.length < 4) {
+        this.images = this.images.concat(this.images);
+      }
     }
   }
 

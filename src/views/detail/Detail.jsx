@@ -15,25 +15,18 @@ import { connect } from "react-redux";
 // import SimilarCarts from "../../components/similarCarts/SimilarCarts";
 
 const Detail = ({ products, userId }) => {
-  const { id } = useParams();
   const navigate = useNavigate();
   const [counter, setCounter] = useState(1);
   const [value, setValue] = useState("1");
   const [product, setProduct] = useState({});
   const [loading, setLoading] = useState(true);
+  const { id } = useParams();
   const productPrice = (+product.price * counter);
 
   const fetchProduct = async () => {
     const [product] = await fetchOneProduct(id);
     setProduct(product);
   }
-
-  useEffect(() => {
-    fetchProduct()
-      .then(() => {
-        setLoading(false);
-      });
-  }, []);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -42,8 +35,6 @@ const Detail = ({ products, userId }) => {
   const minusCounter = () => {
     if (counter > 1) {
       setCounter((count) => count - 1);
-    } else {
-
     }
   };
 
@@ -82,6 +73,13 @@ const Detail = ({ products, userId }) => {
       console.log(error); 
     }
   }
+
+  useEffect(() => {
+    fetchProduct()
+      .finally(() => {
+        setLoading(false);
+      })
+  }, []);
 
   if(loading) {
     return (
@@ -183,7 +181,7 @@ const Detail = ({ products, userId }) => {
                 </Button>
               </div>
               <div className="grid grid-cols-3">
-                {rassrochkaArray.map((item) => (
+                {/* {rassrochkaArray.map((item) => (
                   <Button
                     key={item.id}
                     onClick={() => setRassrochkaTab(item.id)}
@@ -195,7 +193,7 @@ const Detail = ({ products, userId }) => {
                   >
                     {item.name}
                   </Button>
-                ))}
+                ))} */}
               </div>
             </div>
           </div>
