@@ -169,7 +169,7 @@ const Detail = ({ products, userId }) => {
           <div className="xl:col-span-3 lg:col-span-4 col-span-6 lg:col-start-4 lg:col-end-10 xl:mt-0 lg:mt-8">
             <div className="detail-payment rounded">
               <div className="p-4 border">
-                <div className="text-4xl f-bold">{product.price} Сум</div>
+                <div className="text-4xl f-bold">{product.price || "37 739 500 сум"} Сум</div>
                 <div className="detail-counter grid grid-cols-3 my-4">
                   <Button onClick={minusCounter} className="minus">
                     <AiOutlineMinus size={24} fill="#C4C4C4" />
@@ -187,7 +187,7 @@ const Detail = ({ products, userId }) => {
                 >
                   Добавить в корзину
                 </Button>
-                <div className="text-4xl f-bold my-5">{product.installment_plan}</div>
+                <div className="text-4xl f-bold my-5">{product.installment_plan || "47 739 500 / 100 000 Сум"}</div>
                 <Button
                   onClick={() => navigate("/basket")}
                   className="yellow-btn-hover !w-full !py-3 !capitalize !text-base"
@@ -226,8 +226,8 @@ const Detail = ({ products, userId }) => {
         </Tabs>
         {value === "1" && (
           <div className="p-6">
-            {product.description}
-            {/* <div className="f-bold mb-2" style={{ fontSize: "15px" }}>
+            {/* {product.description} */}
+            <div className="f-bold mb-2" style={{ fontSize: "15px" }}>
               Мощный процессор
             </div>
             <div className="mb-2" style={{ fontSize: "15px" }}>
@@ -246,12 +246,12 @@ const Detail = ({ products, userId }) => {
               видеокарте от Intel®. Такое сочетание и память гарантируют более
               высокую скорость загрузки приложений, качественную графику и
               эффективную работу в режиме многозадачности.
-            </div> */}
+            </div>
           </div>
         )}
         {value === "2" && (
           <div className="p-6">
-            {/* <div className="mb-4" style={{ fontSize: "15px" }}>
+            <div className="mb-4" style={{ fontSize: "15px" }}>
               Процессор: Intel® Pentium N5030
             </div>
             <div className="mb-4" style={{ fontSize: "15px" }}>
@@ -262,8 +262,8 @@ const Detail = ({ products, userId }) => {
             </div>
             <div className="mb-4" style={{ fontSize: "15px" }}>
               Частота процессора: 1.10-3.30 ГГц
-            </div> */}
-            {product.detail}
+            </div>
+            {/* {product.detail} */}
           </div>
         )}
       </Container>

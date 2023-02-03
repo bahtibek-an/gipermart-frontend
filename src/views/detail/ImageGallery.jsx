@@ -30,7 +30,7 @@ export default class ImageGallery extends Component {
           arrows={false}
         >
           <div className="carousel-img">
-            <img src={this.images} alt="" />
+            <img src={this.images || "../macb.jpeg"} alt="" />
           </div>
           {/* 
           <div className="carousel-img">
