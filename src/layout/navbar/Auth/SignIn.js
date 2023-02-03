@@ -8,23 +8,30 @@ import {
   } from "@mui/material";
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
 import { signIn } from "../../../http/UserAPI";
+import { useDispatch } from "react-redux";
+import { createUser } from "../../../redux/actions";
+import { setCookie } from "../../../helper";
 
-const SignIn = ({ setRightModalStep }) => {
+const SignIn = ({ setRightModalStep, setRightModal }) => {
     const [ showPassword, setShowPassword ] = useState();
     const [ number, setNumber ] = useState('');
     const [ password, setPassword ] = useState('');
     const [ error, setError ] = useState('');
+    const dispatch = useDispatch();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        signIn(number, password)
-            .then(data => {
-                // console.log(data);
-            })
-            .catch((err) => {
-                console.error(err)
-                setError(err);
-            })
+        try {
+            const data = await signIn(number, password);
+            if(data.error) return setError(data.error);
+            localStorage.setItem("accessToken", data.token.access);
+            dispatch(createUser(data.token.id));
+            setCookie("refreshToken", data.token.refresh, 7);
+            setRightModal(false);
+        } catch (error) {
+            console.log(error);
+        }
+        
     }
     const handleMouseDownPassword = (event) => {
         event.preventDefault();

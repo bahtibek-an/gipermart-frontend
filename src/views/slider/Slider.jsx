@@ -13,7 +13,7 @@ const HomeSlider = () => {
     const response = await fetch("https://yruoebgair.tk/outside/slider/");
     const sliders = await response.json();
     if(sliders.count === 0) return;
-    setSliders(sliders);
+    setSliders(sliders.results);
   }
 
   useEffect(() => {

@@ -13,7 +13,7 @@ const Stock = () => {
     const response = await fetch("https://yruoebgair.tk/outside/stock/");
     const products = await response.json();
     if(products.count === 0) return;
-    setStockProducts(products);
+    setStockProducts(products.results);
   }
 
   useEffect(() => {

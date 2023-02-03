@@ -10,6 +10,7 @@ import {
 import { signUp } from "../../../http/UserAPI";
 import { useDispatch } from "react-redux";
 import { createUser } from "../../../redux/actions";
+import { setCookie } from "../../../helper";
 
 const SignUp = ({ setRightModalStep, setRightModal }) => {
     const [showPassword, setShowPassword] = useState(false);
@@ -36,13 +37,7 @@ const SignUp = ({ setRightModalStep, setRightModal }) => {
             confirmPassword
         ).then((data) => {
             localStorage.setItem("accessToken", data.token.access);
-            function setCookie(cname, cvalue, exdays) {
-                const d = new Date();
-                d.setTime(d.getTime() + (exdays*24*60*60*1000));
-                let expires = "expires="+ d.toUTCString();
-                document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-            }
-            dispatch(createUser(data.token.code));
+            dispatch(createUser(data.token.id));
             setCookie("refreshToken", data.token.refresh, 7);
             setRightModal(false);
         });

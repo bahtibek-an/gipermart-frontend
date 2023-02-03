@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getCookie } from "../helper";
 
 export const API_URL = "https://yruoebgair.tk/";
 
@@ -12,22 +13,6 @@ $host.interceptors.request.use((config) => {
     config.headers.Authorization = `Bearer ${token}`;
     return config;
 });
-
-export function getCookie(cname) {
-    let name = cname + "=";
-    let decodedCookie = decodeURIComponent(document.cookie);
-    let ca = decodedCookie.split(';');
-    for(let i = 0; i <ca.length; i++) {
-      let c = ca[i];
-      while (c.charAt(0) == ' ') {
-        c = c.substring(1);
-      }
-      if (c.indexOf(name) == 0) {
-        return c.substring(name.length, c.length);
-      }
-    }
-    return "";
-  }
 
 $host.interceptors.response.use((config) => {
     return config;

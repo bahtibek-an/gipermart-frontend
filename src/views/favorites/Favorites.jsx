@@ -12,12 +12,12 @@ const Favorites = () => {
       <Container maxWidth="xl">
         <Title title="Избранные товары" style="f-bold mb-6 mt-12" />
         <div className="favorites mb-12">
+          {/* <Cart favorite={true} />
           <Cart favorite={true} />
           <Cart favorite={true} />
           <Cart favorite={true} />
-          <Cart favorite={true} />
-          <Cart favorite={true} />
-          <Cart favorite={true} />
+          <Cart favorite={true} /> */}
+          {/* <Cart favorite={true} /> */}
         </div>
       </Container>
     </>

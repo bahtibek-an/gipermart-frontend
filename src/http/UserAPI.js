@@ -1,6 +1,7 @@
 import jwtDecode from "jwt-decode";
-import $host, { getCookie } from "."
+import $host from "."
 import { store } from "..";
+import { getCookie, setCookie } from "../helper";
 import { createUser, deleteUser } from "../redux/actions";
 
 export const getUserById = async (id) => {
@@ -14,14 +15,13 @@ export const getUserById = async (id) => {
 
 export const signUp = async (phoneNumber, firstName, lastName, password, confirmPassword) => {
     try {
-        const { data } = await $host.post("user/signup/", {
+        const data  = await $host.post("user/signup/", {
             phone_number: phoneNumber,
             first_name: firstName,
             last_name: lastName,
             password,
             confirm_password: confirmPassword
         });
-        
         return data;
     } catch (error) {
         console.log(error);
@@ -29,11 +29,11 @@ export const signUp = async (phoneNumber, firstName, lastName, password, confirm
 }
 
 export const signIn = async (number, password) => {
-    const { response } = await $host.post("user/login/", {
+    const {data} = await $host.post("user/login/", {
         phone_number: number,
         code: password
     });
-    return response; 
+    return data; 
 }
 
 export const checkAuth = async () => {
@@ -49,16 +49,10 @@ export const checkAuth = async () => {
         // this.setLoading(false);
     }
 }
-
-function setCookie(cname, cvalue, exdays) {
-    const d = new Date();
-    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-    let expires = "expires="+d.toUTCString();
-    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-}
   
 export const logout = () => {
     localStorage.removeItem("accessToken");
     setCookie("refreshToken", "", 0);
     store.dispatch(deleteUser());
 }
+

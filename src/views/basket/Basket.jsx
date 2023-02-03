@@ -1,25 +1,32 @@
 import { Container } from "@mui/system";
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "../../assets/scss/_basket.scss";
 import Title from "../../components/title/Title";
-import { BiTrash } from "react-icons/bi";
-import Counter from "../../components/counter/Counter";
 import SecondNavbar from "../../layout/navbar/SecondNavbar";
 import { Button } from "@mui/material";
 import BasketModal from "../../components/modal/BasketModal";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { fetchAllBasketCarts } from "../../http/ProductAPI";
+import BasketCart from "./BasketCart";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import 'react-loading-skeleton/dist/skeleton.css'
 
 const Basket = () => {
   const [ carts, setCarts ] = useState([]);
   const [ loading, setLoading ] = useState(true);
+  const navigate = useNavigate();
+  const [openModal, setOpenModal] = useState(false);
   const userId = useSelector(state => state.user.userId);
 
+  const deleteCart = (id) => {
+    setCarts(carts.filter((item) => item.id !== id));
+  }
+
   const fetchCarts = async () => {
-    const response = await fetchAllBasketCarts(userId);
-    console.log(response)
+    const data = await fetchAllBasketCarts(userId);
+    setCarts(data);
   }
 
   useEffect(() => {
@@ -29,9 +36,6 @@ const Basket = () => {
       });
   }, []);
 
-  const navigate = useNavigate();
-  const [openModal, setOpenModal] = useState(false);
-
   const handleClickOpenModal = () => {
     setOpenModal(true);
   };
@@ -39,6 +43,7 @@ const Basket = () => {
   const handleCloseModal = () => {
     setOpenModal(false);
   };
+
 
   return (
     <>
@@ -48,51 +53,15 @@ const Basket = () => {
         <Title title="Корзина" style="mt-6" />
         <div className="grid lg:grid-cols-12 grid-cols-6 gap-4 mb-12">
           <div className="xl:col-span-9 lg:col-span-8 col-span-6">
-            
-            <div className="basket-cart">
-              <div className="basket-image">
-                <img
-                  src="https://picsum.photos/168/98"
-                  alt=""
-                />
-              </div>
-              <div className="basket-text">
-                <Link to="" className="basket-name">
-                  Acer Aspire 3 Intel Pentium N4500/4GB/1TB HDD/Intel UHD 15.6"
-                  (A315-34-C7AH) Pure Silver
-                </Link>
-                <div className="basket-price">3 113 600 Сум</div>
-                <div className="basket-action">
-                  <div className="basket-remove">
-                    <BiTrash size={16} />
-                    Удалить
-                  </div>
-                  <Counter />
-                </div>
-              </div>
-            </div>
-            <div className="basket-cart">
-              <div className="basket-image">
-                <img
-                  src="https://picsum.photos/168/98"
-                  alt=""
-                />
-              </div>
-              <div className="basket-text">
-                <Link to="" className="basket-name">
-                  Acer Aspire 3 Intel Pentium N4500/4GB/1TB HDD/Intel UHD 15.6"
-                  (A315-34-C7AH) Pure Silver
-                </Link>
-                <div className="basket-price">3 113 600 Сум</div>
-                <div className="basket-action">
-                  <div className="basket-remove">
-                    <BiTrash size={16} />
-                    Удалить
-                  </div>
-                  <Counter />
-                </div>
-              </div>
-            </div>
+            {!loading ? (
+              carts.map((item) => (
+                <BasketCart cart={item} deleteCartItem={deleteCart} key={item.id}/>
+              ))
+            ): (
+              <SkeletonTheme baseColor="#f5f5f6" highlightColor="#FFCE39">
+                <Skeleton count={2} width={"90%"} height={150}/>
+              </SkeletonTheme>
+            )}
           </div>
           <div className="xl:col-span-3 lg:col-span-4 col-span-6">
             <div className="price-box">

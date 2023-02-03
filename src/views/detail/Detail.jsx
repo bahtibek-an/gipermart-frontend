@@ -4,13 +4,13 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import "../../assets/scss/_detail.scss";
 import SecondNavbar from "../../layout/navbar/SecondNavbar";
 import Rating from "@mui/material/Rating";
-import { Button, Tab, Tabs } from "@mui/material";
+import { Alert, Button, Tab, Tabs } from "@mui/material";
 import { BiHeart } from "react-icons/bi";
 import ImageGallery from "./ImageGallery";
 // import Counter from "../../components/counter/Counter";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import { HiOutlineShoppingCart } from "react-icons/hi";
-import { addProductToUserCart, fetchOneProduct } from "../../http/ProductAPI";
+import { appendProductToUserCart, appendProductToWishList, fetchOneProduct } from "../../http/ProductAPI";
 import { connect } from "react-redux";
 // import SimilarCarts from "../../components/similarCarts/SimilarCarts";
 
@@ -76,9 +76,17 @@ const Detail = ({ products, userId }) => {
 
   const addProductToCart = async () => {
     try {
-      await addProductToUserCart(userId, id, counter);
+      await appendProductToUserCart(userId, id, counter);
     } catch (error) {
       console.log(error);
+    }
+  }
+
+  const addProductToWishList = async () => {
+    try {
+      await appendProductToWishList(userId, id);
+    } catch (error) {
+      console.log(error); 
     }
   }
 
@@ -86,6 +94,7 @@ const Detail = ({ products, userId }) => {
     <section className="detail">
       <SecondNavbar />
       <Container maxWidth="xl">
+        <Alert variant="filled" className="yellow-btn-hover"></Alert>
         <div className="pages detail-page !pt-8">
           <Link to="/">Магазин /</Link>
           <Link to="/">Аксессуары /</Link>
@@ -114,8 +123,9 @@ const Detail = ({ products, userId }) => {
             size="large"
             color="error"
             startIcon={<BiHeart size={20} />}
+            onClick={addProductToWishList}
           >
-            Не нравится
+            Нравится
           </Button>
           <div>
             {product.amount === 0 ? (

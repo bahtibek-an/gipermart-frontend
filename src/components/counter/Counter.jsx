@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import "../../assets/scss/_counter.scss";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 
-const Counter = () => {
-  const [counter, setCounter] = useState(1);
+const Counter = ({ quantity = 1 }) => {
+  const [counter, setCounter] = useState(quantity);
 
   const minusCounter = () => {
     if (counter > 1) {

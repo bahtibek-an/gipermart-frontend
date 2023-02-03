@@ -13,7 +13,7 @@ const Brands = () => {
     const response = await fetch("https://yruoebgair.tk/outside/brand/");
     const brands = await response.json();
     if(brands.count === 0) return;
-    setBrands(brands);
+    setBrands(brands.results);
   }
 
   useEffect(() => {

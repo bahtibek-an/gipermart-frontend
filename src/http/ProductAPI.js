@@ -31,7 +31,7 @@ export const fetchOneProduct = async (id) => {
     return data;
 }
 
-export const addProductToUserCart = async (userId, productId, quantity) => {
+export const appendProductToUserCart = async (userId, productId, quantity) => {
     const { data } = await $host.post("cart/add-cart", {user: userId, product: productId, quantity });
     return data;
 }
@@ -45,4 +45,14 @@ export const fetchAllBasketCarts = async (userId) => {
 export const fetchProductsBySearch = async (query) => {
     const { data } = await $host.get(`search/api/${query}/`);
     return data;
+}
+
+
+export const appendProductToWishList = async (userId, productId) => {
+    const { data } = await $host.post("outside/add-wishlist", {user: userId, product: productId});
+    return data;
+}
+
+export const deleteCart = async (id) => {
+    await $host.delete(`cart/delete-cart/${id}/`);
 }
