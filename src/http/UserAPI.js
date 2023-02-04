@@ -6,7 +6,7 @@ import { createUser, deleteUser, fetchUserBasket } from "../redux/actions";
 
 export const getUserById = async (id) => {
     try {
-        const { data } = $host.get(`user/api/v1/profile/${id}`, { withCredentials: true });
+        const { data } = $host.get(`user/api/v1/profile/${id}/`);
         return data;
     } catch (error) {
         console.log(error);

@@ -50,19 +50,23 @@ const Router = ({ isAuth }) => {
           <Route path="/information/refund" element={<Refund />} />
           <Route path="/about-company" element={<About />} />
           <Route path="/basket" element={
-            <ProtectedRoute user={isAuth}>
+            <ProtectedRoute>
               <Basket />
             </ProtectedRoute>
             } />
-          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/checkout" element={
+            <ProtectedRoute>
+              <Checkout />
+            </ProtectedRoute>
+          } />
           <Route path="/favorites" element={
-            <ProtectedRoute user={isAuth}>
+            <ProtectedRoute>
               <Favorites />
             </ProtectedRoute>
             } />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/profile" element={
-            <ProtectedRoute user={isAuth}>
+            <ProtectedRoute>
               <Profile />
             </ProtectedRoute>
           } />

@@ -36,13 +36,31 @@ export function categoriesAlgo(array) {
   for(let i = 0;i < array.length;i++) {
       const index = includesInArrayOfObj(result, array[i].parent_id)
       if(index !== -1) {
-          result[index] = {...result[index], children: []}
-          result[index].children.push(array[index]);
-          continue;
+        if(result[index].children === undefined) {
+          result[index] = {...result[index], children: []}   
+        }
+        result[index].children.push(array[index]);
+        continue;
       }
       result.push(array[i]);
   }
   
   
+  return result;
+}
+
+export function removeRepeatItems(array) {
+  const result = [];
+  const hash = {};
+  
+  for(let i = 0;i < array.length;i++) {
+      const item = array[i].product.id;
+      if(hash[item] !== undefined) {
+          result[hash[item]].quantity += array[i].quantity;
+          continue;
+      }
+      hash[item] = i;
+      result.push(array[i]);  
+  }
   return result;
 }

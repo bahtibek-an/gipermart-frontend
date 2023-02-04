@@ -5,9 +5,13 @@ import "slick-carousel/slick/slick-theme.css";
 import { Link } from "react-router-dom";
 import { Container } from "@mui/system";
 import '../../assets/scss/_second_navbar.scss'
+import { useSelector } from 'react-redux';
+import { categoriesAlgo } from '../../helper';
 
 
 const SecondNavbar = () => {
+  const categories = useSelector((state) => categoriesAlgo(state.categories));
+  
      let settings = {
        dots: false,
        infinite: true,
@@ -52,13 +56,9 @@ const SecondNavbar = () => {
     <div className="second-navbar">
       <Container maxWidth="xl">
         <Slider {...settings}>
-          <Link to="/">Кофеварки и Кофемашины</Link>
-          <Link to="/">Массажеры</Link>
-          <Link to="/">Гантели</Link>
-          <Link to="/">Кофеварки и Кофемашины</Link>
-          <Link to="/">Кофеварки и Кофемашины</Link>
-          <Link to="/">Массажеры</Link>
-          <Link to="/">Гантели</Link>
+          {categories.map((item) => (
+            <Link to="/" key={item.id}>{item.name}</Link>
+          ))}
           <Link to="/">Кофеварки и Кофемашины</Link>
         </Slider>
       </Container>

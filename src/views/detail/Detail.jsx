@@ -42,21 +42,21 @@ const Detail = ({ products, userId }) => {
     setCounter((count) => count + 1);
   };
 
-  const [rassrochkaTab, setRassrochkaTab] = useState("");
-  const rassrochkaArray = [
-    {
-      id: 1,
-      name: "6 месяц",
-    },
-    {
-      id: 2,
-      name: "9 месяц",
-    },
-    {
-      id: 3,
-      name: "12 месяц",
-    },
-  ];
+  // const [rassrochkaTab, setRassrochkaTab] = useState("");
+  // const rassrochkaArray = [
+  //   {
+  //     id: 1,
+  //     name: "6 месяц",
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "9 месяц",
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "12 месяц",
+  //   },
+  // ];
 
   const addProductToCart = async () => {
     try {

@@ -12,10 +12,42 @@ import Checkbox from "@mui/material/Checkbox";
 import { Button, Dialog, IconButton } from "@mui/material";
 import { BiPencil, BiTrash } from "react-icons/bi";
 import Title from "../../components/title/Title";
+import { useSelector } from "react-redux";
+import { createCheckout } from "../../http/CheckoutAPI";
 
 const Checkout = () => {
   const [selectedValue, setSelectedValue] = React.useState("a");
   const [disabledButton, setDisabledButton] = useState(false);
+  const basketProducts = useSelector((state) => state.basket);
+  const [ fullName, setFullName ] = useState('');
+  const [ phone, setPhone ] = useState('');
+  const [ region, setRegion ] = useState('');
+  const [ town, setTown ] = useState('');
+  const [ address, setAddress ] = useState('');
+  const [ comment, setComment ] = useState('');
+  const [ error, setError ] = useState('');
+
+  const onButtonClick = async () => {
+    const cashStatus = selectedValue === "a";
+    try {
+      const data = await createCheckout(
+        fullName,
+        phone,
+        region,
+        town,
+        address,
+        comment,
+        basketProducts[0].id,
+        true,
+        cashStatus
+      )
+      console.log(data);
+    } catch(e) {
+      setError(e);
+    }
+  }
+
+  const totalPrice = basketProducts.reduce((acc, item) => +item.total + acc, 0);
 
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
@@ -88,11 +120,17 @@ const Checkout = () => {
             <div className="text-2xl f-medium mt-2">Контактные данные</div>
             <div className="mt-4">Контактное лицо (ФИО)</div>
             <TextField
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              type="text"
               className="!rounded-none w-full !my-4"
               id="outlined-required"
             />
             <div className="mt-4">Контактный телефон</div>
             <TextField
+              type="number"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
               className="!rounded-none w-full !my-4"
               id="outlined-required"
               defaultValue="+998 __ ___ __ __"
@@ -104,6 +142,7 @@ const Checkout = () => {
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
+                onChange={(e) => setRegion(e.target.value)}
               >
                 <MenuItem value={10}>Ten</MenuItem>
                 <MenuItem value={20}>Twenty</MenuItem>
@@ -115,6 +154,7 @@ const Checkout = () => {
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
+                onChange={(e) => setTown(e.target.value)}
               >
                 <MenuItem value={10}>Ten</MenuItem>
                 <MenuItem value={20}>Twenty</MenuItem>
@@ -123,11 +163,17 @@ const Checkout = () => {
             </FormControl>
             <div className="mt-4 mb-1">Адрес*</div>
             <TextField
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              type="text"
               className="!rounded-none w-full"
               id="outlined-required"
             />
             <div className="mt-4 mb-1">Комментарии к заказу</div>
             <TextField
+              type="text"
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
               id="outlined-multiline-flexible"
               className="w-full"
               multiline
@@ -181,61 +227,40 @@ const Checkout = () => {
             />
             <Button
               disabled={!disabledButton}
+              onClick={onButtonClick}
               className={`yellow-btn-hover !rounded-none !py-3 !text-base !my-4 !w-full`}
             >
               Подтвердить заказ
             </Button>
           </div>
           <div className="right lg:pl-4 mb-8">
-            <div className="checkout-cart p-1">
-              <div className="checkout-image">
-                <img
-                  src="https://picsum.photos/80/50"
-                  alt=""
-                />
-              </div>
-              <div className="checkout-name">
-                Acer Aspire 3 Intel Pentium N4500/4GB/1TB HDD/Intel UHD 15.6"
-                (A315-34-C7AH) Pure Silver
-              </div>
-              <div className="checkout-price gap-x-2">
-                4 x <span className="f-bold price">3 113 600 Сум</span>
-              </div>
-            </div>
-            <div className="checkout-cart p-1">
-              <div className="checkout-image">
-                <img
-                  src="https://picsum.photos/80/50"
-                  alt=""
-                />
-              </div>
-              <div className="checkout-name">
-                Acer Aspire 3 Intel Pentium N4500/4GB/1TB HDD/Intel UHD 15.6"
-                (A315-34-C7AH) Pure Silver
-              </div>
-              <div className="checkout-price gap-x-2">
-                4 x <span className="f-bold price">3 113 600 Сум</span>
-              </div>
-            </div>
-            <div className="checkout-cart p-1">
-              <div className="checkout-image">
-                <img
-                  src="https://picsum.photos/80/50"
-                  alt=""
-                />
-              </div>
-              <div className="checkout-name">
-                Acer Aspire 3 Intel Pentium N4500/4GB/1TB HDD/Intel UHD 15.6"
-                (A315-34-C7AH) Pure Silver
-              </div>
-              <div className="checkout-price gap-x-2">
-                4 x <span className="f-bold price">3 113 600 Сум</span>
-              </div>
-            </div>
+            {
+              basketProducts.map((item) => (
+                <div className="checkout-cart p-1" key={item.id}>
+                  <div className="flex items-center">
+                    <div className="checkout-image">
+                      <img
+                        src="https://picsum.photos/80/50"
+                        alt=""
+                      />
+                    </div>
+                    <div className="checkout-name">
+                      {/* Acer Aspire 3 Intel Pentium N4500/4GB/1TB HDD/Intel UHD 15.6"
+                      (A315-34-C7AH) Pure Silver */}
+                      {item.product.name}
+                    </div>
+                  </div>
+                  <div className="checkout-price gap-x-2">
+                    {/* 4 x <span className="f-bold price">3 113 600 Сум</span> */}
+                    <span className="f-bold price">{item.total} Сум</span>
+                  </div>
+                </div>
+              ))
+            }
             <div className="border-t border-b py-6 my-6">
               <div className="flex items-center justify-between">
                 <div>Сумма по товарам</div>
-                <div className="text-xl f-bold">16 150 400 Сум</div>
+                <div className="text-xl f-bold">{totalPrice} Сум</div>
               </div>
               <div className="flex items-center justify-between mt-4">
                 <div>Стоимость доставки</div>
@@ -244,7 +269,7 @@ const Checkout = () => {
             </div>
             <div className="flex items-center justify-between mt-4">
               <div className="text-xl">Итого:</div>
-              <div className="text-xl f-bold">16 150 400 Сум</div>
+              <div className="text-xl f-bold">{totalPrice} Сум</div>
             </div>
           </div>
         </div>

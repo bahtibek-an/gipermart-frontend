@@ -23,9 +23,9 @@ const BasketCart = ({ cart, deleteCartItem }) => {
             <Link to="" className="basket-name">
                {product.name}
             </Link>
-            <div className="basket-price">3 113 600 Сум</div>
-            <div className="basket-action" onClick={removeCart}>
-                <div className="basket-remove">
+            <div className="basket-price">{cart.total} Сум</div>
+            <div className="basket-action">
+                <div className="basket-remove" onClick={removeCart}>
                 <BiTrash size={16}/>
                     Удалить
                 </div>

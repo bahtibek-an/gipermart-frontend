@@ -6,7 +6,7 @@ import { categoriesAlgo } from "../../helper";
 
 const NavbarCatalog = ({ openModal, closeModal, categories }) => {
   const sortedCategories = categoriesAlgo(categories);
-
+  
   return (
     <div>
       <Dialog
@@ -26,7 +26,7 @@ const NavbarCatalog = ({ openModal, closeModal, categories }) => {
                     alt=""
                   />
                 </div>
-                <div className="main-name">ноутбуки и принтеры</div>
+                <div className="main-name">{item.name}</div>
               </Link>
               {item.children && (
                 item.children.map((item) => (
