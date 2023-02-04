@@ -10,9 +10,12 @@ import {
   } from "@mui/material";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
+import { useDispatch } from "react-redux";
+import { hideRightModal } from "../../../redux/actions";
 
-const AuthSidebar = ({ rightModalStep, setRightModalStep, setRightModal }) => {
+const AuthSidebar = ({ rightModalStep, setRightModalStep }) => {
     const [showPassword, setShowPassword] = useState(false);
+    const dispatch = useDispatch();
     const handleClickShowPassword = () => setShowPassword((show) => !show);
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
@@ -23,7 +26,7 @@ const AuthSidebar = ({ rightModalStep, setRightModalStep, setRightModal }) => {
               <div className="flex items-center justify-end">
                 <IconButton
                   onClick={() => {
-                    setRightModal(false);
+                    dispatch(hideRightModal())
                     setRightModalStep("1");
                   }}
                   className="!ml-auto"
@@ -33,12 +36,12 @@ const AuthSidebar = ({ rightModalStep, setRightModalStep, setRightModal }) => {
               </div>
               {rightModalStep === "0" && (
                 <>
-                  <SignUp setRightModalStep={setRightModalStep} setRightModal={setRightModal}/>
+                  <SignUp setRightModalStep={setRightModalStep}/>
                 </>
               )}
               {rightModalStep === "1" && (
                 <>
-                <SignIn setRightModalStep={setRightModalStep} setRightModal={setRightModal}/>
+                <SignIn setRightModalStep={setRightModalStep}/>
                 </>
               )}
               {rightModalStep === "2" && (

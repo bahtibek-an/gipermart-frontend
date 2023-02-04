@@ -1,5 +1,5 @@
-import { fetchAllCategories, fetchAllProducts } from "../http/ProductAPI"
-import { CREATE_USER, DELETE_USER, FETCH_CATEGORIES, FETCH_PRODUCTS, HIDE_LOADER, SHOW_LOADER } from "./types"
+import { fetchAllBasketCarts, fetchAllCategories, fetchAllProducts } from "../http/ProductAPI"
+import { CREATE_USER, DELETE_USER, FETCH_BASKET_PRODUCTS, FETCH_CATEGORIES, FETCH_PRODUCTS, HIDE_LOADER, HIDE_RIGHT_MODAL, SHOW_LOADER, SHOW_MODAL_LOGIN, SHOW_MODAL_SIGNUP, SHOW_RIGHT_MODAL } from "./types"
 
 export function hideLoader() {
     return {
@@ -30,6 +30,13 @@ export function fetchProducts() {
     }
 }
 
+export function fetchUserBasket(userId) {
+    return async (dispatch) => {
+        const data = await fetchAllBasketCarts(userId);
+        dispatch({ type: FETCH_BASKET_PRODUCTS, payload: data })
+    }
+}
+
 export function createUser(id) {
     return {
         type: CREATE_USER,
@@ -43,3 +50,14 @@ export function deleteUser() {
     }
 }
 
+export function showRightModal() {
+    return {
+        type: SHOW_RIGHT_MODAL
+    }
+}
+
+export function hideRightModal() {
+    return {
+        type: HIDE_RIGHT_MODAL
+    }
+}

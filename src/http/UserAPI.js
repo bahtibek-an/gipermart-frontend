@@ -2,7 +2,7 @@ import jwtDecode from "jwt-decode";
 import $host from "."
 import { store } from "..";
 import { getCookie, setCookie } from "../helper";
-import { createUser, deleteUser } from "../redux/actions";
+import { createUser, deleteUser, fetchUserBasket } from "../redux/actions";
 
 export const getUserById = async (id) => {
     try {
@@ -43,7 +43,9 @@ export const checkAuth = async () => {
         const userDecoded = jwtDecode(data.access); 
         localStorage.setItem("accessToken", data.access);
         store.dispatch(createUser(userDecoded.user_id));
+        store.dispatch(fetchUserBasket(userDecoded.user_id));
     } catch (error) {
+        console.log(error)
         store.dispatch(deleteUser());
     } finally {
         // this.setLoading(false);

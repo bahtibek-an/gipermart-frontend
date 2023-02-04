@@ -9,7 +9,7 @@ import {
   } from "@mui/material";
 import { signUp } from "../../../http/UserAPI";
 import { useDispatch } from "react-redux";
-import { createUser } from "../../../redux/actions";
+import { createUser, hideRightModal } from "../../../redux/actions";
 import { setCookie } from "../../../helper";
 
 const SignUp = ({ setRightModalStep, setRightModal }) => {
@@ -39,7 +39,7 @@ const SignUp = ({ setRightModalStep, setRightModal }) => {
             localStorage.setItem("accessToken", data.token.access);
             dispatch(createUser(data.token.id));
             setCookie("refreshToken", data.token.refresh, 7);
-            setRightModal(false);
+            dispatch(hideRightModal())
         });
     }
 

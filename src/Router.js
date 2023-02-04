@@ -29,7 +29,6 @@ import ProtectedRoute from "./components/protectedRoute/ProtectedRoute";
 import { connect } from "react-redux";
 
 const Router = ({ isAuth }) => {
-
     return (
     <BrowserRouter>
         <Navbar />
@@ -56,7 +55,11 @@ const Router = ({ isAuth }) => {
             </ProtectedRoute>
             } />
           <Route path="/checkout" element={<Checkout />} />
-          <Route path="/favorites" element={<Favorites />} />
+          <Route path="/favorites" element={
+            <ProtectedRoute user={isAuth}>
+              <Favorites />
+            </ProtectedRoute>
+            } />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/profile" element={
             <ProtectedRoute user={isAuth}>

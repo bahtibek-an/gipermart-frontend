@@ -23,14 +23,18 @@ import { SlScreenSmartphone } from "react-icons/sl";
 import MobileNavbar from "./MobileNavbar";
 import NavbarSearch from "./NavbarSearch";
 import AuthSidebar from "./Auth/AuthSidebar";
-import { connect } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
+import { hideRightModal, showRightModal } from "../../redux/actions";
 
 
-const Navbar = ({ isAuth }) => {
+const Navbar = ({ isAuth, basketProductsLength }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const pathName = location.pathname;
   const [navbarFixed, setNavbarFixed] = useState(false);
+  const [ rightModalStep, setRightModalStep ] = useState("1");
+  const rightModal = useSelector(state => state.app.rightModal);
+  const dispatch = useDispatch();
   const handleScrollNavbar = () => {
     if (window.scrollY >= 40) {
       setNavbarFixed(true);
@@ -49,9 +53,7 @@ const Navbar = ({ isAuth }) => {
     setOpenModal(false);
   };
 
-  const [rightModal, setRightModal] = useState(false);
   const [leftModal, setLeftModal] = useState(false);
-  const [rightModalStep, setRightModalStep] = useState("1");
 
   return (
     <>
@@ -76,7 +78,7 @@ const Navbar = ({ isAuth }) => {
               <div
                 className="flex items-center ml-auto"
                 onClick={() => {
-                  setRightModal(true);
+                  dispatch(hideRightModal())
                 }}
               >
                 <div className="underline underline-offset-1">Войти </div>
@@ -161,14 +163,13 @@ const Navbar = ({ isAuth }) => {
             anchor={"right"}
             open={rightModal}
             onClose={() => {
-              setRightModal(false);
+              dispatch(hideRightModal());
               setRightModalStep("1");
             }}
           >
             <AuthSidebar 
               rightModalStep={rightModalStep} 
               setRightModalStep={setRightModalStep}
-              setRightModal={setRightModal}
             />
           </Drawer>
         </>
@@ -239,7 +240,7 @@ const Navbar = ({ isAuth }) => {
                   </div>
                   <div
                     // onClick={() => navigate("/profile")}
-                    onClick={() => isAuth ? navigate("/profile") : setRightModal(true)}
+                    onClick={() => isAuth ? navigate("/profile") : dispatch(showRightModal())}
                     className="profile-icon cursor-pointer flex flex-col text-center items-center justify-between"
                   >
                     <CgProfile size={24} />
@@ -258,7 +259,7 @@ const Navbar = ({ isAuth }) => {
                     onClick={() => navigate("/basket")}
                     className="basket-icon cursor-pointer flex flex-col text-center items-center justify-between"
                   >
-                    <Badge badgeContent={4} color="primary">
+                    <Badge badgeContent={basketProductsLength} color="primary">
                       <HiOutlineShoppingCart size={24} />
                     </Badge>
                     <div className="mobile-hidden-text">Корзина</div>
@@ -276,7 +277,8 @@ const Navbar = ({ isAuth }) => {
 
 const mapStateToProps = (state) => {
   return {
-    isAuth: state.user.isAuth
+    isAuth: state.user.isAuth,
+    basketProductsLength: state.basket.length
   }
 }
 

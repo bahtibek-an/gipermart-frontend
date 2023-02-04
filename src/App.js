@@ -1,18 +1,18 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { checkAuth, getUserById } from "./http/UserAPI";
-import { fetchProducts } from "./redux/actions";
+import { checkAuth } from "./http/UserAPI";
+import { fetchProducts, fetchUserBasket } from "./redux/actions";
 import Router from "./Router";
 import Spinner from "./UI/spinner/Spinner";
 
 const App = () => {
   const dispatch = useDispatch();
   const isLoading = useSelector((state) => state.app.isLoading);
-
+  
   useEffect(() => {
     dispatch(fetchProducts());
     if(localStorage.getItem("accessToken")) {
-      checkAuth();
+      checkAuth()
     }
   }, []);
 

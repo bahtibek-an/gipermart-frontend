@@ -4,7 +4,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import "../../assets/scss/_detail.scss";
 import SecondNavbar from "../../layout/navbar/SecondNavbar";
 import Rating from "@mui/material/Rating";
-import { Alert, Button, Tab, Tabs } from "@mui/material";
+import { Button, Tab, Tabs } from "@mui/material";
 import { BiHeart } from "react-icons/bi";
 import ImageGallery from "./ImageGallery";
 // import Counter from "../../components/counter/Counter";
@@ -93,7 +93,7 @@ const Detail = ({ products, userId }) => {
     <section className="detail">
       <SecondNavbar />
       <Container maxWidth="xl">
-        <Alert variant="filled" className="yellow-btn-hover"></Alert>
+        
         <div className="pages detail-page !pt-8">
           <Link to="/">Магазин /</Link>
           <Link to="/">Аксессуары /</Link>

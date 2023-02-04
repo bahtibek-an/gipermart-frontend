@@ -9,7 +9,7 @@ import {
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
 import { signIn } from "../../../http/UserAPI";
 import { useDispatch } from "react-redux";
-import { createUser } from "../../../redux/actions";
+import { createUser, hideRightModal } from "../../../redux/actions";
 import { setCookie } from "../../../helper";
 
 const SignIn = ({ setRightModalStep, setRightModal }) => {
@@ -27,7 +27,7 @@ const SignIn = ({ setRightModalStep, setRightModal }) => {
             localStorage.setItem("accessToken", data.token.access);
             dispatch(createUser(data.token.id));
             setCookie("refreshToken", data.token.refresh, 7);
-            setRightModal(false);
+            dispatch(hideRightModal());
         } catch (error) {
             // setError(error);
         }
