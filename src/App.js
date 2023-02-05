@@ -8,7 +8,7 @@ import Spinner from "./UI/spinner/Spinner";
 const App = () => {
   const dispatch = useDispatch();
   const isLoading = useSelector((state) => state.app.isLoading);
-  
+    
   useEffect(() => {
     if(localStorage.getItem("accessToken")) {
       checkAuth()
@@ -20,16 +20,20 @@ const App = () => {
     dispatch(fetchProducts());
   }, []);
 
-  if(isLoading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <Spinner/>
-      </div>
-    );
-  }
-
   return (
-    <Router/>
+    <>
+    {isLoading ? (
+      <div className="flex items-center justify-center h-screen">
+        <Spinner
+          width={14}
+          height={14}
+          color="fill-yellow-400"
+        />
+      </div>
+    ) : (
+      <Router/>
+    )}
+    </>
   );
 };
 

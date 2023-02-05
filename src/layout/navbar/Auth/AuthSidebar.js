@@ -8,10 +8,10 @@ import {
     OutlinedInput,
     TextField,
   } from "@mui/material";
-import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import { useDispatch } from "react-redux";
 import { hideRightModal } from "../../../redux/actions";
+import LoginForm from "../../../modules/LoginForm";
 
 const AuthSidebar = ({ rightModalStep, setRightModalStep }) => {
     const [showPassword, setShowPassword] = useState(false);
@@ -41,7 +41,8 @@ const AuthSidebar = ({ rightModalStep, setRightModalStep }) => {
               )}
               {rightModalStep === "1" && (
                 <>
-                <SignIn setRightModalStep={setRightModalStep}/>
+                  {/* <SignIn setRightModalStep={setRightModalStep}/> */}
+                  <LoginForm setRightModalStep={setRightModalStep}/>
                 </>
               )}
               {rightModalStep === "2" && (

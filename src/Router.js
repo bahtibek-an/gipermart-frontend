@@ -25,10 +25,9 @@ import Order from "./views/profile/Order";
 import Filter from "./views/filter/Filter";
 import Detail from "./views/detail/Detail";
 import Stock from "./components/stock/Stock";
-import ProtectedRoute from "./components/protectedRoute/ProtectedRoute";
-import { connect } from "react-redux";
+import PrivateRoutes from "./components/protectedRoute/PrivateRoutes";
 
-const Router = ({ isAuth }) => {
+const Router = () => {
     return (
     <BrowserRouter>
         <Navbar />
@@ -49,43 +48,22 @@ const Router = ({ isAuth }) => {
           <Route path="/information/delivery" element={<Delivery />} />
           <Route path="/information/refund" element={<Refund />} />
           <Route path="/about-company" element={<About />} />
-          <Route path="/basket" element={
-            <ProtectedRoute>
-              <Basket />
-            </ProtectedRoute>
-            } />
-          <Route path="/checkout" element={
-            <ProtectedRoute>
-              <Checkout />
-            </ProtectedRoute>
-          } />
-          <Route path="/favorites" element={
-            <ProtectedRoute>
-              <Favorites />
-            </ProtectedRoute>
-            } />
           <Route path="/search" element={<SearchPage />} />
-          <Route path="/profile" element={
-            <ProtectedRoute>
-              <Profile />
-            </ProtectedRoute>
-          } />
           <Route path="/profile/adresses" element={<Adresses />} />
           <Route path="/profile/order" element={<Order />} />
           <Route path="/filter" element={<Filter />} />
           <Route path="/product/:id" element={<Detail />} />
           <Route path="/stock" element={<Stock />} />
+          <Route element={<PrivateRoutes/>}>
+            <Route path="/profile" element={<Profile />}/>
+            <Route path="/favorites" element={<Favorites />}/>
+            <Route path="/checkout" element={<Checkout />}/>
+            <Route path="/basket" element={<Basket />}/>
+          </Route>
         </Routes>
         <Footer />
     </BrowserRouter>
     );
 }
 
-const mapStateToProps = (state) => {
-
-  return {
-    isAuth: state.user.isAuth
-  }
-}
-
-export default connect(mapStateToProps, null)(Router);
+export default Router;
