@@ -5,6 +5,8 @@ import Title from "../title/Title";
 import "../../assets/scss/_stock.scss";
 import Slider from "react-slick";
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
+import SlickArrowRight from "../SlickArrow/SlickArrowRight";
+import SlickArrowLeft from "../SlickArrow/SlickArrowLeft";
 
 const Stock = () => {
   const [ stockProducts, setStockProducts ] = useState([]);
@@ -25,8 +27,8 @@ const Stock = () => {
     slidesToShow: 3,
     slidesToScroll: 1,
     infinite: false,
-    nextArrow: <BsArrowRight color="#eb7471" size={24} />,
-    prevArrow: <BsArrowLeft color="#eb7471" size={24} />,
+    nextArrow: <SlickArrowRight color="#eb7471" size={24} />,
+    prevArrow: <SlickArrowLeft color="#eb7471" size={24} />,
 
     responsive: [
       {

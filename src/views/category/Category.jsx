@@ -4,9 +4,10 @@ import "../../assets/scss/_category.scss";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Link } from "react-router-dom";
-import { BsArrowLeftCircle, BsArrowRightCircle } from "react-icons/bs";
 import { Container } from "@mui/system";
 import { connect } from "react-redux";
+import SlickArrowRight from "../../components/SlickArrow/SlickArrowRight";
+import SlickArrowLeft from "../../components/SlickArrow/SlickArrowLeft";
 
 const Category = ({ categories }) => {
 
@@ -15,8 +16,8 @@ const Category = ({ categories }) => {
     infinite: false,
     slidesToShow: 5,
     slidesToScroll: 1,
-    nextArrow: <BsArrowRightCircle size={14} />,
-    prevArrow: <BsArrowLeftCircle size={14} />,
+    nextArrow: <SlickArrowRight size={14} />,
+    prevArrow: <SlickArrowLeft size={14} />,
 
     responsive: [
       {

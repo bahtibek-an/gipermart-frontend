@@ -11,9 +11,13 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
-import { Button } from "@mui/material";
+import { Button, Card } from "@mui/material";
+import { useSelector } from "react-redux";
+import Cart from "../../components/cart/Cart";
 
 const SpecialOrder = () => {
+  const products = useSelector((state) => state?.products?.filter((item) => !item?.product?.USA_product));
+  console.log(products)
   let settings = {
     dots: false,
     infinite: false,
@@ -58,86 +62,9 @@ const SpecialOrder = () => {
           </div>
           <Title title="Популярные бренды" style="f-bold mb-8" />
           <Slider {...settings}>
-            <Link className="brand" to="/">
-              <div className="brand-image">
-                <img
-                  src="https://picsum.photos/204/200"
-                  alt=""
-                />
-              </div>
-              <div className="brand-name">VictoriasSecret</div>
-              <div className="brand-text">stuff for women</div>
-            </Link>
-            <Link className="brand" to="/">
-              <div className="brand-image">
-                <img
-                  src="https://picsum.photos/204/200"
-                  alt=""
-                />
-              </div>
-              <div className="brand-name">VictoriasSecret</div>
-              <div className="brand-text">stuff for women</div>
-            </Link>
-            <Link className="brand" to="/">
-              <div className="brand-image">
-                <img
-                  src="https://picsum.photos/204/200"
-                  alt=""
-                />
-              </div>
-              <div className="brand-name">VictoriasSecret</div>
-              <div className="brand-text">stuff for women</div>
-            </Link>
-            <Link className="brand" to="/">
-              <div className="brand-image">
-                <img
-                  src="https://picsum.photos/204/200"
-                  alt=""
-                />
-              </div>
-              <div className="brand-name">VictoriasSecret</div>
-              <div className="brand-text">stuff for women</div>
-            </Link>
-            <Link className="brand" to="/">
-              <div className="brand-image">
-                <img
-                  src="https://picsum.photos/204/200"
-                  alt=""
-                />
-              </div>
-              <div className="brand-name">VictoriasSecret</div>
-              <div className="brand-text">stuff for women</div>
-            </Link>
-            <Link className="brand" to="/">
-              <div className="brand-image">
-                <img
-                  src="https://picsum.photos/204/200"
-                  alt=""
-                />
-              </div>
-              <div className="brand-name">VictoriasSecret</div>
-              <div className="brand-text">stuff for women</div>
-            </Link>
-            <Link className="brand" to="/">
-              <div className="brand-image">
-                <img
-                  src="https://picsum.photos/204/200"
-                  alt=""
-                />
-              </div>
-              <div className="brand-name">VictoriasSecret</div>
-              <div className="brand-text">stuff for women</div>
-            </Link>
-            <Link className="brand" to="/">
-              <div className="brand-image">
-                <img
-                  src="https://picsum.photos/204/200"
-                  alt=""
-                />
-              </div>
-              <div className="brand-name">VictoriasSecret</div>
-              <div className="brand-text">stuff for women</div>
-            </Link>
+            {products.map((item) => (
+              <Cart cart={item} key={item.id}/>
+            ))}
           </Slider>
           <div className="grid md:grid-cols-2 mt-8">
             <div>

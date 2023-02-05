@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import Title from "../title/Title";
 import "../../assets/scss/_brands.scss";
 import { Link } from "react-router-dom";
-import Slider from "react-slick";
-import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
+// import Slider from "react-slick";
+// import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
 
 const Brands = () => {
   const [ brands, setBrands ] = useState([]);

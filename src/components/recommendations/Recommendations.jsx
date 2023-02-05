@@ -9,6 +9,8 @@ import { Container } from "@mui/system";
 import Title from "../title/Title";
 import Cart from "../cart/Cart";
 import { connect } from "react-redux";
+import SlickArrowLeft from "../SlickArrow/SlickArrowLeft";
+import SlickArrowRight from "../SlickArrow/SlickArrowRight";
 
 
 const Recommendations = ({ products: productLists, isLoading }) => {
@@ -25,8 +27,8 @@ const Recommendations = ({ products: productLists, isLoading }) => {
     infinite: true,
     slidesToShow: 6,
     slidesToScroll: 1,
-    nextArrow: <BsArrowRight color="#eb7471" size={24} />,
-    prevArrow: <BsArrowLeft color="#eb7471" size={24} />,
+    nextArrow: <SlickArrowRight color="#eb7471" size={24} />,
+    prevArrow: <SlickArrowLeft color="#eb7471" size={24} />,
 
     responsive: [
       {

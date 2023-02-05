@@ -14,13 +14,14 @@ import { BiPencil, BiTrash } from "react-icons/bi";
 import Title from "../../components/title/Title";
 import { useSelector } from "react-redux";
 import { createCheckout } from "../../http/CheckoutAPI";
+import { connect } from "react-redux";
 
-const Checkout = () => {
+const Checkout = ({ user }) => {
   const [selectedValue, setSelectedValue] = React.useState("a");
   const [disabledButton, setDisabledButton] = useState(false);
   const basketProducts = useSelector((state) => state.basket);
-  const [ fullName, setFullName ] = useState('');
-  const [ phone, setPhone ] = useState('');
+  const [ fullName, setFullName ] = useState(`${user.first_name} ${user.last_name}`);
+  const [ phone, setPhone ] = useState(`${user.phone_number}`);
   const [ region, setRegion ] = useState('');
   const [ town, setTown ] = useState('');
   const [ address, setAddress ] = useState('');
@@ -37,7 +38,7 @@ const Checkout = () => {
         town,
         address,
         comment,
-        basketProducts[0].id,
+        basketProducts.map((item) => item.id),
         true,
         cashStatus
       )
@@ -278,4 +279,10 @@ const Checkout = () => {
   );
 };
 
-export default Checkout;
+const mapStateToProps = (state) => {
+  return {
+    user: state.user.user
+  }
+}
+
+export default connect(mapStateToProps, null)(Checkout);

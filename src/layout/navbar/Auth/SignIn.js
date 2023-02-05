@@ -7,7 +7,7 @@ import {
     TextField,
   } from "@mui/material";
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
-import { signIn } from "../../../http/UserAPI";
+import { getUserById, signIn } from "../../../http/UserAPI";
 import { useDispatch } from "react-redux";
 import { createUser, hideRightModal } from "../../../redux/actions";
 import { setCookie } from "../../../helper";
@@ -25,7 +25,8 @@ const SignIn = ({ setRightModalStep, setRightModal }) => {
             const data = await signIn(number, password);
             if(data.error) return setError(data.error);
             localStorage.setItem("accessToken", data.token.access);
-            dispatch(createUser(data.token.id));
+            const user = await getUserById(data.token.id);
+            dispatch(createUser(user.data[0]));
             setCookie("refreshToken", data.token.refresh, 7);
             dispatch(hideRightModal());
         } catch (error) {

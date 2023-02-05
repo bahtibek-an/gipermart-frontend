@@ -27,7 +27,7 @@ import { connect, useDispatch, useSelector } from "react-redux";
 import { hideRightModal, showRightModal } from "../../redux/actions";
 
 
-const Navbar = ({ isAuth, basketProductsLength }) => {
+const Navbar = ({ isAuth, basketProductsLength, wishListsLength }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const pathName = location.pathname;
@@ -250,7 +250,7 @@ const Navbar = ({ isAuth, basketProductsLength }) => {
                     onClick={() => navigate("/favorites")}
                     className="favorite-icon cursor-pointer flex flex-col text-center items-center justify-between"
                   >
-                    <Badge badgeContent={4} color="primary">
+                    <Badge badgeContent={wishListsLength} color="primary">
                       <BiHeart size={24} />
                     </Badge>
                     <div className="mobile-hidden-text">Избранное</div>
@@ -278,7 +278,8 @@ const Navbar = ({ isAuth, basketProductsLength }) => {
 const mapStateToProps = (state) => {
   return {
     isAuth: state.user.isAuth,
-    basketProductsLength: state.basket.length
+    basketProductsLength: state.basket.length,
+    wishListsLength: state?.wishLists.length
   }
 }
 

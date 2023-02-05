@@ -4,19 +4,38 @@ import { BiHeart } from "react-icons/bi";
 import { HiOutlineShoppingCart } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteWishList, showRightModal } from "../../redux/actions";
+import { appendProductToWishList, deleteProductFromWishList } from "../../http/ProductAPI";
 
-const Cart = ({ cart, favorite }) => {
+const Cart = ({ cart/*, favorite */ }) => {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state?.user);
+  const favorite = useSelector((state) => state?.wishLists.find((item) => item?.product?.id == cart.id));
+  
+  const handleClick = async () => {
+    if(!user.isAuth) {
+      return dispatch(showRightModal());
+    }
+    if(favorite) {
+      return deleteProductFromWishList(favorite.id)
+      .then(() => {
+        dispatch(deleteWishList(cart.id));
+      });
+    }
+    return await appendProductToWishList(user?.user?.id, cart.id);
+  }
 
   return (
-    <Link to={`/product/${cart.id}`}>
-      <div className="cart">
-        <button
-          className={`${!favorite ? "favorite" : "favorited"} favorite-icon`}
-        >
-          <BiHeart size={24} />
-        </button>
+    <div className="cart">
+      <button
+        onClick={handleClick}
+        className={`${!favorite ? "favorite" : "favorited"} favorite-icon`}
+      >
+        <BiHeart size={24} />
+      </button>
+      <Link to={`/product/${cart.id}`}>
         <div className="flex flex-col">
           <div onClick={() => navigate(`/product/${cart.id}`)} className="cart-image">
             <img src={cart?.image || "./macb.jpeg"} alt="" />
@@ -32,8 +51,8 @@ const Cart = ({ cart, favorite }) => {
             </button>
           </div>
         </div>
-      </div>
-    </Link>
+      </Link>
+    </div>
   );
 };
 

@@ -7,7 +7,7 @@ import {
     OutlinedInput,
     TextField,
   } from "@mui/material";
-import { signUp } from "../../../http/UserAPI";
+import { getUserById, signUp } from "../../../http/UserAPI";
 import { useDispatch } from "react-redux";
 import { createUser, hideRightModal } from "../../../redux/actions";
 import { setCookie } from "../../../helper";
@@ -37,9 +37,12 @@ const SignUp = ({ setRightModalStep, setRightModal }) => {
             confirmPassword
         ).then((data) => {
             localStorage.setItem("accessToken", data.token.access);
-            dispatch(createUser(data.token.id));
-            setCookie("refreshToken", data.token.refresh, 7);
-            dispatch(hideRightModal())
+            getUserById(data.token.id)
+                .then((user) => {
+                    dispatch(createUser(user.data[0]));
+                    setCookie("refreshToken", data.token.refresh, 7);
+                    dispatch(hideRightModal());
+                });
         });
     }
 

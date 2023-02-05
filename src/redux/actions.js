@@ -1,5 +1,5 @@
-import { fetchAllBasketCarts, fetchAllCategories, fetchAllProducts } from "../http/ProductAPI"
-import { CREATE_USER, DELETE_BASKET_PRODUCT, DELETE_USER, FETCH_BASKET_PRODUCTS, FETCH_CATEGORIES, FETCH_PRODUCTS, HIDE_LOADER, HIDE_RIGHT_MODAL, SHOW_LOADER, SHOW_MODAL_LOGIN, SHOW_MODAL_SIGNUP, SHOW_RIGHT_MODAL } from "./types"
+import { fetchAllBasketCarts, fetchAllCategories, fetchAllProducts, getWishListsByUserId } from "../http/ProductAPI"
+import { CREATE_BASKET_PRODUCT, CREATE_USER, DELETE_BASKET_PRODUCT, DELETE_USER, DELETE_WISHLIST, FETCH_BASKET_PRODUCTS, FETCH_CATEGORIES, FETCH_PRODUCTS, FETCH_USER_WISHLISTS, HIDE_LOADER, HIDE_RIGHT_MODAL, SHOW_LOADER, SHOW_MODAL_LOGIN, SHOW_MODAL_SIGNUP, SHOW_RIGHT_MODAL } from "./types"
 
 export function hideLoader() {
     return {
@@ -19,6 +19,13 @@ export function fetchCategories() {
         const data = await fetchAllCategories();
         dispatch({ type: FETCH_CATEGORIES, payload: data });
         // dispatch(hideLoader);
+    }
+}
+
+export function fetchUserWishLists(userId) {
+    return async (dispatch) => {
+        const data = await getWishListsByUserId(userId);
+        dispatch({type: FETCH_USER_WISHLISTS, payload: data});
     }
 }
 
@@ -46,10 +53,10 @@ export function deleteBasketProduct(carts, id) {
     }
 }
 
-export function createUser(id) {
+export function createUser(user) {
     return {
         type: CREATE_USER,
-        payload: id
+        payload: user
     }
 }
 
@@ -68,5 +75,19 @@ export function showRightModal() {
 export function hideRightModal() {
     return {
         type: HIDE_RIGHT_MODAL
+    }
+}
+
+export function createBasketProduct(data) {
+    return {
+        type: CREATE_BASKET_PRODUCT,
+        payload: data
+    }
+}
+
+export function deleteWishList(productId) {
+    return {
+        type: DELETE_WISHLIST,
+        payload: productId
     }
 }

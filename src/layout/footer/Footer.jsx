@@ -29,7 +29,7 @@ const Footer = () => {
             <Link to="/" className="block mb-6">
               <img
                 className="footer-logo"
-                src="https://picsum.photos/190/50"
+                src="../logoo.svg"
                 alt=""
               />
             </Link>

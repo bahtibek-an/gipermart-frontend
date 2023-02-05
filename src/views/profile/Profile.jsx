@@ -15,8 +15,11 @@ import {
 } from "@mui/material";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { logout } from "../../http/UserAPI";
+import { useSelector } from "react-redux";
 
 const Profile = () => {
+  const user = useSelector((state) => state.user.user);
+  console.log(user);
   const navigate = useNavigate();
   const location = useLocation();
   const pathName = location.pathname;
@@ -96,7 +99,7 @@ const Profile = () => {
                 className="col-span-4 flex items-center justify-center h-px bg-black m-auto"
                 style={{ width: "-webkit-fill-available" }}
               ></div>
-              <div>VXNlcjoxMjcx</div>
+              <div>{user.id}</div>
             </div>
             <div className="grid lg:grid-cols-6 gap-x-4 lg:gap-y-0 gap-y-1 mt-8">
               <div>Имя и фамилия:</div>
@@ -104,7 +107,7 @@ const Profile = () => {
                 className="col-span-4 flex items-center justify-center h-px bg-black m-auto"
                 style={{ width: "-webkit-fill-available" }}
               ></div>
-              <div>Ilhom Nasriddinov</div>
+              <div>{user.first_name} {user.last_name}</div>
             </div>
             <div className="grid lg:grid-cols-6 gap-x-4 lg:gap-y-0 gap-y-1 mt-8">
               <div>Номер телефона:</div>
@@ -112,7 +115,7 @@ const Profile = () => {
                 className="col-span-4 flex items-center justify-center h-px bg-black m-auto"
                 style={{ width: "-webkit-fill-available" }}
               ></div>
-              <div>+998900511676</div>
+              <div>{user.phone_number}</div>
             </div>
             <Button
               color="error"

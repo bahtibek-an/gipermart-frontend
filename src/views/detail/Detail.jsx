@@ -5,24 +5,26 @@ import "../../assets/scss/_detail.scss";
 import SecondNavbar from "../../layout/navbar/SecondNavbar";
 import Rating from "@mui/material/Rating";
 import { Button, Tab, Tabs } from "@mui/material";
-import { BiHeart } from "react-icons/bi";
+import { BiHeart, BiHeartCircle } from "react-icons/bi";
 import ImageGallery from "./ImageGallery";
 // import Counter from "../../components/counter/Counter";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import { HiOutlineShoppingCart } from "react-icons/hi";
-import { appendProductToUserCart, appendProductToWishList, fetchOneProduct } from "../../http/ProductAPI";
-import { connect } from "react-redux";
+import { appendProductToUserCart, appendProductToWishList, fetchOneProduct, deleteProductFromWishList } from "../../http/ProductAPI";
+import { connect, useDispatch, useSelector } from "react-redux";
+import { createBasketProduct, deleteWishList, showRightModal } from "../../redux/actions";
 // import SimilarCarts from "../../components/similarCarts/SimilarCarts";
 
-const Detail = ({ products, userId }) => {
+const Detail = ({ products, user }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [counter, setCounter] = useState(1);
   const [value, setValue] = useState("1");
   const [product, setProduct] = useState({});
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
   const productPrice = (+product.price * counter);
-
+  const favorite = useSelector((state) => state?.wishLists.find((item) => item?.product?.id == product?.product?.id));
   const fetchProduct = async () => {
     const [product] = await fetchOneProduct(id);
     setProduct(product);
@@ -58,17 +60,30 @@ const Detail = ({ products, userId }) => {
   //   },
   // ];
 
+
   const addProductToCart = async () => {
+    if(!user.isAuth) {
+      return dispatch(showRightModal());
+    }
     try {
-      await appendProductToUserCart(userId, id, counter, productPrice);
+      const data = await appendProductToUserCart(user?.user?.id, id, counter, productPrice);
     } catch (error) {
       console.log(error);
     }
   }
 
   const addProductToWishList = async () => {
+    if(!user.isAuth) {
+      return dispatch(showRightModal());
+    }
     try {
-      await appendProductToWishList(userId, id);
+      if(favorite) {
+        return deleteProductFromWishList(favorite.id)
+        .then(() => {
+          dispatch(deleteWishList(product?.product?.id));
+        });
+      }
+      return await appendProductToWishList(user?.user?.id, product?.product?.id);
     } catch (error) {
       console.log(error); 
     }
@@ -121,10 +136,10 @@ const Detail = ({ products, userId }) => {
             className="!capitalize"
             size="large"
             color="error"
-            startIcon={<BiHeart size={20} />}
+            startIcon={!favorite ? <BiHeart size={20} /> : <BiHeartCircle size={20}/>}
             onClick={addProductToWishList}
           >
-            Нравится
+            {!favorite ? "Нравится" : "Не нравится"}
           </Button>
           <div>
             {product.amount === 0 ? (
@@ -265,8 +280,8 @@ const Detail = ({ products, userId }) => {
 
 const mapStateToProps = (state) => {
   return {
-    products: state.products,
-    userId: state.user.userId
+    products: state?.products,
+    user: state?.user,
   }
 } 
 

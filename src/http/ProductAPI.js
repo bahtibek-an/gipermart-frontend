@@ -34,6 +34,7 @@ export const fetchOneProduct = async (id) => {
     }
 }
 
+
 export const appendProductToUserCart = async (userId, productId, quantity, total) => {
     const { data } = await $host.post("cart/add-cart", {user: userId, product: productId, quantity, total });
     return data;
@@ -54,6 +55,16 @@ export const fetchProductsBySearch = async (query) => {
 export const appendProductToWishList = async (userId, productId) => {
     const { data } = await $host.post("outside/add-wishlist", {user: userId, product: productId});
     return data;
+}
+
+export const deleteProductFromWishList = async (id) => {
+    const data = await $host.delete(`outside/delete-wishlist/${id}/`);
+    return data;
+}
+
+export const getWishListsByUserId = async (userId) => {
+    const wishLists = await $host.get(`outside/user-wishlist/${userId}`);
+    return wishLists.data;
 }
 
 export const deleteCart = async (id) => {

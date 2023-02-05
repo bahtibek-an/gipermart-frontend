@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { checkAuth, getUserById } from "./http/UserAPI";
-import { fetchProducts, fetchUserBasket } from "./redux/actions";
+import { checkAuth } from "./http/UserAPI";
+import { fetchProducts } from "./redux/actions";
 import Router from "./Router";
 import Spinner from "./UI/spinner/Spinner";
 
@@ -15,9 +15,6 @@ const App = () => {
         .then(() => {
           dispatch(fetchProducts())
         });
-        getUserById(11).then((data) => {
-          console.log(data);
-        })
       return;
     }
     dispatch(fetchProducts());

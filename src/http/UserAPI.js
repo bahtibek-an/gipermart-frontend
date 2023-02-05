@@ -2,11 +2,11 @@ import jwtDecode from "jwt-decode";
 import $host from "."
 import { store } from "..";
 import { getCookie, setCookie } from "../helper";
-import { createUser, deleteUser, fetchUserBasket } from "../redux/actions";
+import { createUser, deleteUser, fetchUserBasket, fetchUserWishLists } from "../redux/actions";
 
 export const getUserById = async (id) => {
     try {
-        const { data } = $host.get(`user/api/v1/profile/${id}/`);
+        const data  = $host.get(`user/api/v1/profile/${id}/`);
         return data;
     } catch (error) {
         console.log(error);
@@ -40,10 +40,12 @@ export const checkAuth = async () => {
     try {
         const refreshToken = getCookie("refreshToken");
         const {data} = await $host.post("user/api/v1/token/refresh/", {refresh: refreshToken});
-        const userDecoded = jwtDecode(data.access); 
+        const userDecoded = jwtDecode(data.access);
+        const user = await getUserById(userDecoded.user_id);
         localStorage.setItem("accessToken", data.access);
-        store.dispatch(createUser(userDecoded.user_id));
+        store.dispatch(createUser(user.data[0]));
         store.dispatch(fetchUserBasket(userDecoded.user_id));
+        store.dispatch(fetchUserWishLists(userDecoded.user_id));
     } catch (error) {
         console.log(error)
         store.dispatch(deleteUser());
@@ -57,4 +59,3 @@ export const logout = () => {
     setCookie("refreshToken", "", 0);
     store.dispatch(deleteUser());
 }
-
