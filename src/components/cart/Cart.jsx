@@ -9,6 +9,7 @@ import { createBasketProduct, craeteWishListProduct, deleteWishList, showRightMo
 import { appendProductToUserCart, appendProductToWishList, deleteCart, deleteProductFromWishList } from "../../http/ProductAPI";
 
 const Cart = ({ cart/*, favorite */ }) => {
+  console.log(cart);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state?.user);
@@ -60,7 +61,7 @@ const Cart = ({ cart/*, favorite */ }) => {
       </button>
         <div className="flex flex-col">
           <div onClick={() => navigate(`/product/${cart.id}`)} className="cart-image">
-            <img src={cart?.image || "./macb.jpeg"} alt="" />
+            <img src={"https://yruoebgair.tk/" + cart?.media[0]?.img_url || "./macb.jpeg"} alt="" />
           </div>
           <div onClick={() => navigate(`/product/${cart.name}`)} className="cart-name">
             { cart.title || "MacBook Pro 16-inch M2 Pro/16/512GB Space Gray 2023" }
