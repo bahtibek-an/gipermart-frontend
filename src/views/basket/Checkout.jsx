@@ -12,14 +12,16 @@ import Checkbox from "@mui/material/Checkbox";
 import { Button, Dialog, IconButton } from "@mui/material";
 import { BiPencil, BiTrash } from "react-icons/bi";
 import Title from "../../components/title/Title";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createCheckout } from "../../http/CheckoutAPI";
 import { connect } from "react-redux";
+import { createCheckoutInUser } from "../../redux/actions";
 
 const Checkout = ({ user }) => {
   const [selectedValue, setSelectedValue] = React.useState("a");
+  const dispatch = useDispatch();
   const [disabledButton, setDisabledButton] = useState(false);
-  const basketProducts = useSelector((state) => state.basket);
+  const basketProducts = useSelector((state) => state.baskets);
   const [ fullName, setFullName ] = useState(`${user.first_name} ${user.last_name}`);
   const [ phone, setPhone ] = useState(`${user.phone_number}`);
   const [ region, setRegion ] = useState('');
@@ -31,7 +33,7 @@ const Checkout = ({ user }) => {
   const onButtonClick = async () => {
     const cashStatus = selectedValue === "a";
     try {
-      const data = await createCheckout(
+      const { data } = await createCheckout(
         fullName,
         phone,
         region,
@@ -40,8 +42,10 @@ const Checkout = ({ user }) => {
         comment,
         basketProducts.map((item) => item.id),
         true,
-        cashStatus
-      )
+        cashStatus,
+        user.id
+      );
+      dispatch(createCheckoutInUser(data));
       console.log(data);
     } catch(e) {
       setError(e);

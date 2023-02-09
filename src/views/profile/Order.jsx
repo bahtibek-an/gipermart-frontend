@@ -6,10 +6,14 @@ import SecondNavbar from "../../layout/navbar/SecondNavbar";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
+import { useSelector } from "react-redux";
 
 const Order = () => {
   const navigate = useNavigate();
+  const checkouts = useSelector((state) => state.user?.user?.checkout);
   const location = useLocation();
+  const products = useSelector((state) => state.products);
+  const basket = useSelector((state) => state.basket);
   const pathName = location.pathname;
   const [value, setValue] = React.useState("1");
 
@@ -73,31 +77,32 @@ const Order = () => {
             </Tabs>
             {value === "1" && (
               <>
-                <div className="order-block">
-                  <div style={{ font: "-webkit-mini-control" }}>
+                {checkouts.map((item, i) => (
+                <div className="order-block" key={i}>
+                  {/* <div style={{ font: "-webkit-mini-control" }}>
                     Адрес из карты: 41.43254634546 63.2435344
-                  </div>
+                  </div> */}
                   <div className="order-cart border-b md:flex gap-x-4 bg-gray md:p-6 p-2">
                     <div>
-                      <img
+                      {/* <img
                         src="https://picsum.photos/120/120"
                         alt=""
-                      />
+                      /> */}
                     </div>
                     <div style={{ width: "-webkit-fill-available" }}>
                       <div className="grid lg:grid-cols-2 gap-2 mb-2">
                         <div>
-                          <div className="order-name mb-2 f-medium">
+                          {/* <div className="order-name mb-2 f-medium">
                             Acer Aspire 3 Intel Pentium N4500/4GB/1TB HDD/Intel
                             Cor i 10
-                          </div>
+                          </div> */}
                           <div className="flex gap-x-6">
                             <div>
                               <strong>ID заказа:</strong>
                               <span
                                 style={{ color: "#828282", marginLeft: "4px" }}
                               >
-                                №8
+                                №{i + 1}
                               </span>
                             </div>
                           </div>
@@ -105,7 +110,11 @@ const Order = () => {
                         <div className="md:text-end text-lg">
                           <strong>
                             Статус оплаты:{" "}
-                            <span className="status-payment">Не оплачено</span>
+                            {item.PAY_STATUS ? (
+                              <span className="text-green-700">Оплачено</span>  
+                            ) : (
+                              <span className="status-payment">Не оплачено</span>  
+                            )}
                           </strong>
                         </div>
                       </div>
@@ -124,7 +133,7 @@ const Order = () => {
                             <span
                               style={{ color: "#828282", marginLeft: "4px" }}
                             >
-                              Ilhom Nasriddinov
+                              {item.full_name}
                             </span>
                           </div>
                         </div>
@@ -138,7 +147,7 @@ const Order = () => {
                             <span
                               style={{ color: "#828282", marginLeft: "4px" }}
                             >
-                              +998900511676
+                              {item.phone_number}
                             </span>
                           </div>
                           <div>
@@ -146,122 +155,44 @@ const Order = () => {
                             <span
                               style={{ color: "#828282", marginLeft: "4px" }}
                             >
-                              Наличный
+                              {item.NAXT_STATUS ? "Наличный" : "Онлайн"}
                             </span>
                           </div>
                         </div>
                         <div className="md:col-span-2 media-pt">
                           <strong>Адрес покупателя:</strong>
                           <span style={{ color: "#828282", marginLeft: "4px" }}>
-                            Diydor 10
+                            {item.address}
                           </span>
                         </div>
                         <div className="md:col-span-2 media-pt">
                           <strong>Число:</strong>
                           <span style={{ color: "#828282", marginLeft: "4px" }}>
-                            2020-05-05 19:38
+                            {item.created_at.split('T')[0]} {item.created_at.split('T')[1]}
                           </span>
                         </div>
                       </div>
-                      <div className="text-end text-lg mt-6">
-                        <strong>
-                          Стоимость:{" "}
-                          <span className="order-price">500 000</span>
-                        </strong>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="order-block">
-                  <div style={{ font: "-webkit-mini-control" }}>
-                    Адрес из карты: 41.43254634546 63.2435344
-                  </div>
-                  <div className="order-cart border-b md:flex gap-x-4 bg-gray md:p-6 p-2">
-                    <div>
-                      <img
-                        src="https://picsum.photos/120/120"
-                        alt=""
-                      />
-                    </div>
-                    <div style={{ width: "-webkit-fill-available" }}>
-                      <div className="grid lg:grid-cols-2 gap-2 mb-2">
-                        <div>
-                          <div className="order-name mb-2 f-medium">
-                            Acer Aspire 3 Intel Pentium N4500/4GB/1TB HDD/Intel
-                            Cor i 10
+                      {basket.filter((cart) => item.cart.includes(cart.id)).map((cart) => (
+                        <Link to="/" className="department-box" key={cart.id}>
+                          <div className="department-image relative">
+                            <div className="discount">-6%</div>
+                            <img
+                              src="https://picsum.photos/140/140"
+                              alt=""
+                            />
                           </div>
-                          <div className="flex gap-x-6">
-                            <div>
-                              <strong>ID заказа:</strong>
-                              <span
-                                style={{ color: "#828282", marginLeft: "4px" }}
-                              >
-                                №8
-                              </span>
+                          <div className="department-text">
+                            <div className="department-name">
+                              acer aspire 3 intel pentium n4500/4gb/500gb hdd/in...
+                            </div>
+                            {/* <div className="department-rassrochka">462 000 сум/ 12 мес</div> */}
+                            <div className="department-price">
+                              <div className="price">{cart.total} Сум</div>
+                              {/* <div className="price_old">3 474 240 Сум</div> */}
                             </div>
                           </div>
-                        </div>
-                        <div className="md:text-end text-lg">
-                          <strong>
-                            Статус оплаты:{" "}
-                            <span className="status-payment">Не оплачено</span>
-                          </strong>
-                        </div>
-                      </div>
-                      <div className="grid media-grid grid-cols-2 gap-2">
-                        <div className="flex flex-col gap-y-2">
-                          <div>
-                            <strong>Количество:</strong>
-                            <span
-                              style={{ color: "#828282", marginLeft: "4px" }}
-                            >
-                              5
-                            </span>
-                          </div>
-                          <div>
-                            <strong>Имя покупателя:</strong>
-                            <span
-                              style={{ color: "#828282", marginLeft: "4px" }}
-                            >
-                              Ilhom Nasriddinov
-                            </span>
-                          </div>
-                        </div>
-                        <div className="flex flex-col gap-y-2 media-pt">
-                          <div>
-                            <strong>Цвет:</strong>
-                            <span style={{ color: "#828282" }}>Чёрный</span>
-                          </div>
-                          <div>
-                            <strong>Номер телефона:</strong>
-                            <span
-                              style={{ color: "#828282", marginLeft: "4px" }}
-                            >
-                              +998900511676
-                            </span>
-                          </div>
-                          <div>
-                            <strong>Вид оплаты:</strong>
-                            <span
-                              style={{ color: "#828282", marginLeft: "4px" }}
-                            >
-                              Наличный
-                            </span>
-                          </div>
-                        </div>
-                        <div className="md:col-span-2 media-pt">
-                          <strong>Адрес покупателя:</strong>
-                          <span style={{ color: "#828282", marginLeft: "4px" }}>
-                            Diydor 10
-                          </span>
-                        </div>
-                        <div className="md:col-span-2 media-pt">
-                          <strong>Число:</strong>
-                          <span style={{ color: "#828282", marginLeft: "4px" }}>
-                            2020-05-05 19:38
-                          </span>
-                        </div>
-                      </div>
+                        </Link>
+                      ))}
                       <div className="text-end text-lg mt-6">
                         <strong>
                           Стоимость:{" "}
@@ -271,6 +202,7 @@ const Order = () => {
                     </div>
                   </div>
                 </div>
+                ))}
               </>
             )}
             {value === "2" && (

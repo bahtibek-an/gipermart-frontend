@@ -26,6 +26,7 @@ import Filter from "./views/filter/Filter";
 import Detail from "./views/detail/Detail";
 import Stock from "./components/stock/Stock";
 import PrivateRoutes from "./components/protectedRoute/PrivateRoutes";
+import Category from "./views/filter/Category";
 
 const Router = () => {
     return (
@@ -50,11 +51,12 @@ const Router = () => {
           <Route path="/about-company" element={<About />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/profile/adresses" element={<Adresses />} />
-          <Route path="/profile/order" element={<Order />} />
           <Route path="/filter" element={<Filter />} />
+          <Route path="/category/:categoryId" element={<Category />} />
           <Route path="/product/:id" element={<Detail />} />
           <Route path="/stock" element={<Stock />} />
           <Route element={<PrivateRoutes/>}>
+            <Route path="/profile/order" element={<Order />} />
             <Route path="/profile" element={<Profile />}/>
             <Route path="/favorites" element={<Favorites />}/>
             <Route path="/checkout" element={<Checkout />}/>

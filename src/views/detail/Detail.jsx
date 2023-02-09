@@ -12,7 +12,7 @@ import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import { HiOutlineShoppingCart } from "react-icons/hi";
 import { appendProductToUserCart, appendProductToWishList, fetchOneProduct, deleteProductFromWishList } from "../../http/ProductAPI";
 import { connect, useDispatch, useSelector } from "react-redux";
-import { createBasketProduct, deleteWishList, showRightModal } from "../../redux/actions";
+import { craeteWishListProduct, createBasketProduct, createBasketToLocal, deleteWishList, showRightModal } from "../../redux/actions";
 // import SimilarCarts from "../../components/similarCarts/SimilarCarts";
 
 const Detail = ({ products, user }) => {
@@ -25,6 +25,7 @@ const Detail = ({ products, user }) => {
   const { id } = useParams();
   const productPrice = (+product.price * counter);
   const favorite = useSelector((state) => state?.wishLists.find((item) => item?.product?.id == product?.product?.id));
+  const hasInProduct = useSelector((state) => state.basket?.find((item) => item?.product.id == product?.product?.id));
   const fetchProduct = async () => {
     const [product] = await fetchOneProduct(id);
     setProduct(product);
@@ -65,8 +66,13 @@ const Detail = ({ products, user }) => {
     if(!user.isAuth) {
       return dispatch(showRightModal());
     }
+    if(hasInProduct) {
+      return navigate("/basket");
+    }
     try {
+      createBasketToLocal(id);
       const data = await appendProductToUserCart(user?.user?.id, id, counter, productPrice);
+      dispatch(createBasketProduct(data));
     } catch (error) {
       console.log(error);
     }
@@ -83,7 +89,10 @@ const Detail = ({ products, user }) => {
           dispatch(deleteWishList(product?.product?.id));
         });
       }
-      return await appendProductToWishList(user?.user?.id, product?.product?.id);
+      return appendProductToWishList(user?.user?.id, product?.product?.id)
+        .then((data) => {
+          dispatch(craeteWishListProduct(data));
+        });
     } catch (error) {
       console.log(error); 
     }
@@ -185,7 +194,7 @@ const Detail = ({ products, user }) => {
                   className="yellow-btn-hover !w-full !py-3 !capitalize !text-base"
                   endIcon={<HiOutlineShoppingCart size={16} />}
                 >
-                  Добавить в корзину
+                  {!hasInProduct ? "Добавить в корзину" : "Корзина"}
                 </Button>
                 <div className="text-4xl f-bold my-5">{product.installment_plan || "47 739 500 / 100 000 Сум"}</div>
                 <Button

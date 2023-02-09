@@ -21,33 +21,26 @@ export function getCookie(cname) {
     return "";
 }
 
-function includesInArrayOfObj(arr, item) {
-  for(let i = 0;i < arr.length;i++) {
-      if(arr[i].id == item) {
-          return i;
-      }
-  }
-  return -1;
-}
-
-export function categoriesAlgo(array) {
+export function categoriesAlgo(categories) {
   const result = [];
-    
-  for(let i = 0;i < array.length;i++) {
-      const index = includesInArrayOfObj(result, array[i].parent_id)
-      if(index !== -1) {
-        if(result[index].children === undefined) {
-          result[index] = {...result[index], children: []}   
-        }
-        result[index].children.push(array[index]);
-        continue;
-      }
-      result.push(array[i]);
+  const map = {};
+  for (const category of categories) {
+    map[category.id] = category;
+    category.children = [];
   }
-  
-  
+  for (const category of categories) {
+    if (category.parent_id) {
+      map[category.parent_id].children.push(category);
+    } 
+    else {
+      // result.push(category);
+      category.parent = true;
+    }
+    result.push(category);
+  }
   return result;
 }
+
 
 export function removeRepeatItems(array) {
   const result = [];

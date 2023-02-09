@@ -3,67 +3,74 @@ import Slider from "react-slick";
 import "../../assets/scss/_category.scss";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Container } from "@mui/system";
 import { connect } from "react-redux";
 import SlickArrowRight from "../../components/SlickArrow/SlickArrowRight";
 import SlickArrowLeft from "../../components/SlickArrow/SlickArrowLeft";
+import { categoriesAlgo } from "../../helper";
 
 const Category = ({ categories }) => {
 
-  let settings = {
+  const settings = {
+    infinite:false,
     dots: false,
-    infinite: false,
     slidesToShow: 5,
-    slidesToScroll: 1,
+    arrows: true,
+    speed: 500,
+    slidesToScroll: 2,
+    autoplay: true,
+    autoplaySpeed:4000,
     nextArrow: <SlickArrowRight size={14} />,
     prevArrow: <SlickArrowLeft size={14} />,
+    responsive:[
+      {
+        breakpoint: 900,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          arrows: false,
 
-    responsive: [
-      {
-        breakpoint: 1280,
-        settings: {
-          slidesToShow: 4,
-          slidesToScroll: 1,
         },
       },
       {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 1,
-        },
-      },
-      {
-        breakpoint: 769,
+        breakpoint: 560,
         settings: {
           slidesToShow: 2,
-          slidesToScroll: 1,
+          slidesToScroll: 2,
         },
       },
       {
-        breakpoint: 540,
+        breakpoint: 340,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: 1,
           slidesToScroll: 1,
         },
       },
-    ],
-  };
+      
+    ]
+  }
+
   return (
     <div className="my-4">
       <Container maxWidth="xl">
-        <Slider {...settings} className="category-slider">
+        <Slider 
+          {...settings} 
+          className="category-slider"
+          lazyLoad="progressive" 
+        >
           {categories?.map((item, i) => (
+            item.parent && (
             <div key={i}>
-              <Link to="" className="category-box">
+              <Link to={`/category/${item.id}`} className="category-box">
                 <img
-                  src={item.image}
+                  src={"https://yruoebgair.tk/" + item.background_image}
                   alt=""
                 />
-                <div>{ item.title }</div>
+                <div>{ item.name }</div>
               </Link>
             </div>
+            )
           ))}
         </Slider>
       </Container>
@@ -73,7 +80,7 @@ const Category = ({ categories }) => {
 
 const mapStateToProps = (state) => {
   return {
-    categories: state.categories?.categories
+    categories: (state.categories)
   }
 }
 

@@ -1,5 +1,6 @@
+import { categoriesAlgo } from "../helper"
 import { fetchAllBasketCarts, fetchAllCategories, fetchAllProducts, getWishListsByUserId } from "../http/ProductAPI"
-import { CREATE_BASKET_PRODUCT, CREATE_USER, DELETE_BASKET_PRODUCT, DELETE_USER, DELETE_WISHLIST, FETCH_BASKET_PRODUCTS, FETCH_CATEGORIES, FETCH_PRODUCTS, FETCH_USER_WISHLISTS, HIDE_LOADER, HIDE_RIGHT_MODAL, SHOW_LOADER, SHOW_MODAL_LOGIN, SHOW_MODAL_SIGNUP, SHOW_RIGHT_MODAL } from "./types"
+import { CREATE_BASKET_PRODUCT, CREATE_BASKET_TO_LOCAL, CREATE_CHECKOUT_IN_USER, CREATE_USER, CREATE_WISHLIST, DELETE_BASKET_IN_LOCAL, DELETE_BASKET_PRODUCT, DELETE_USER, DELETE_WISHLIST, FETCH_BASKET_PRODUCTS, FETCH_CATEGORIES, FETCH_PRODUCTS, FETCH_USER_WISHLISTS, HIDE_LOADER, HIDE_RIGHT_MODAL, SHOW_LOADER, SHOW_MODAL_LOGIN, SHOW_MODAL_SIGNUP, SHOW_RIGHT_MODAL } from "./types"
 
 export function hideLoader() {
     return {
@@ -17,7 +18,7 @@ export function showLoader() {
 export function fetchCategories() {
     return async (dispatch) => {
         const data = await fetchAllCategories();
-        dispatch({ type: FETCH_CATEGORIES, payload: data });
+        dispatch({ type: FETCH_CATEGORIES, payload: categoriesAlgo(data) });
         // dispatch(hideLoader);
     }
 }
@@ -45,11 +46,10 @@ export function fetchUserBasket(userId) {
     }
 }
 
-export function deleteBasketProduct(carts, id) {
-    const result = carts.filter((item) => item.id !== id);
+export function deleteBasketProduct(productId) {
     return {
         type: DELETE_BASKET_PRODUCT,
-        payload: result
+        payload: productId
     }
 }
 
@@ -88,6 +88,34 @@ export function createBasketProduct(data) {
 export function deleteWishList(productId) {
     return {
         type: DELETE_WISHLIST,
+        payload: productId
+    }
+}
+
+export function craeteWishListProduct(data) {
+    return {
+        type: CREATE_WISHLIST,
+        payload: data
+    }
+}
+
+export const createCheckoutInUser = (data) => {
+    return {
+        type: CREATE_CHECKOUT_IN_USER,
+        payload: data
+    }
+}
+
+export const createBasketToLocal = (data) => {
+    return {
+        type: CREATE_BASKET_TO_LOCAL,
+        payload: data
+    }
+}
+
+export const deleteBasketInLocal = (productId) => {
+    return {
+        type: DELETE_BASKET_IN_LOCAL,
         payload: productId
     }
 }

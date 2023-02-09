@@ -8,7 +8,7 @@ const SlickArrowRight = ({ currentSlide, slideCount, ...props }) => (
       //   "slick-prev slick-arrow" +
       //   (currentSlide === 0 ? " slick-disabled" : "")
       // }
-      aria-hidden="true"
+      // aria-hidden="false"
       // aria-disabled={currentSlide === 0 ? true : false}
       type="button"
     />

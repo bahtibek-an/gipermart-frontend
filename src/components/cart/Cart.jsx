@@ -1,20 +1,39 @@
 import React from "react";
 import "../../assets/scss/_cart.scss";
 import { BiHeart } from "react-icons/bi";
-import { HiOutlineShoppingCart } from "react-icons/hi";
+import { HiOutlineShoppingCart, HiOutlineEye } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteWishList, showRightModal } from "../../redux/actions";
-import { appendProductToWishList, deleteProductFromWishList } from "../../http/ProductAPI";
+import { createBasketProduct, craeteWishListProduct, deleteWishList, showRightModal, deleteBasketProduct, createBasketToLocal } from "../../redux/actions";
+import { appendProductToUserCart, appendProductToWishList, deleteCart, deleteProductFromWishList } from "../../http/ProductAPI";
 
 const Cart = ({ cart/*, favorite */ }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state?.user);
   const favorite = useSelector((state) => state?.wishLists.find((item) => item?.product?.id == cart.id));
+  const hasInCart = useSelector((state) => state?.baskets?.find((item) => item.product?.id == cart.id));
   
-  const handleClick = async () => {
+  const addProductToCart = async (e) => {
+    e.preventDefault();
+    if(!user.isAuth) {
+      return dispatch(showRightModal());
+    }
+    if(hasInCart) {
+      return navigate("/basket");
+    }
+    try {
+      const data = await appendProductToUserCart(user?.user?.id, cart.id, 1, cart.price);
+      dispatch(createBasketToLocal(data));
+      dispatch(createBasketProduct(data));
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const handleClick = async (e) => {
+    e.preventDefault();
     if(!user.isAuth) {
       return dispatch(showRightModal());
     }
@@ -24,18 +43,21 @@ const Cart = ({ cart/*, favorite */ }) => {
         dispatch(deleteWishList(cart.id));
       });
     }
-    return await appendProductToWishList(user?.user?.id, cart.id);
+    return appendProductToWishList(user?.user?.id, cart.id)
+      .then((data) => {
+        dispatch(craeteWishListProduct(data));
+      });
   }
 
   return (
     <div className="cart">
+      <Link to={`/product/${cart.id}`}>
       <button
         onClick={handleClick}
         className={`${!favorite ? "favorite" : "favorited"} favorite-icon`}
       >
         <BiHeart size={24} />
       </button>
-      <Link to={`/product/${cart.id}`}>
         <div className="flex flex-col">
           <div onClick={() => navigate(`/product/${cart.id}`)} className="cart-image">
             <img src={cart?.image || "./macb.jpeg"} alt="" />
@@ -46,8 +68,12 @@ const Cart = ({ cart/*, favorite */ }) => {
           <div className="rassrochka f-bold text-center">{ cart.installment_plan }</div>
           <div className="cart-action">
             <div className="cart-price f-bold">{ cart.price || "37 739 500 сум" }</div>
-            <button className="cart-basket hover:shadow-lg shadow-none">
-              <HiOutlineShoppingCart stroke="rgb(33, 26, 26)" size={24} />
+            <button onClick={addProductToCart} className="cart-basket hover:shadow-lg shadow-none">
+              {!hasInCart ? (
+                <HiOutlineShoppingCart stroke="rgb(33, 26, 26)" size={24} />
+              ) : (
+                <HiOutlineEye size={24}/>
+              )}
             </button>
           </div>
         </div>

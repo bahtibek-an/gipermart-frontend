@@ -5,8 +5,6 @@ import { connect } from "react-redux";
 import { categoriesAlgo } from "../../helper";
 
 const NavbarCatalog = ({ openModal, closeModal, categories }) => {
-  const sortedCategories = categoriesAlgo(categories);
-  
   return (
     <div>
       <Dialog
@@ -17,12 +15,13 @@ const NavbarCatalog = ({ openModal, closeModal, categories }) => {
         className="navbar-catalog-modal"
       >
         <div className="grid xl:grid-cols-3 lg:grid-cols-2 gap-x-4 gap-y-6">
-          {sortedCategories.map((item) => (
+          {categories.map((item) => (
+            item.parent && (
             <div className="catalog-box flex flex-col gap-y-2" key={item.id}>
-              <Link to="" className="catalog-main">
+              <Link to={`/category/${item.id}`} onClick={closeModal} className="catalog-main">
                 <div className="main-image">
                   <img
-                    src="https://picsum.photos/96/96"
+                    src={"https://yruoebgair.tk/" + item?.background_image}
                     alt=""
                   />
                 </div>
@@ -30,12 +29,13 @@ const NavbarCatalog = ({ openModal, closeModal, categories }) => {
               </Link>
               {item.children && (
                 item.children.map((item) => (
-                  <Link to="" className="red" key={item.id}>
+                  <Link to={`/category/${item.id}`} onClick={closeModal} className="red" key={item.id}>
                     {item.name}
                   </Link>
                 ))
               )}
             </div>
+            )
           ))}    
         </div>
       </Dialog>

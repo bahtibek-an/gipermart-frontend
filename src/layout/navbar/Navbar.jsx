@@ -278,7 +278,7 @@ const Navbar = ({ isAuth, basketProductsLength, wishListsLength }) => {
 const mapStateToProps = (state) => {
   return {
     isAuth: state.user.isAuth,
-    basketProductsLength: state.basket.length,
+    basketProductsLength: state.baskets?.length,
     wishListsLength: state?.wishLists.length
   }
 }

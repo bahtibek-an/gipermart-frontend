@@ -16,7 +16,7 @@ import { deleteBasketProduct } from "../../redux/actions";
 // import { removeRepeatItems } from "../../helper";
 
 const Basket = () => {
-  const carts = useSelector((state) => state.basket);
+  const carts = useSelector((state) => state.baskets);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState(false);
@@ -24,7 +24,7 @@ const Basket = () => {
   const totalPrice = carts.reduce((acc, item) => acc + +item.total, 0);
 
   const deleteCart = (id) => {
-    dispatch(deleteBasketProduct(carts, id));
+    dispatch(deleteBasketProduct(id));
   }
 
   const handleClickOpenModal = () => {
@@ -34,7 +34,6 @@ const Basket = () => {
   const handleCloseModal = () => {
     setOpenModal(false);
   };
-
 
   return (
     <>

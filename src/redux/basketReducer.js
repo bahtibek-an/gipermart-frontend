@@ -7,9 +7,9 @@ export const basketReducer = (state = initialState, action) => {
         case FETCH_BASKET_PRODUCTS:
             return [...action.payload];
         case DELETE_BASKET_PRODUCT:
-            return [...action.payload];
+            return [...state.filter((item) => item.product?.id != action.payload)];
         case CREATE_BASKET_PRODUCT:
-            return [...state, ...action.payload];
+            return [...state, action.payload];
         default:
             return state;
     }
