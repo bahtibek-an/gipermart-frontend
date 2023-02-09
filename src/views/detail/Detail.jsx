@@ -236,8 +236,8 @@ const Detail = ({ products, user }) => {
         </Tabs>
         {value === "1" && (
           <div className="p-6">
-            {/* {product.description} */}
-            <div className="f-bold mb-2" style={{ fontSize: "15px" }}>
+            {productDetail.product?.description}
+            {/* <div className="f-bold mb-2" style={{ fontSize: "15px" }}>
               Мощный процессор
             </div>
             <div className="mb-2" style={{ fontSize: "15px" }}>
@@ -256,7 +256,7 @@ const Detail = ({ products, user }) => {
               видеокарте от Intel®. Такое сочетание и память гарантируют более
               высокую скорость загрузки приложений, качественную графику и
               эффективную работу в режиме многозадачности.
-            </div>
+            </div> */}
           </div>
         )}
         {value === "2" && (

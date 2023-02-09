@@ -9,7 +9,6 @@ import { createBasketProduct, craeteWishListProduct, deleteWishList, showRightMo
 import { appendProductToUserCart, appendProductToWishList, deleteCart, deleteProductFromWishList } from "../../http/ProductAPI";
 
 const Cart = ({ cart/*, favorite */ }) => {
-  console.log(cart);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state?.user);
