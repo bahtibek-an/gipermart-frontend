@@ -1,7 +1,7 @@
 import { CREATE_BASKET_TO_LOCAL, DELETE_BASKET_IN_LOCAL } from "./types";
 
 
-const initialState = JSON.parse(localStorage.getItem("carts") || []);
+const initialState = JSON.parse(localStorage.getItem("carts")) || [];
 
 export const basketsReducer = (state = initialState, action) => {
 

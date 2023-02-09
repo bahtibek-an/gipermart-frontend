@@ -9,13 +9,13 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Radio from "@mui/material/Radio";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import { Button, Dialog, IconButton } from "@mui/material";
+import { Button, Dialog, IconButton, Modal, Paper, Stack, Typography } from "@mui/material";
 import { BiPencil, BiTrash } from "react-icons/bi";
 import Title from "../../components/title/Title";
 import { useDispatch, useSelector } from "react-redux";
 import { createCheckout } from "../../http/CheckoutAPI";
 import { connect } from "react-redux";
-import { createCheckoutInUser } from "../../redux/actions";
+import { createCheckoutInUser, deleteBasketInLocal } from "../../redux/actions";
 
 const Checkout = ({ user }) => {
   const [selectedValue, setSelectedValue] = React.useState("a");
@@ -29,6 +29,7 @@ const Checkout = ({ user }) => {
   const [ address, setAddress ] = useState('');
   const [ comment, setComment ] = useState('');
   const [ error, setError ] = useState('');
+  const [ showModal, setShowModal ] = useState(false);
 
   const onButtonClick = async () => {
     const cashStatus = selectedValue === "a";
@@ -45,8 +46,9 @@ const Checkout = ({ user }) => {
         cashStatus,
         user.id
       );
+      basketProducts.forEach(item => dispatch(deleteBasketInLocal(item.product.id)));
       dispatch(createCheckoutInUser(data));
-      console.log(data);
+      setShowModal(true);
     } catch(e) {
       setError(e);
     }
@@ -69,6 +71,45 @@ const Checkout = ({ user }) => {
   return (
     <>
       <SecondNavbar />
+        <Modal
+          onClose={() => setShowModal(false)}
+          open={showModal}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Paper sx={{ borderRadius: 0, padding: '40px' }}>
+            <Stack sx={{ gap: '1rem' }}>
+              <Typography variant="h2">
+                Заказ №:{' '}
+                <Typography component="span" variant="h2" fontWeight={300}>
+                  {/* {checkoutCompleteData?.checkoutComplete?.order?.number} */}
+                </Typography>{' '}
+                оформлен
+              </Typography>
+              <Typography variant="subtitle2">
+                Отслеживать статус заказа можно в личном кабинете
+              </Typography>
+              <Stack justifyContent="space-between" direction="row">
+                {/* {paymentGateway !== '1' && (
+                  <Button
+                    loading={paymeLoading}
+                    onClick={handlePayment}
+                    variant="contained"
+                  >
+                    ОПЛАТИТЬ
+                  </Button>
+                )}
+                <Button
+                  onClick={() => router.push(Paths.HOME)}
+                  variant="text"
+                  sx={{ color: colors.black }}
+                >
+                  ПРОДОЛЖИТЬ ПОКУПКИ
+                </Button> */}
+              </Stack>
+            </Stack>
+          </Paper>
+        </Modal>
       <div>
         <Dialog
           open={openModal2}

@@ -13,6 +13,7 @@ import { HiOutlineShoppingCart } from "react-icons/hi";
 import { appendProductToUserCart, appendProductToWishList, fetchOneProduct, deleteProductFromWishList } from "../../http/ProductAPI";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { craeteWishListProduct, createBasketProduct, createBasketToLocal, deleteWishList, showRightModal } from "../../redux/actions";
+import Spinner from "../../UI/spinner/Spinner";
 // import SimilarCarts from "../../components/similarCarts/SimilarCarts";
 
 const Detail = ({ products, user }) => {
@@ -20,15 +21,15 @@ const Detail = ({ products, user }) => {
   const dispatch = useDispatch();
   const [counter, setCounter] = useState(1);
   const [value, setValue] = useState("1");
-  const [product, setProduct] = useState({});
+  const [productDetail, setProductDetail] = useState({});
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
-  const productPrice = (+product.price * counter);
-  const favorite = useSelector((state) => state?.wishLists.find((item) => item?.product?.id == product?.product?.id));
-  const hasInProduct = useSelector((state) => state.basket?.find((item) => item?.product.id == product?.product?.id));
+  const productPrice = (+productDetail.price * counter);
+  const favorite = useSelector((state) => state?.wishLists.find((item) => item?.product?.id == productDetail?.product?.id));
+  const hasInProduct = useSelector((state) => state.baskets?.find((item) => item?.product.id == productDetail?.product?.id));
   const fetchProduct = async () => {
-    const [product] = await fetchOneProduct(id);
-    setProduct(product);
+    const product = await fetchOneProduct(id);
+    setProductDetail(product);
   }
 
   const handleChange = (event, newValue) => {
@@ -70,8 +71,8 @@ const Detail = ({ products, user }) => {
       return navigate("/basket");
     }
     try {
-      createBasketToLocal(id);
       const data = await appendProductToUserCart(user?.user?.id, id, counter, productPrice);
+      dispatch(createBasketToLocal(data));
       dispatch(createBasketProduct(data));
     } catch (error) {
       console.log(error);
@@ -86,10 +87,10 @@ const Detail = ({ products, user }) => {
       if(favorite) {
         return deleteProductFromWishList(favorite.id)
         .then(() => {
-          dispatch(deleteWishList(product?.product?.id));
+          dispatch(deleteWishList(productDetail?.product?.id));
         });
       }
-      return appendProductToWishList(user?.user?.id, product?.product?.id)
+      return appendProductToWishList(user?.user?.id, productDetail?.product?.id)
         .then((data) => {
           dispatch(craeteWishListProduct(data));
         });
@@ -108,7 +109,7 @@ const Detail = ({ products, user }) => {
   if(loading) {
     return (
       <div className="flex items-center justify-center h-screen">
-        Loading
+         <Spinner />
       </div>
     );
   }
@@ -122,11 +123,11 @@ const Detail = ({ products, user }) => {
           <Link to="/">Магазин /</Link>
           <Link to="/">Аксессуары /</Link>
           <div>
-            {product.name}
+            {productDetail.product.name}
           </div>
         </div>
         <div className="laptop-detail-name text-2xl f-medium mb-4">
-          {product.name}
+          {productDetail.product.name}
         </div>
         <div className="flex items-center gap-4 border-b-2">
           <Rating
@@ -151,16 +152,16 @@ const Detail = ({ products, user }) => {
             {!favorite ? "Нравится" : "Не нравится"}
           </Button>
           <div>
-            {product.amount === 0 ? (
+            {/* {product.amount === 0 ? (
               <div className="text-red-600">Нет в наличии</div>
             ) : (
               <div>Есть в наличии: {product.amount}</div>
-            )}
+            )} */}
           </div>
         </div>
         <div className="grid lg:grid-cols-12 grid-cols-6 justify-between detail-box mt-8">
           <div className="xl:col-span-4 lg:col-span-6 col-span-6">
-            <ImageGallery images={product.media}/>
+            <ImageGallery images={productDetail.media}/>
           </div>
           <div className="xl:col-span-5 lg:col-span-6 col-span-6 character-box xl:pl-8 lg:pl-14 mb-6 lg:mt-0 mt-8">
             <div className="mobile-detail-name text-2xl f-medium mb-4">
@@ -168,7 +169,7 @@ const Detail = ({ products, user }) => {
               (A315-34-P59K) Charcoal Black
             </div>
             <div className="text-lg f-medium">Характеристики</div>
-            {product.attributes?.map((item, i) => (
+            {productDetail.attributes?.map((item, i) => (
               <div className="mt-4 flex items-center gap-x-4 gap-y-2" key={i}>
                 <div className="gray">{item.product_attribute?.name}:</div>
                 <div>{item.attribute_value}</div>
@@ -196,7 +197,7 @@ const Detail = ({ products, user }) => {
                 >
                   {!hasInProduct ? "Добавить в корзину" : "Корзина"}
                 </Button>
-                <div className="text-4xl f-bold my-5">{product.installment_plan || "47 739 500 / 100 000 Сум"}</div>
+                <div className="text-4xl f-bold my-5">{productDetail.installment_plan || "47 739 500 / 100 000 Сум"}</div>
                 <Button
                   onClick={() => navigate("/basket")}
                   className="yellow-btn-hover !w-full !py-3 !capitalize !text-base"
@@ -272,7 +273,7 @@ const Detail = ({ products, user }) => {
             <div className="mb-4" style={{ fontSize: "15px" }}>
               Частота процессора: 1.10-3.30 ГГц
             </div> */}
-            {product.attributes.map((item, i) => (
+            {productDetail.attributes.map((item, i) => (
               <div className="mb-4" style={{ fontSize: "15px" }} key={i}>
                 {/* Процессор: Intel® Pentium N5030 */}
                 {item.product_attribute?.name}: {item.attribute_value}

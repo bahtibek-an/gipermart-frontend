@@ -9,13 +9,13 @@ const LoaderButton = ({ loading, label }) => {
             disabled={loading}
             className="!w-full !py-3 yellow-btn-hover !capitalize !text-base !my-3" 
             type="submit">
-                <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+                {/* <span className="absolute inset-y-0 left-0 flex items-center pl-3">
                     <Spinner
                         height={4}
                         width={4}
                         color="fill-yellow-400"
                     />
-                </span>
+                </span> */}
                 {label}
         </Button>
     );

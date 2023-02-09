@@ -24,11 +24,7 @@ const App = () => {
     <>
     {isLoading ? (
       <div className="flex items-center justify-center h-screen">
-        <Spinner
-          width={14}
-          height={14}
-          color="fill-yellow-400"
-        />
+        <Spinner />
       </div>
     ) : (
       <Router/>
