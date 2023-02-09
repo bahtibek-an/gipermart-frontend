@@ -9,13 +9,14 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Radio from "@mui/material/Radio";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import { Button, Dialog, IconButton, Modal, Paper, Stack, Typography } from "@mui/material";
+import { Box, Button, Dialog, IconButton, Modal, Paper, Stack, Typography } from "@mui/material";
 import { BiPencil, BiTrash } from "react-icons/bi";
 import Title from "../../components/title/Title";
 import { useDispatch, useSelector } from "react-redux";
 import { createCheckout } from "../../http/CheckoutAPI";
 import { connect } from "react-redux";
 import { createCheckoutInUser, deleteBasketInLocal } from "../../redux/actions";
+import { Link } from "react-router-dom";
 
 const Checkout = ({ user }) => {
   const [selectedValue, setSelectedValue] = React.useState("a");
@@ -67,48 +68,75 @@ const Checkout = ({ user }) => {
   const handleClickOpenModal2 = () => {
     setOpenModal2(true);
   };
+  
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+  };
 
   return (
     <>
       <SecondNavbar />
         <Modal
-          onClose={() => setShowModal(false)}
           open={showModal}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
         >
-          <Paper sx={{ borderRadius: 0, padding: '40px' }}>
-            <Stack sx={{ gap: '1rem' }}>
-              <Typography variant="h2">
-                Заказ №:{' '}
-                <Typography component="span" variant="h2" fontWeight={300}>
-                  {/* {checkoutCompleteData?.checkoutComplete?.order?.number} */}
-                </Typography>{' '}
-                оформлен
-              </Typography>
-              <Typography variant="subtitle2">
-                Отслеживать статус заказа можно в личном кабинете
-              </Typography>
-              <Stack justifyContent="space-between" direction="row">
-                {/* {paymentGateway !== '1' && (
+          <Box sx={{ ...style}}>
+            <Paper sx={{ borderRadius: 0, padding: '40px' }}>
+              <Stack sx={{ gap: '1rem' }}>
+                <h2 className="font-medium text-2xl">Заказ №: 245 оформлен</h2>
+                <p className="mt-4">Отслеживать статус заказа можно в личном кабинете</p>
+                <div className="mt-8 flex">
                   <Button
-                    loading={paymeLoading}
-                    onClick={handlePayment}
-                    variant="contained"
+                    className={`!mr-4 yellow-btn-hover !rounded-none !py-3 !text-base !w-full`}
                   >
-                    ОПЛАТИТЬ
+                    <Link to="/profile/order">
+                      Смотреть заказы
+                    </Link>
                   </Button>
-                )}
-                <Button
-                  onClick={() => router.push(Paths.HOME)}
-                  variant="text"
-                  sx={{ color: colors.black }}
-                >
-                  ПРОДОЛЖИТЬ ПОКУПКИ
-                </Button> */}
+                  <Button
+                    className={`yellow-btn-hover !rounded-none !py-3 !text-base !w-full`}
+                  >
+                    <Link to="/">
+                      Продолжить покупки
+                    </Link>
+                  </Button>
+                </div>
+                {/* <Typography variant="h4">
+                  Заказ №:{' '}
+                  <Typography component="span" variant="h2" fontWeight={300}>
+                    {checkoutCompleteData?.checkoutComplete?.order?.number}
+                  </Typography>{' '}
+                  оформлен
+                </Typography>
+                <Typography variant="subtitle2">
+                  Отслеживать статус заказа можно в личном кабинете
+                </Typography>
+                <Stack justifyContent="space-between" direction="row">
+                  {paymentGateway !== '1' && (
+                    <Button
+                      loading={paymeLoading}
+                      onClick={handlePayment}
+                      variant="contained"
+                    >
+                      ОПЛАТИТЬ
+                    </Button>
+                  )}
+                  <Button
+                    onClick={() => router.push(Paths.HOME)}
+                    variant="text"
+                    sx={{ color: colors.black }}
+                  >
+                    ПРОДОЛЖИТЬ ПОКУПКИ
+                  </Button>
+                </Stack> */}
               </Stack>
-            </Stack>
-          </Paper>
+            </Paper>
+          </Box>
         </Modal>
       <div>
         <Dialog
