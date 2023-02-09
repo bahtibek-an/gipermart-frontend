@@ -50,7 +50,7 @@ const Category = () => {
         .then(() => {
             setLoading(false);
         })
-    }, []);
+    }, [categoryId]);
 
     const addToSearch = (e, data) => {
       const checked = e.target.checked;
