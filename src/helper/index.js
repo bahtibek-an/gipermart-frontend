@@ -57,3 +57,19 @@ export function removeRepeatItems(array) {
   }
   return result;
 }
+
+export function sortFilterCategories(array) {
+  const result = [];
+  const hash = {};
+  
+  for(let i = 0;i < array.length;i++) {
+      const item = array[i];
+      if(hash[item.product_attribute.name] !== undefined) {
+          result[hash[item.product_attribute.name]].children.push({id: item.id, value: item.attribute_value})
+          continue;
+      }
+      hash[item.product_attribute.name] = i;
+      result.push({name: item.product_attribute.name, children: [{id: item.id, value: item.attribute_value}]});
+  }
+  return result;
+}

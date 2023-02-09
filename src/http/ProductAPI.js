@@ -70,3 +70,21 @@ export const getWishListsByUserId = async (userId) => {
 export const deleteCart = async (id) => {
     await $host.delete(`cart/delete-cart/${id}/`);
 }
+
+export const fetchAttributesByCategoryId = async (id) => {
+    try {
+        const { data } = await $host.get(`product/api/products/filter/${id}/`);
+        return data;
+    } catch (error) {
+        return [];
+    }
+}
+
+export const fetchFilterProducts = async (params) => {
+    try {
+        const { data } = await $host.get(`product/api/products/?${params}`);
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
+}
