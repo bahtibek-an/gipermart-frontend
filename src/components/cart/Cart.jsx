@@ -64,7 +64,7 @@ const Cart = ({ cart/*, favorite */ }) => {
             <img src={"https://yruoebgair.tk/" + cart?.media[0]?.img_url || "./macb.jpeg"} alt="" />
           </div>
           <div onClick={() => navigate(`/product/${cart.name}`)} className="cart-name">
-            { cart.title || "MacBook Pro 16-inch M2 Pro/16/512GB Space Gray 2023" }
+            { cart.product?.name || "MacBook Pro 16-inch M2 Pro/16/512GB Space Gray 2023" }
           </div>
           <div className="rassrochka f-bold text-center">{ cart.installment_plan }</div>
           <div className="cart-action">
