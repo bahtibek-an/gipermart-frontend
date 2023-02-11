@@ -57,9 +57,8 @@ const SecondNavbar = () => {
       <Container maxWidth="xl">
         <Slider {...settings}>
           {categories.map((item) => (
-            <Link to="/" key={item.id}>{item.name}</Link>
+            <Link to={`/category/${item.id}`} key={item.id}>{item.name}</Link>
           ))}
-          <Link to="/">Кофеварки и Кофемашины</Link>
         </Slider>
       </Container>
     </div>

@@ -1,4 +1,4 @@
-import { CREATE_BASKET_TO_LOCAL, DELETE_BASKET_IN_LOCAL } from "./types";
+import { CREATE_BASKET_TO_LOCAL, DELETE_BASKET_IN_LOCAL, UPDATE_BASKET_COUNTER } from "./types";
 
 
 const initialState = JSON.parse(localStorage.getItem("carts")) || [];
@@ -13,6 +13,8 @@ export const basketsReducer = (state = initialState, action) => {
             const filter = state.filter((item) => item.product?.id != action.payload);    
             localStorage.setItem("carts", JSON.stringify([...filter])); 
             return [...filter];
+        case UPDATE_BASKET_COUNTER:
+            return [...action.payload];
         default:
             return state;
     }

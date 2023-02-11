@@ -4,9 +4,9 @@ import { BiTrash } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import { deleteCart } from "../../http/ProductAPI";
 import { useDispatch } from "react-redux";
-import { deleteBasketInLocal } from "../../redux/actions";
+import { deleteBasketInLocal, updateBasketCounter } from "../../redux/actions";
 
-const BasketCart = ({ cart, deleteCartItem }) => {
+const BasketCart = ({ cart, deleteCartItem, carts }) => {
     const [ counter, setCounter ] = useState(cart.quantity);
     const dispatch = useDispatch();
     const product = cart.product;
@@ -19,12 +19,14 @@ const BasketCart = ({ cart, deleteCartItem }) => {
     }
 
     const minusCounter = () => {
+        // const 
+        dispatch(updateBasketCounter());
         if (counter > 1) {
           setCounter((count) => count - 1);
         } else {
 
         }
-      };
+    };
 
     const plusCounter = () => {
         setCounter((count) => count + 1);
