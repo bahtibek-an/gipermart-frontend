@@ -13,13 +13,12 @@ const App = () => {
   const fetchData = async () => {
     if(localStorage.getItem("accessToken")) {
       await checkAuth()
-      const products = await fetchAllProducts();
-      const categories = await fetchAllCategories();
-      dispatch(fetchProducts(products));
-      dispatch(fetchCategories(categories));
-      return dispatch(hideLoader());
     }
-    dispatch(fetchProducts());
+    const products = await fetchAllProducts();
+    const categories = await fetchAllCategories();
+    dispatch(fetchProducts(products));
+    dispatch(fetchCategories(categories));
+    return dispatch(hideLoader());
   }
 
   useEffect(() => {
