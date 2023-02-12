@@ -58,7 +58,7 @@ const Category = () => {
 
     useEffect(() => {
       fetchAttributes();
-    }, [products]);
+    }, [categoryId]);
 
     const addToSearch = (e, data) => {
       const checked = e.target.checked;

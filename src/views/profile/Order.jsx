@@ -175,6 +175,7 @@ const Order = () => {
                       {basket.filter((cart) => item.cart.includes(cart.id)).map((cart) => (
                         <Link to="/" className="department-box" key={cart.id}>
                           <div className="department-image relative">
+                            {console.log(cart)}
                             <div className="discount">-6%</div>
                             <img
                               src="https://picsum.photos/140/140"

@@ -26,7 +26,7 @@ const Checkout = ({ user }) => {
   const basketProducts = useSelector((state) => state.baskets);
   const [ fullName, setFullName ] = useState(`${user.first_name} ${user.last_name}`);
   const [ phone, setPhone ] = useState(`${user.phone_number}`);
-  const [ region, setRegion ] = useState('');
+  const [ region, setRegion ] = useState({});
   const [ town, setTown ] = useState('');
   const [ address, setAddress ] = useState('');
   const [ comment, setComment ] = useState('');
@@ -35,11 +35,12 @@ const Checkout = ({ user }) => {
 
   const onButtonClick = async () => {
     const cashStatus = selectedValue === "a";
+    console.log(region)
     try {
       const { data } = await createCheckout(
         fullName,
         phone,
-        region,
+        region.name,
         town,
         address,
         comment,
