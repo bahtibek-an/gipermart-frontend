@@ -28,8 +28,13 @@ const Category = () => {
 
     const fetchAttributes = async () => {
       const attributes = [];
+      const map = {};
       products.forEach((item, i) => {
         return item.attributes?.forEach((attr, j) => {
+          if(map[item.attribute_values[j]] !== undefined) {
+            return;
+          }           
+          map[item.attribute_values[j]] = attr;
           attributes.push({
             id: item.attribute_values[j],
             product_attribute: {
