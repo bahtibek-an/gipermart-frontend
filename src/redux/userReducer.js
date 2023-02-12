@@ -1,8 +1,6 @@
 import { CREATE_USER, DELETE_USER, CREATE_CHECKOUT_IN_USER } from "./types";
 
-
 const initialState = {isAuth: false};
-
 
 export const userReducer = (state = initialState, action) => {
     switch(action.type) {

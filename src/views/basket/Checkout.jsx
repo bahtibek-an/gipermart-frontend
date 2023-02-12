@@ -17,6 +17,7 @@ import { createCheckout } from "../../http/CheckoutAPI";
 import { connect } from "react-redux";
 import { createCheckoutInUser, deleteBasketInLocal } from "../../redux/actions";
 import { Link } from "react-router-dom";
+import { countrySource } from "../../helper/countryData";
 
 const Checkout = ({ user }) => {
   const [selectedValue, setSelectedValue] = React.useState("a");
@@ -180,11 +181,11 @@ const Checkout = ({ user }) => {
               </div>
               <div className="flex items-baseline gap-4 mb-2 leading-none">
                 <div className="f-bold text-xl">Имя</div>
-                <div>ILKHOM</div>
+                <div>{ user.first_name }</div>
               </div>
               <div className="flex items-baseline gap-4 mb-2 leading-none">
                 <div className="f-bold text-xl">Tелефон</div>
-                <div>+998994064667</div>
+                <div>{ user.phone_number }</div>
               </div>
               <div className="flex items-baseline gap-4 mb-2 leading-none">
                 <div className="f-bold text-xl">Адрес</div>
@@ -211,30 +212,42 @@ const Checkout = ({ user }) => {
             />
             <div className="text-2xl f-medium">Доставка</div>
             <div className="mt-4">Адрес</div>
-            <div className="mt-4 mb-1">Регион/область*</div>
-            <FormControl fullWidth>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                onChange={(e) => setRegion(e.target.value)}
-              >
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
-              </Select>
-            </FormControl>
-            <div className="mt-4 mb-1">Город/район*</div>
-            <FormControl fullWidth>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                onChange={(e) => setTown(e.target.value)}
-              >
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
-              </Select>
-            </FormControl>
+            <Stack>
+              <div className="mt-4 mb-1">Регион/область*</div>
+              <FormControl fullWidth sx>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  // onChange={(e) => setRegion(e.target.value)}
+                >
+                  {countrySource.country.map((item) => (
+                    <MenuItem 
+                      key={item.name} 
+                      value={item.id} 
+                      onClick={() => setRegion({id: item.id, name: item.name})}
+                    >
+                        {item.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Stack>
+
+            <Stack>
+              <div className="mt-4 mb-1">Город/район*</div>
+              <FormControl fullWidth>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  onChange={(e) => setTown(e.target.value)}
+                >
+                  {countrySource[region.id] && countrySource[region.id].map((i) => (
+                    <MenuItem key={i.name} value={i.name}>{i.name}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Stack>
+
             <div className="mt-4 mb-1">Адрес*</div>
             <TextField
               value={address}

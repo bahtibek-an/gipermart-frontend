@@ -48,6 +48,7 @@ const Cart = ({ cart/*, favorite */ }) => {
         dispatch(craeteWishListProduct(data));
       });
   }
+  
 
   return (
     <div className="cart">
@@ -58,16 +59,16 @@ const Cart = ({ cart/*, favorite */ }) => {
       >
         <BiHeart size={24} />
       </button>
-        <div className="flex flex-col">
+        <div className="cart-item">
           <div onClick={() => navigate(`/product/${cart.id}`)} className="cart-image">
             <img src={"https://yruoebgair.tk/" + cart?.media[0]?.img_url || "./macb.jpeg"} alt="" />
           </div>
           <div onClick={() => navigate(`/product/${cart.name}`)} className="cart-name">
-            { cart.product?.name || "MacBook Pro 16-inch M2 Pro/16/512GB Space Gray 2023" }
+            { cart.product?.name }
           </div>
           <div className="rassrochka f-bold text-center">{ cart.installment_plan }</div>
           <div className="cart-action">
-            <div className="cart-price f-bold">{ cart.price || "37 739 500 сум" }</div>
+            <div className="cart-price f-bold">{ cart.price }</div>
             <button onClick={addProductToCart} className="cart-basket hover:shadow-lg shadow-none">
               {!hasInCart ? (
                 <HiOutlineShoppingCart stroke="rgb(33, 26, 26)" size={24} />
