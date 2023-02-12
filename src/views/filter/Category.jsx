@@ -22,15 +22,26 @@ const Category = () => {
     const category = useSelector((state) => state.categories?.find((item) => item?.id == categoryId))
     const productsFromStore = useSelector((state) => state.products?.filter((item) => item?.product?.category == categoryId));
     const [ products, setProducts ] = useState(productsFromStore);
-    // const [ searchParams, setSearchParams ] = useSearchParams();
     const [ attr, setAttr ] = useState([]);
     const [ loading, setLoading ] = useState(true);
-    // const attributeValues = searchParams.get("attribute_values") || '';
     const[ searchParams, setSearchParams ] = useState([]);
 
     const fetchAttributes = async () => {
-      const data = await fetchAttributesByCategoryId(categoryId);
-      const sortData = sortFilterCategories(data.atributes_value || []);
+      const attributes = [];
+      products.forEach((item, i) => {
+        return item.attributes?.forEach((attr, j) => {
+          attributes.push({
+            id: item.attribute_values[j],
+            product_attribute: {
+              id: attr.product_attribute.id,
+              name: attr.product_attribute.name,
+              description: attr.product_attribute.description,
+            },
+            attribute_value: attr.attribute_value
+          });
+        });
+      });
+      const sortData = sortFilterCategories(attributes || []);
       setAttr(sortData);
     }
 
@@ -42,15 +53,12 @@ const Category = () => {
 
     useEffect(() => {
       fetchProducts();
+      setLoading(false);
     }, [searchParams, categoryId]);
 
-
     useEffect(() => {
-      fetchAttributes()
-        .then(() => {
-            setLoading(false);
-        })
-    }, [categoryId]);
+      fetchAttributes();
+    }, [products]);
 
     const addToSearch = (e, data) => {
       const checked = e.target.checked;

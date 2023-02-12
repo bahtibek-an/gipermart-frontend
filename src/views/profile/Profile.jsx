@@ -16,16 +16,14 @@ import {
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { logout } from "../../http/UserAPI";
 import { useSelector } from "react-redux";
+import DialogUpdateForm from "./components/DialogUpdateUserForms/DialogUpdateForm";
 
 const Profile = () => {
   const user = useSelector((state) => state.user.user);
-  console.log(user);
   const navigate = useNavigate();
   const location = useLocation();
   const pathName = location.pathname;
-
   const [openModal, setOpenModal] = useState(false);
-  const [openModal2, setOpenModal2] = useState(false);
 
   const handleClickOpenModal = () => {
     setOpenModal(true);
@@ -35,13 +33,6 @@ const Profile = () => {
     setOpenModal(false);
   };
 
-  const handleClickOpenModal2 = () => {
-    setOpenModal2(true);
-  };
-
-  const handleCloseModal2 = () => {
-    setOpenModal2(false);
-  };
 
   const [showPassword, setShowPassword] = React.useState(false);
 
@@ -117,16 +108,6 @@ const Profile = () => {
               ></div>
               <div>{user.phone_number}</div>
             </div>
-            <Button
-              color="error"
-              size="large"
-              className="!my-6"
-              style={{ color: "#e44542" }}
-              onClick={handleClickOpenModal}
-            >
-              Изменить
-            </Button>
-            <Title title="Пароль" style="f-medium" />
             <div className="grid lg:grid-cols-6 gap-x-4 lg:gap-y-0 gap-y-1 mt-8">
               <div>Текущий пароль:</div>
               <div
@@ -141,7 +122,7 @@ const Profile = () => {
                 size="large"
                 className="!my-6"
                 style={{ color: "#e44542" }}
-                onClick={handleClickOpenModal2}
+                onClick={handleClickOpenModal}
               >
                 Изменить
               </Button>
@@ -162,88 +143,12 @@ const Profile = () => {
         </div>
       </Container>
       <div>
-        <Dialog
-          open={openModal}
-          onClose={handleCloseModal}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <div className="!p-8">
-            <div>Имя</div>
-            <TextField defaultValue="Ilhom" className="!w-full !my-4" />
-            <div>Фамилия</div>
-            <TextField defaultValue="Nasriddinov" className="!w-full !my-4" />
-            <Button
-              className="yellow-btn-hover !w-full !rounded-none !py-3 !text-base"
-              onClick={handleCloseModal}
-              autoFocus
-            >
-              Изменить
-            </Button>
-          </div>
-        </Dialog>
+        <DialogUpdateForm 
+          handleCloseModal={handleCloseModal} 
+          openModal={openModal}
+        />
       </div>
       <div>
-        <Dialog
-          open={openModal2}
-          onClose={handleCloseModal2}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <div className="!p-8">
-            <div>Последний пароль</div>
-            <OutlinedInput
-              className="!w-full !my-4"
-              type={showPassword ? "text" : "password"}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                  >
-                    {showPassword ? <AiFillEye /> : <AiFillEyeInvisible />}
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-            <div>Пароль</div>
-            <OutlinedInput
-              className="!w-full !my-4"
-              type={showPassword ? "text" : "password"}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                  >
-                    {showPassword ? <AiFillEye /> : <AiFillEyeInvisible />}
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-            <div>Подтвердить Пароль</div>
-            <OutlinedInput
-              className="!w-full !my-4"
-              type={showPassword ? "text" : "password"}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                  >
-                    {showPassword ? <AiFillEye /> : <AiFillEyeInvisible />}
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-            <Button
-              className="yellow-btn-hover !w-full !rounded-none !py-3 !text-base"
-              onClick={handleCloseModal2}
-            >
-              Изменить
-            </Button>
-          </div>
-        </Dialog>
       </div>
     </>
   );

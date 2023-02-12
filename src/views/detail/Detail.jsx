@@ -132,7 +132,7 @@ const Detail = ({ products, user }) => {
         <div className="flex items-center gap-4 border-b-2">
           <Rating
             name="half-rating"
-            defaultValue={2.5}
+            defaultValue={productDetail.rating}
             precision={0.5}
             size="small"
           />
