@@ -36,13 +36,13 @@ const Category = () => {
 
     const fetchProducts = async () => {
       const param = searchParams.map((item) => `attribute_values=${item.id}`).join('&');
-      const data = await fetchFilterProducts(param);
+      const data = await fetchFilterProducts(param, category.slug);
       setProducts(data.results);
     }
 
     useEffect(() => {
       fetchProducts();
-    }, [searchParams]);
+    }, [searchParams, categoryId]);
 
 
     useEffect(() => {

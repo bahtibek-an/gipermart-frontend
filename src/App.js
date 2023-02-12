@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { fetchAllCategories, fetchAllProducts } from "./http/ProductAPI";
 import { checkAuth } from "./http/UserAPI";
-import { fetchProducts } from "./redux/actions";
+import { fetchCategories, fetchProducts, hideLoader } from "./redux/actions";
 import Router from "./Router";
 import Spinner from "./UI/spinner/Spinner";
 
@@ -9,15 +10,20 @@ const App = () => {
   const dispatch = useDispatch();
   const isLoading = useSelector((state) => state.app.isLoading);
     
-  useEffect(() => {
+  const fetchData = async () => {
     if(localStorage.getItem("accessToken")) {
-      checkAuth()
-        .then(() => {
-          dispatch(fetchProducts())
-        });
-      return;
+      await checkAuth()
+      const products = await fetchAllProducts();
+      const categories = await fetchAllCategories();
+      dispatch(fetchProducts(products));
+      dispatch(fetchCategories(categories));
+      return dispatch(hideLoader());
     }
     dispatch(fetchProducts());
+  }
+
+  useEffect(() => {
+    fetchData();
   }, []);
 
   return (

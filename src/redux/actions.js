@@ -15,11 +15,10 @@ export function showLoader() {
 }
 
 
-export function fetchCategories() {
-    return async (dispatch) => {
-        const data = await fetchAllCategories();
-        dispatch({ type: FETCH_CATEGORIES, payload: categoriesAlgo(data) });
-        // dispatch(hideLoader);
+export function fetchCategories(data) {
+    return { 
+        type: FETCH_CATEGORIES, 
+        payload: categoriesAlgo(data) 
     }
 }
 
@@ -30,12 +29,15 @@ export function fetchUserWishLists(userId) {
     }
 }
 
-export function fetchProducts() {
+export function fetchProducts(data) {
+    return {
+        type: FETCH_PRODUCTS,
+        payload: data
+    }
     return async (dispatch) => {
-        const data = await fetchAllProducts();
         dispatch({ type: FETCH_PRODUCTS, payload: data })
         dispatch(fetchCategories());
-        dispatch(hideLoader());
+        // dispatch(hideLoader());
     }
 }
 
