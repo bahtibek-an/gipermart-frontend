@@ -17,17 +17,13 @@ const SearchPage = () => {
 
   const fetchProducts = async () => {
     const response = await fetchProductsBySearch(searchQuery);
-    return response.results.map((item) => ({
-      id: item.id,
-      price: item.price,
-      name: item.product.name,
-      description: item.product.description
-    }));
+    return response.results;
   }
 
   useEffect(() => {
     fetchProducts()
       .then((data) => {
+        console.log(data);
         setProducts(data);
         setLoading(false);
       });
