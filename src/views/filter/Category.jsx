@@ -21,8 +21,7 @@ import LoadingCart from "../../components/cart/LoadingCart";
 const Category = () => {
     const { categoryId } = useParams();
     const category = useSelector((state) => state.categories?.find((item) => item?.id == categoryId))
-    const productsFromStore = useSelector((state) => state.products?.filter((item) => item?.product?.category == categoryId));
-    const [ products, setProducts ] = useState(productsFromStore);
+    const [ products, setProducts ] = useState([]);
     const [ attr, setAttr ] = useState([]);
     const [ loading, setLoading ] = useState(true);
     const [ searchParams, setSearchParams ] = useState([]);
@@ -59,6 +58,7 @@ const Category = () => {
     }
 
     useEffect(() => {
+      setLoading(true);
       fetchProducts()
         .then(() => setLoading(false));
     }, [searchParams]);
@@ -82,54 +82,61 @@ const Category = () => {
     <>
       <SecondNavbar />
       <Container maxWidth="xl">
-        <div className="grid lg:grid-cols-12 grid-cols-6 gap-4 filter my-12">
-          <div className="lg:col-span-3 col-span-6">
-            <div>
-              <Accordion className="all-category">
-                <AccordionSummary
-                  expandIcon={<IoIosArrowDown />}
-                  aria-controls="panel1a-content"
-                  id="panel1a-header"
-                >
-                  <Typography>Все категории</Typography>
-                </AccordionSummary>
-                {category?.children?.map((item) => (
-                    <Link to={`/category/${item.id}`} key={item.id} className="item">
-                        {item.name}
-                    </Link>
-                ))}
-              </Accordion>
-              {attr.map((item, i) => (
-                <Accordion key={i}>
+        <div style={{minHeight: "70vh"}}>
+          <div className="grid lg:grid-cols-12 grid-cols-6 gap-4 filter my-12" >
+            <div className="lg:col-span-3 col-span-6">
+              <div>
+                <Accordion className="all-category">
                   <AccordionSummary
                     expandIcon={<IoIosArrowDown />}
-                    aria-controls="panel2a-content"
-                    id="panel2a-header"
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
                   >
-                    <Typography>{item.name}</Typography>
+                    <Typography>Все категории</Typography>
                   </AccordionSummary>
-                  <div className="all-category">
-                    {item.children?.map((value) => (
-                      <label className="item" key={value.id}>
-                        <FormControlLabel control={<Checkbox onClick={(e) => addToSearch(e, value)}/>} label={value.value} />
-                      </label>
-                    ))}
-                  </div>
+                  {category?.children?.map((item) => (
+                      <Link to={`/category/${item.id}`} key={item.id} className="item">
+                          {item.name}
+                      </Link>
+                  ))}
                 </Accordion>
-              ))}
+                {attr.map((item, i) => (
+                  <Accordion key={i}>
+                    <AccordionSummary
+                      expandIcon={<IoIosArrowDown />}
+                      aria-controls="panel2a-content"
+                      id="panel2a-header"
+                    >
+                      <Typography>{item.name}</Typography>
+                    </AccordionSummary>
+                    <div className="all-category">
+                      {item.children?.map((value) => (
+                        <label className="item" key={value.id}>
+                          <FormControlLabel control={<Checkbox onClick={(e) => addToSearch(e, value)}/>} label={value.value} />
+                        </label>
+                      ))}
+                    </div>
+                  </Accordion>
+                ))}
+              </div>
             </div>
-          </div>
-          <div className="lg:col-span-9 col-span-6">
-            <Title title={category?.name} style="f-medium mb-4" />
-            <div className="grid 2xl:grid-cols-4 xl:grid-cols-3 md:grid-cols-2 lg:grid-cols-2">
-              {loading ? (
-                [1, 2, 3].map((i) => (
-                  <LoadingCart key={i}/>
-                ))
-              ) : (
-                products.map((item) => (
-                  <Cart cart={item} key={item.id}/>
-                ))
+            <div className="lg:col-span-9 col-span-6">
+              <Title title={category?.name} style="f-medium mb-4" />
+              <div className="grid 2xl:grid-cols-4 xl:grid-cols-3 md:grid-cols-2 lg:grid-cols-2">
+                {loading ? (
+                  [1, 2, 3].map((i) => (
+                    <LoadingCart key={i}/>
+                  ))
+                ) : (
+                  products.map((item) => (
+                    <Cart cart={item} key={item.id}/>
+                  ))
+                )}
+              </div>
+              {!loading && products.length === 0 && (
+                <div className="mt-8 flex justify-center">
+                    <h1 className="text-2xl">Ничего не найдено</h1>
+                </div>
               )}
             </div>
           </div>
