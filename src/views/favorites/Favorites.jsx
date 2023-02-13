@@ -13,11 +13,19 @@ const Favorites = () => {
     <>
       <SecondNavbar />
       <Container maxWidth="xl">
-        <Title title="Избранные товары" style="f-bold mb-6 mt-12" />
-        <div className="favorites mb-12">
-          {products.map((item) => (
-            <Cart cart={item} key={item.id} favorite={true}/>
-          ))}
+        <div style={{minHeight: "70vh"}}>
+          <Title title="Избранные товары" style="f-bold mb-6 mt-12" />
+          {products.length > 0 ? (
+            <div className="favorites mb-12">
+              {products.map((item) => (
+                <Cart cart={item} key={item.id} favorite={true}/>
+              ))}
+            </div>
+            ) : (
+              <div className="flex items-center justify-center mt-10">
+                <h2 className="text-2xl">Нет избранных товаров</h2>
+              </div>
+            )}
         </div>
       </Container>
     </>

@@ -1,8 +1,9 @@
-import { Button, Dialog, InputAdornment, OutlinedInput, TextField } from "@mui/material";
+import { Button, Dialog, TextField } from "@mui/material";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import PasswordInput from "../../../../UI/passwordInput/PasswordInput";
 import { updateUser } from "./http/userAPI";
+import AlertError from "../../../../UI/Alert/AlertError";
 
 const DialogUpdateForm = ({ handleCloseModal, openModal }) => {
     const user = useSelector((state) => state.user?.user);
@@ -11,8 +12,18 @@ const DialogUpdateForm = ({ handleCloseModal, openModal }) => {
     const [ number, setNumber ] = useState(user.phone_number);
     const [ password, setPassword ] = useState(user.password);
     const [ confirmPassword, setConfirmPassword ] = useState('');
+    const [ error, setError ] = useState('');
+
+    const setErrorMessage = (error) => {
+        setError(error);
+        setTimeout(() => {
+            setError('');
+        }, 2000);
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if(confirmPassword !== password) return setErrorMessage("Passwords don't match!");
         await updateUser(user.id, firstName, email, number, password);
         handleCloseModal();
     }
@@ -40,7 +51,6 @@ const DialogUpdateForm = ({ handleCloseModal, openModal }) => {
     }
 
 
-
     return (
         <Dialog
           open={openModal}
@@ -49,6 +59,9 @@ const DialogUpdateForm = ({ handleCloseModal, openModal }) => {
           aria-describedby="alert-dialog-description"
         >
           <form action="" method="post" onSubmit={handleSubmit}>
+            <AlertError
+                error={error}
+            />
             <div className="!p-8">
                 <div>Имя</div>
                 <TextField 
@@ -78,12 +91,14 @@ const DialogUpdateForm = ({ handleCloseModal, openModal }) => {
                 />
                 <div>Пароль</div>
                 <PasswordInput
+                    error={error !== ''}
                     name="password"
                     onChange={handleChange}
                     value={password}
                 />
                 <div>Подтвердить Пароль</div>
                 <PasswordInput
+                    error={error !== ''}
                     name="confirm-password"
                     onChange={handleChange}
                     value={confirmPassword}

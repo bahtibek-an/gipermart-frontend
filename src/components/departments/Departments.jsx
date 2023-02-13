@@ -7,26 +7,9 @@ import { categoriesAlgo } from "../../helper";
 
 const Departments = () => {
   const products = useSelector((state) => state.products);
-
-  const sort = (categories) => {
-    const result = categoriesAlgo(categories).filter(item => item.parent).slice(0, 3);
-    for(let i = 0;i < result.length;i++) {
-      for(let j = 0;j < products.length;j++) {
-        if(!result[i].products) result[i].products = [];
-        if(result[i].id == products[j].product?.category) {
-          result[i].products.push(products[j]);
-          break;
-        }
-      } 
-    }
-    return result;
-  }
+  const categories = useSelector((state) => (state.categories).slice(0, 3));
 
   
-  const categories = useSelector((state) => sort(state.categories));
-
-  
-  console.log(categories)
   return (
     <Container maxWidth="xl">
       <div className="grid xl:grid-cols-3 lg:grid-cols-2 gap-10 my-12">
@@ -35,7 +18,7 @@ const Departments = () => {
           <Link to={`/category/${category.id}`} className="block pb-4 border-b title red">
             {category.name}
           </Link>
-          {category.products?.map((product) => (
+          {products.filter((product) => product?.product?.category == category?.id).map((product) => (
           <Link to={`/product/${product.product?.id}/`} className="department-box">
             <div className="department-image relative">
               <div className="discount">-6%</div>

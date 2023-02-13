@@ -16,6 +16,7 @@ import Cart from "../../components/cart/Cart";
 import { useSelector } from "react-redux";
 import { fetchAttributesByCategoryId, fetchFilterProducts } from "../../http/ProductAPI";
 import { sortFilterCategories } from "../../helper";
+import LoadingCart from "../../components/cart/LoadingCart";
 
 const Category = () => {
     const { categoryId } = useParams();
@@ -24,9 +25,9 @@ const Category = () => {
     const [ products, setProducts ] = useState(productsFromStore);
     const [ attr, setAttr ] = useState([]);
     const [ loading, setLoading ] = useState(true);
-    const[ searchParams, setSearchParams ] = useState([]);
+    const [ searchParams, setSearchParams ] = useState([]);
 
-    const fetchAttributes = async () => {
+    const fetchAttributes = async (products) => {
       const attributes = [];
       const map = {};
       products.forEach((item, i) => {
@@ -54,15 +55,19 @@ const Category = () => {
       const param = searchParams.map((item) => `attribute_values=${item.id}`).join('&');
       const data = await fetchFilterProducts(param, category.slug);
       setProducts(data.results);
+      return data.results;
     }
 
     useEffect(() => {
-      fetchProducts();
-      setLoading(false);
-    }, [searchParams, categoryId]);
+      fetchProducts()
+        .then(() => setLoading(false));
+    }, [searchParams]);
 
     useEffect(() => {
-      fetchAttributes();
+      setLoading(true)
+      fetchProducts()
+        .then((data) => fetchAttributes(data))
+        .then(() => setLoading(false));
     }, [categoryId]);
 
     const addToSearch = (e, data) => {
@@ -73,8 +78,6 @@ const Category = () => {
       return setSearchParams((prev) => prev.filter((item) => item.id != data.id));
     }
 
-    if(loading) return;
-    
     return (
     <>
       <SecondNavbar />
@@ -119,9 +122,15 @@ const Category = () => {
           <div className="lg:col-span-9 col-span-6">
             <Title title={category?.name} style="f-medium mb-4" />
             <div className="grid 2xl:grid-cols-4 xl:grid-cols-3 md:grid-cols-2 lg:grid-cols-2">
-              {products.map((item) => (
-                <Cart cart={item} key={item.id}/>
-              ))}
+              {loading ? (
+                [1, 2, 3].map((i) => (
+                  <LoadingCart key={i}/>
+                ))
+              ) : (
+                products.map((item) => (
+                  <Cart cart={item} key={item.id}/>
+                ))
+              )}
             </div>
           </div>
         </div>

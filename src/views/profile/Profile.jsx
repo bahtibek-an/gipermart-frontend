@@ -7,13 +7,7 @@ import { CgFileDocument } from "react-icons/cg";
 import Title from "../../components/title/Title";
 import {
   Button,
-  Dialog,
-  IconButton,
-  InputAdornment,
-  OutlinedInput,
-  TextField,
 } from "@mui/material";
-import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { logout } from "../../http/UserAPI";
 import { useSelector } from "react-redux";
 import DialogUpdateForm from "./components/DialogUpdateUserForms/DialogUpdateForm";
@@ -32,11 +26,6 @@ const Profile = () => {
   const handleCloseModal = () => {
     setOpenModal(false);
   };
-
-
-  const [showPassword, setShowPassword] = React.useState(false);
-
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
