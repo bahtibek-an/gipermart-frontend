@@ -6,7 +6,6 @@ import {
   StyledLabel,
   StyledHelperText,
 } from './select.styles';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 const Select = ({
   label,
@@ -25,7 +24,6 @@ const Select = ({
         },
       }}
       labelId="Some-id"
-      IconComponent={KeyboardArrowDownIcon}
       {...props}
     >
       {props.children}

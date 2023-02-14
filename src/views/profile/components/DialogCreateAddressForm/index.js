@@ -27,7 +27,6 @@ const DialogCreateAddressForm = ({ openModal, handleCloseModal }) => {
         if(!name.trim() || !number.trim() || !town.trim() || !address.trim()) {
             return setErrorMessage("Все поля должны быть заполнены!");
         }
-
         const { data } = await $host.post("user/map/", {
             title: name,
             phone_number: number,
@@ -35,7 +34,6 @@ const DialogCreateAddressForm = ({ openModal, handleCloseModal }) => {
             town: town,
             user: user.id
         });
-        console.log(data)  
         handleCloseModal();
     }
 
