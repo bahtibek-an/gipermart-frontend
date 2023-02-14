@@ -2,7 +2,6 @@ import React from "react";
 import SecondNavbar from "../../layout/navbar/SecondNavbar";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import { IoIosArrowDown } from "react-icons/io";
 import { Container } from "@mui/system";

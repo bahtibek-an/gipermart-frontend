@@ -2,21 +2,20 @@ import React, { useEffect, useState } from "react";
 import SecondNavbar from "../../layout/navbar/SecondNavbar";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import { IoIosArrowDown } from "react-icons/io";
 import { Container } from "@mui/system";
 import "../../assets/scss/_filter.scss";
-import { Link, useParams, useSearchParams } from "react-router-dom";
-import { FormControlLabel, OutlinedInput } from "@mui/material";
-import { IoLogoUsd } from "react-icons/io";
+import { Link, useParams } from "react-router-dom";
+import { FormControlLabel, MenuItem, Stack } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import Title from "../../components/title/Title";
 import Cart from "../../components/cart/Cart";
 import { useSelector } from "react-redux";
-import { fetchAttributesByCategoryId, fetchFilterProducts } from "../../http/ProductAPI";
+import { fetchFilterProducts } from "../../http/ProductAPI";
 import { sortFilterCategories } from "../../helper";
 import LoadingCart from "../../components/cart/LoadingCart";
+import Select from "../../components/select/Select";
 
 const Category = () => {
     const { categoryId } = useParams();
@@ -25,7 +24,7 @@ const Category = () => {
     const [ attr, setAttr ] = useState([]);
     const [ loading, setLoading ] = useState(true);
     const [ searchParams, setSearchParams ] = useState([]);
-
+    const [ sortType, setSortType ] = useState("price");
     const fetchAttributes = async (products) => {
       const attributes = [];
       const map = {};
@@ -52,7 +51,7 @@ const Category = () => {
 
     const fetchProducts = async () => {
       const param = searchParams.map((item) => `attribute_values=${item.id}`).join('&');
-      const data = await fetchFilterProducts(param, category.slug);
+      const data = await fetchFilterProducts(param, category.slug, sortType);
       setProducts(data.results);
       return data.results;
     }
@@ -61,7 +60,7 @@ const Category = () => {
       setLoading(true);
       fetchProducts()
         .then(() => setLoading(false));
-    }, [searchParams]);
+    }, [searchParams, sortType]);
 
     useEffect(() => {
       setLoading(true)
@@ -112,12 +111,37 @@ const Category = () => {
                     <div className="all-category">
                       {item.children?.map((value) => (
                         <label className="item" key={value.id}>
-                          <FormControlLabel control={<Checkbox onClick={(e) => addToSearch(e, value)}/>} label={value.value} />
+                          <FormControlLabel 
+                            control={
+                              <Checkbox 
+                                onClick={(e) => addToSearch(e, value)}
+                              />
+                              } 
+                              label={value.value} />
                         </label>
                       ))}
                     </div>
                   </Accordion>
                 ))}
+                <Stack sx={{ padding: '1rem 0' }} gap={2}>
+                  <Select
+                    value={sortType}
+                    onChange={(e) =>
+                      //@ts-expect-error
+                      // dispatch(sortFn({ direction: e.target.value }))
+                      setSortType(e.target.value)
+                    }
+                    // value={sort?.direction}
+                    placeholder="Сортировка"
+                >
+                    <MenuItem value={"price"}>
+                      Сначала по дешевле
+                    </MenuItem>
+                    <MenuItem value={"-price"}>
+                      Сначала по дороже
+                    </MenuItem>
+                  </Select>
+                </Stack>
               </div>
             </div>
             <div className="lg:col-span-9 col-span-6">
