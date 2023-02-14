@@ -6,6 +6,7 @@ import { CgFileDocument } from "react-icons/cg";
 import SecondNavbar from "../../layout/navbar/SecondNavbar";
 import { Container } from "@mui/system";
 import { BiPencil, BiTrash } from "react-icons/bi";
+import DialogCreateAddressForm from "./components/DialogCreateAddressForm";
 
 const Adresses = () => {
   const navigate = useNavigate();
@@ -175,58 +176,16 @@ const Adresses = () => {
         </div>
       </Container>
       <div>
-        <Dialog
-          open={openModal}
-          onClose={handleCloseModal}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <div className="!p-8">
-            <Title title="Создать адрес" style="f-medium mb-4" />
-            <div>Имя</div>
-            <TextField className="!w-full !my-4" />
-            <div>Номер телефона</div>
-            <TextField className="!w-full !my-4" />
-            <div>Адрес</div>
-            <TextField className="!w-full !my-4" />
-            <div>Город</div>
-            <TextField className="!w-full !my-4" />
-            <Button
-              className="yellow-btn-hover !w-full !rounded-none !py-3 !text-base"
-              onClick={handleCloseModal}
-              autoFocus
-            >
-              Добавлять
-            </Button>
-          </div>
-        </Dialog>
+        <DialogCreateAddressForm
+          openModal={openModal}
+          handleCloseModal={handleCloseModal}
+        />
       </div>
       <div>
-        <Dialog
-          open={openModal2}
-          onClose={handleCloseModal2}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <div className="!p-8">
-            <Title title="Изменить адрес" style="f-medium mb-4" />
-            <div>Имя</div>
-            <TextField defaultValue="Ilhom" className="!w-full !my-4" />
-            <div>Номер телефона</div>
-            <TextField defaultValue="+998900511676" className="!w-full !my-4" />
-            <div>Адрес</div>
-            <TextField defaultValue="Diydor 10" className="!w-full !my-4" />
-            <div>Город</div>
-            <TextField defaultValue="UZ" className="!w-full !my-4" />
-            <Button
-              className="yellow-btn-hover !w-full !rounded-none !py-3 !text-base"
-              onClick={handleCloseModal2}
-              autoFocus
-            >
-              Обновлять
-            </Button>
-          </div>
-        </Dialog>
+        <DialogCreateAddressForm
+          handleCloseModal2={handleCloseModal2}
+          openModal2={openModal2}
+        />
       </div>
     </>
   );
