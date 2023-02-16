@@ -26,7 +26,7 @@ const Detail = ({ products, user }) => {
   const { id } = useParams();
   const productPrice = (+productDetail.price * counter);
   const favorite = useSelector((state) => state?.wishLists.find((item) => item?.product?.id == productDetail?.product?.id));
-  const hasInProduct = useSelector((state) => state.baskets?.find((item) => item?.product.id == productDetail?.product?.id));
+  const hasInProduct = useSelector((state) => state.baskets?.find((item) => item?.product == productDetail?.product?.id));
   const fetchProduct = async () => {
     const product = await fetchOneProduct(id);
     setProductDetail(product);

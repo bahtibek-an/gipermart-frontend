@@ -8,9 +8,7 @@ import { Button } from "@mui/material";
 import BasketModal from "../../components/modal/BasketModal";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllBasketCarts } from "../../http/ProductAPI";
 import BasketCart from "./BasketCart";
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import 'react-loading-skeleton/dist/skeleton.css'
 import { deleteBasketProduct } from "../../redux/actions";
 // import { removeRepeatItems } from "../../helper";

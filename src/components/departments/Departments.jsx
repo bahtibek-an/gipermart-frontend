@@ -19,7 +19,6 @@ const Departments = () => {
           </Link>
           {products.filter((product) => product?.product?.category == category?.id).map((product) => (
           <Link key={product.id} to={`/product/${product.product?.id}/`} className="department-box">
-            {console.log(product)}
             <div className="department-image relative">
               <div className="discount">-6%</div>
               <img
