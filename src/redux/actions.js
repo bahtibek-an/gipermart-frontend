@@ -1,6 +1,6 @@
 import { categoriesAlgo } from "../helper"
 import { fetchAllBasketCarts, fetchAllCategories, fetchAllProducts, getWishListsByUserId } from "../http/ProductAPI"
-import { CREATE_BASKET_PRODUCT, CREATE_BASKET_TO_LOCAL, CREATE_CHECKOUT_IN_USER, CREATE_USER, CREATE_WISHLIST, DELETE_BASKET_IN_LOCAL, DELETE_BASKET_PRODUCT, DELETE_USER, DELETE_WISHLIST, FETCH_BASKET_PRODUCTS, FETCH_CATEGORIES, FETCH_PRODUCTS, FETCH_USER_WISHLISTS, HIDE_LOADER, HIDE_RIGHT_MODAL, SHOW_LOADER, SHOW_MODAL_LOGIN, SHOW_MODAL_SIGNUP, SHOW_RIGHT_MODAL, UPDATE_BASKET_COUNTER } from "./types"
+import { CREATE_BASKET_PRODUCT, CREATE_BASKET_TO_LOCAL, CREATE_CHECKOUT_IN_USER, CREATE_USER, CREATE_WISHLIST, DECREMENT_BASKET_COUNTER, DELETE_BASKET_IN_LOCAL, DELETE_BASKET_PRODUCT, DELETE_USER, DELETE_WISHLIST, FETCH_BASKET_PRODUCTS, FETCH_CATEGORIES, FETCH_PRODUCTS, FETCH_USER_WISHLISTS, HIDE_LOADER, HIDE_RIGHT_MODAL, INCREMENT_BASKET_COUNTER, SHOW_LOADER, SHOW_MODAL_LOGIN, SHOW_MODAL_SIGNUP, SHOW_RIGHT_MODAL, UPDATE_BASKET_COUNTER } from "./types"
 
 export function hideLoader() {
     return {
@@ -122,9 +122,16 @@ export const deleteBasketInLocal = (productId) => {
     }
 }
 
-export const updateBasketCounter = (data) => {
+export const incrementBasketCounter = (cartId) => {
     return {
-        type: UPDATE_BASKET_COUNTER,
-        payload: data
+        type: INCREMENT_BASKET_COUNTER,
+        payload: cartId
+    }
+}
+
+export const decrementBasketCounter = (cartId) => {
+    return {
+        type: DECREMENT_BASKET_COUNTER,
+        payload: cartId
     }
 }

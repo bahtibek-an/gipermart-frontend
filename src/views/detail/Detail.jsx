@@ -19,17 +19,18 @@ import Spinner from "../../UI/spinner/Spinner";
 const Detail = ({ products, user }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [counter, setCounter] = useState(1);
   const [value, setValue] = useState("1");
   const [productDetail, setProductDetail] = useState({});
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
-  const productPrice = (+productDetail.price * counter);
   const favorite = useSelector((state) => state?.wishLists.find((item) => item?.product?.id == productDetail?.product?.id));
   const hasInProduct = useSelector((state) => state.baskets?.find((item) => item?.product == productDetail?.product?.id));
+  const [counter, setCounter] = useState(1);
+  const productPrice = (productDetail.price * counter);
   const fetchProduct = async () => {
     const product = await fetchOneProduct(id);
     setProductDetail(product);
+    return product;
   }
 
   const handleChange = (event, newValue) => {
@@ -101,6 +102,8 @@ const Detail = ({ products, user }) => {
 
   useEffect(() => {
     fetchProduct()
+      .then((data) => {
+      })
       .finally(() => {
         setLoading(false);
       })
@@ -184,7 +187,9 @@ const Detail = ({ products, user }) => {
                   <Button onClick={minusCounter} className="minus">
                     <AiOutlineMinus size={24} fill="#C4C4C4" />
                   </Button>
-                  <div className="count">{counter}</div>
+                  <div className="count">
+                    {counter}
+                  </div>
                   <Button onClick={plusCounter} className="plus">
                     <AiOutlinePlus size={24} fill="#C4C4C4" />
                   </Button>
@@ -197,7 +202,7 @@ const Detail = ({ products, user }) => {
                 >
                   {!hasInProduct ? "Добавить в корзину" : "Корзина"}
                 </Button>
-                <div className="text-4xl f-bold my-5">{productDetail.installment_plan || "47 739 500 / 100 000 Сум"}</div>
+                <div className="text-4xl f-bold my-5">{productDetail.installment_plan}</div>
                 <Button
                   onClick={() => navigate("/basket")}
                   className="yellow-btn-hover !w-full !py-3 !capitalize !text-base"

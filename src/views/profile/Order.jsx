@@ -172,7 +172,8 @@ const Order = () => {
                           </span>
                         </div>
                       </div>
-                      {basket.filter((cart) => item.cart.includes(cart.id)).map((cart) => (
+                      {basket.filter((cart) => item.cart.includes(cart.id)).map((cart) => 
+                      !cart.product?.product?.USA_product && (
                         <Link to="/" className="department-box" key={cart.id}>
                           <div className="department-image relative">
                             <div className="discount">-6%</div>

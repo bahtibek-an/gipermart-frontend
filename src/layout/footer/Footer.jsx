@@ -34,13 +34,13 @@ const Footer = () => {
               />
             </Link>
             <div className="footer__link">
-              <a className="text-xl mb-1 block" href="+998900511676">
+              <a className="text-xl mb-1 block" href="tel:+998900511676">
                 +998900511676
               </a>
               <div className="text-sm text-black">справочная служба</div>
             </div>
             <div className="footer__link">
-              <a className="text-xl mb-1 block" href="+998900511676">
+              <a className="text-xl mb-1 block" href="tel:+998900511676">
                 +998900511676
               </a>
               <div className="text-sm text-black">интернет-магазин</div>

@@ -33,7 +33,7 @@ const Departments = () => {
               <div className="department-rassrochka">{product.installment_plan}</div>
               <div className="department-price">
                 <div className="price">{product.sale_price} Сум</div>
-                <div className="price_old">{product.price}</div>
+                <div className="price_old">{product.price} Сум</div>
               </div>
             </div>
           </Link>

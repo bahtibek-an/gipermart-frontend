@@ -23,7 +23,6 @@ const Recommendations = ({ products: productLists, isLoading }) => {
   })());
   
   let settings = {
-    dots: true,
     infinite: true,
     slidesToShow: 6,
     slidesToScroll: 1,

@@ -18,12 +18,13 @@ import { connect } from "react-redux";
 import { createCheckoutInUser, deleteBasketInLocal } from "../../redux/actions";
 import { Link } from "react-router-dom";
 import { countrySource } from "../../helper/countryData";
+import BasketProduct from "./components/BasketProduct";
 
 const Checkout = ({ user }) => {
   const [selectedValue, setSelectedValue] = React.useState("a");
   const dispatch = useDispatch();
   const [disabledButton, setDisabledButton] = useState(false);
-  const basketProducts = useSelector((state) => state.baskets);
+  const { baskets: basketProducts } = useSelector((state) => state);
   const [ fullName, setFullName ] = useState(`${user.first_name} ${user.last_name}`);
   const [ phone, setPhone ] = useState(`${user.phone_number}`);
   const [ region, setRegion ] = useState({});
@@ -58,7 +59,6 @@ const Checkout = ({ user }) => {
   }
 
   const totalPrice = basketProducts.reduce((acc, item) => +item.total + acc, 0);
-
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
   };
@@ -323,26 +323,8 @@ const Checkout = ({ user }) => {
           </div>
           <div className="right lg:pl-4 mb-8">
             {
-              basketProducts.map((item) => (
-                <div className="checkout-cart p-1" key={item.id}>
-                  <div className="flex items-center">
-                    <div className="checkout-image">
-                      <img
-                        src="https://picsum.photos/80/50"
-                        alt=""
-                      />
-                    </div>
-                    <div className="checkout-name">
-                      {/* Acer Aspire 3 Intel Pentium N4500/4GB/1TB HDD/Intel UHD 15.6"
-                      (A315-34-C7AH) Pure Silver */}
-                      {item.product.name}
-                    </div>
-                  </div>
-                  <div className="checkout-price gap-x-2">
-                    {/* 4 x <span className="f-bold price">3 113 600 Сум</span> */}
-                    <span className="f-bold price">{item.total} Сум</span>
-                  </div>
-                </div>
+              basketProducts.map((basket) => (
+                <BasketProduct basket={basket} key={basket.id}/>
               ))
             }
             <div className="border-t border-b py-6 my-6">

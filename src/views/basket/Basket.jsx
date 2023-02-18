@@ -55,7 +55,7 @@ const Basket = () => {
               <div className="price-box">
                 <div className="px-6">
                   <div className="text-2xl f-bold">В корзине</div>
-                  <div className="mt-1">Товаров: 5</div>
+                  <div className="mt-1">Товаров: {carts.length}</div>
                   <div className="text-2xl f-bold mt-1">{totalPrice} Сум</div>
                 </div>
                 <Button
@@ -66,8 +66,8 @@ const Basket = () => {
                 </Button>
                 <div className="px-6">
                   <div className="text-2xl f-bold">12 месяц</div>
-                  <div className="mt-1">Товаров: 5</div>
-                  <div className="text-2xl f-bold mt-4">2 018 800 Сум</div>
+                  <div className="mt-1">Товаров: 0</div>
+                  <div className="text-2xl f-bold mt-4">0 Сум</div>
                   <div className="mt-1">
                     Рассрочку можно офромить только до 15 000 000 сум
                   </div>

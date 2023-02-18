@@ -24,7 +24,6 @@ const Cart = ({ cart/*, favorite */ }) => {
     }
     try {
       const data = await appendProductToUserCart(user?.user?.id, cart.id, 1, cart.price);
-      console.log(data);
       dispatch(createBasketToLocal(data));
       dispatch(createBasketProduct(data));
     } catch (error) {
@@ -68,7 +67,7 @@ const Cart = ({ cart/*, favorite */ }) => {
           </div>
           <div className="rassrochka f-bold text-center">{ cart.installment_plan }</div>
           <div className="cart-action">
-            <div className="cart-price f-bold">{ cart.price }</div>
+            <div className="cart-price f-bold">{ cart.price } сум</div>
             <button onClick={addProductToCart} className="cart-basket hover:shadow-lg shadow-none">
               {!hasInCart ? (
                 <HiOutlineShoppingCart stroke="rgb(33, 26, 26)" size={24} />

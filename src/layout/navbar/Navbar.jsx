@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { Container } from "@mui/system";
 import "../../assets/scss/_navbar.scss";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { MdOutlinePhone } from "react-icons/md";
-import { HiBars3 } from "react-icons/hi2";
+import { MdOutlinePhone, MdPayment } from "react-icons/md";
+import { HiBars3, HiOutlineInformationCircle } from "react-icons/hi2";
 import { SlPlane } from "react-icons/sl";
-import { CgProfile } from "react-icons/cg";
+import { CgArrowsExchangeAlt, CgFileDocument, CgProfile } from "react-icons/cg";
 import { BiHeart } from "react-icons/bi";
 import { HiOutlineShoppingCart } from "react-icons/hi";
 import {
@@ -15,8 +15,7 @@ import {
 } from "@mui/material";
 import NavbarCatalog from "../../components/modal/NavbarCatalog";
 import { IoMdClose } from "react-icons/io";
-import { GrCatalogOption } from "react-icons/gr";
-import { BsBagCheck, BsQuestionCircle } from "react-icons/bs";
+import { GrCatalogOption, GrDeliver } from "react-icons/gr";
 import { CiLocationOn } from "react-icons/ci";
 import { BiMapAlt, BiMailSend } from "react-icons/bi";
 import { SlScreenSmartphone } from "react-icons/sl";
@@ -25,6 +24,7 @@ import NavbarSearch from "./NavbarSearch";
 import AuthSidebar from "./Auth/AuthSidebar";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { hideRightModal, showRightModal } from "../../redux/actions";
+import { AiOutlineShop, AiOutlineUser } from "react-icons/ai";
 
 
 const Navbar = ({ isAuth, basketProductsLength, wishListsLength }) => {
@@ -98,62 +98,119 @@ const Navbar = ({ isAuth, basketProductsLength, wishListsLength }) => {
                 Каталог
               </div>
             </div>
-            <Link
+            {/* <Link
               to="/profile/order"
               onClick={() => setLeftModal(false)}
               className="flex items-center gap-x-3 px-4 py-3 bg-white"
             >
               <BsBagCheck size={24} />
               Мои заказы
+            </Link> */}
+            <Link
+                to="/profile"
+                className="flex items-center gap-x-3 px-4 py-3 bg-white"
+              >
+              <CgProfile size={24} />
+              Профиль
             </Link>
             <Link
-              to="/favorites"
+              to="/basket"
               onClick={() => setLeftModal(false)}
               className="flex items-center gap-x-3 px-4 py-3 bg-white"
             >
-              <BiHeart size={24} />
-              Избранное
+              <Badge badgeContent={basketProductsLength} color="primary">
+                <HiOutlineShoppingCart size={24} />
+              </Badge>
+              Корзина
             </Link>
             <Link
+              to="/profile/addresses"
+              onClick={() => setLeftModal(false)}
+              className="flex items-center gap-x-3 px-4 py-3 bg-white"
+            >
+              <CgFileDocument color="#2E3A59" size={24} />
+              Адреса
+            </Link>
+            <Link
+              to="/special-order"
+              onClick={() => setLeftModal(false)}
+              className="flex items-center gap-x-3 px-4 py-3 bg-white"
+            >
+              <SlPlane size={24} />
+              Заказы из США
+            </Link>
+            <Link
+              to="/information/refund"
+              onClick={() => setLeftModal(false)}
+              className="flex items-center gap-x-3 px-4 py-3 bg-white"
+            >
+              <CgArrowsExchangeAlt size={24}/>
+              Условия обмена и возврата
+            </Link>
+            <Link
+              to="/information/delivery"
+              onClick={() => setLeftModal(false)}
+              className="flex items-center gap-x-3 px-4 py-3 bg-white"
+            >
+              <GrDeliver size={24}/>
+              Доставка
+            </Link>
+            <Link
+              to="/information/payment"
+              onClick={() => setLeftModal(false)}
+              className="flex items-center gap-x-3 px-4 py-3 bg-white"
+            >
+              <MdPayment size={24}/>
+              Оплата
+            </Link>
+            <Link
+              to="/information/clients"
+              onClick={() => setLeftModal(false)}
+              className="flex items-center gap-x-3 px-4 py-3 bg-white"
+            >
+              <AiOutlineUser size={24}/>
+              Клиентам
+            </Link>
+            <Link
+              to="/information/blog"
+              onClick={() => setLeftModal(false)}
+              className="flex items-center gap-x-3 px-4 py-3 bg-white"
+            >
+              <AiOutlineShop size={24}/>
+              Блог
+            </Link>
+            {/* <Link
               to=""
               onClick={() => setLeftModal(false)}
               className="flex items-center gap-x-3 px-4 py-3 bg-white"
             >
               <CiLocationOn size={24} />
               Город: Ташкент
-            </Link>
-            <Link
+            </Link> */}
+            {/* <Link
               to=""
               onClick={() => setLeftModal(false)}
               className="flex items-center gap-x-3 px-4 py-3 bg-white"
             >
               <BiMapAlt size={24} />
               Пункты выдачи
-            </Link>
+            </Link> */}
             <Link
               to=""
               onClick={() => setLeftModal(false)}
               className="border-b flex items-center gap-x-3 px-4 py-3 bg-white"
             >
-              <BsQuestionCircle size={24} />
-              Часто задаваемые вопросы
+              <HiOutlineInformationCircle size={24}/>
+              О компании
             </Link>
-            <Link
-              to=""
+            <a
+              href="tel:+998900511676"
               onClick={() => setLeftModal(false)}
               className="flex items-center gap-x-3 px-4 py-3 bg-white"
             >
               <BiMailSend size={24} />
-              Связаться с нами
-            </Link>
-            <Link
-              to=""
-              onClick={() => setLeftModal(false)}
-              className="flex items-center gap-x-3 px-4 py-3 bg-white"
-            >
-              <SlScreenSmartphone size={24} />
-              Приложение Name
-            </Link>
+              Обратная связь
+            </a>
           </div>
         </Drawer>
       </div>
@@ -182,10 +239,10 @@ const Navbar = ({ isAuth, basketProductsLength, wishListsLength }) => {
                 <Link to="" className="">
                   Поддержка
                 </Link>
-                <Link to="+998900511676" className="flex items-center gap-x-3">
+                <a href="tel:+998900511676" className="flex items-center gap-x-3">
                   <MdOutlinePhone size={24} />
                   +998 90 051 16 76
-                </Link>
+                </a>
               </div>
             </Container>
           </div>

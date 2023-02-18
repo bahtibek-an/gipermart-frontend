@@ -88,3 +88,17 @@ export const fetchFilterProducts = async (params, productSlug, sortType) => {
         console.log(error);
     }
 }
+
+export const updateCart = async (cartId, userId, productId, quantity, totalPrice) => {
+    try {
+        const { data } = await $host.put(`https://yruoebgair.tk/cart/update-cart/${cartId}`, {
+            user: userId,
+            product: productId,
+            quantity: quantity,
+            total: totalPrice
+        });
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
+}

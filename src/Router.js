@@ -50,13 +50,13 @@ const Router = () => {
           <Route path="/information/refund" element={<Refund />} />
           <Route path="/about-company" element={<About />} />
           <Route path="/search" element={<SearchPage />} />
-          <Route path="/profile/adresses" element={<Adresses />} />
           <Route path="/filter" element={<Filter />} />
           <Route path="/category/:categoryId" element={<Category />} />
           <Route path="/product/:id" element={<Detail />} />
           <Route path="/stock" element={<Stock />} />
           <Route element={<PrivateRoutes/>}>
             <Route path="/profile/order" element={<Order />} />
+            <Route path="/profile/adresses" element={<Adresses />} />
             <Route path="/profile" element={<Profile />}/>
             <Route path="/favorites" element={<Favorites />}/>
             <Route path="/checkout" element={<Checkout />}/>
