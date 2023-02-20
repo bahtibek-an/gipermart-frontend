@@ -25,7 +25,8 @@ import AuthSidebar from "./Auth/AuthSidebar";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { hideRightModal, showRightModal } from "../../redux/actions";
 import { AiOutlineShop, AiOutlineUser } from "react-icons/ai";
-
+import { RemoveScrollBar } from "react-remove-scroll-bar";
+import {zeroRightClassName,fullWidthClassName, noScrollbarsClassName} from 'react-remove-scroll-bar';
 
 const Navbar = ({ isAuth, basketProductsLength, wishListsLength }) => {
   const navigate = useNavigate();
@@ -66,8 +67,9 @@ const Navbar = ({ isAuth, basketProductsLength, wishListsLength }) => {
             setLeftModal(false);
           }}
         >
-          <div>
-            <div className="text-sm flex items-center justify-end px-3 py-1">
+          <div className={noScrollbarsClassName}>
+            <RemoveScrollBar />
+            <div className="text-sm flex items-center px-3 py-1">
               <IconButton
                 onClick={() => {
                   setLeftModal(false);
@@ -75,18 +77,28 @@ const Navbar = ({ isAuth, basketProductsLength, wishListsLength }) => {
               >
                 <IoMdClose size={24} />
               </IconButton>
-              <div
-                className="flex items-center ml-auto"
-                onClick={() => {
-                  dispatch(hideRightModal())
-                }}
-              >
-                <div className="underline underline-offset-1">Войти </div>
-                <div className="px-1">/</div>
-                <div className="underline underline-offset-1">
-                  Зарегистрироваться
-                </div>
+              {!isAuth && (
+                <div
+                  className="flex items-center ml-auto"
+                  onClick={() => {
+                    // dispatch(hideRightModal())
+                  }}
+                >
+                  <div 
+                    onClick={(e) => dispatch(showRightModal())}
+                    className="underline underline-offset-1"
+                  >
+                    Войти
+                  </div>
+                  <div className="px-1">/</div>
+                  <div 
+                    className="underline underline-offset-1"
+                    onClick={(e) => dispatch(showRightModal())}
+                  >
+                    Зарегистрироваться
+                  </div>
               </div>
+              )}
             </div>
             <div
               onClick={() => setOpenModal(true)}
@@ -284,7 +296,7 @@ const Navbar = ({ isAuth, basketProductsLength, wishListsLength }) => {
                   </div>
                   <Link to="/" className="mobile-logo">
                     <img
-                      src="https://gipermart.uz/_next/static/media/logo.b17eab0f.svg"
+                      src="../logoo.svg"
                       alt=""
                     />
                   </Link>

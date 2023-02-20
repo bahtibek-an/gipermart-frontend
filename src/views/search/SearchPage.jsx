@@ -8,23 +8,24 @@ import { useSearchParams } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 import { fetchProductsBySearch } from "../../http/ProductAPI";
+import { useSelector } from "react-redux";
 
 const SearchPage = () => {
   const [ searchParams, setSearchParams] = useSearchParams();
   const searchQuery = searchParams.get("query");
   const [ products, setProducts ] = useState([]);
+  const productsState = useSelector((state) => state.products);
   const [ loading, setLoading ] = useState(true);
 
   const fetchProducts = async () => {
     const response = await fetchProductsBySearch(searchQuery);
     return response.results;
   }
-
   useEffect(() => {
     fetchProducts()
       .then((data) => {
-        console.log(data);
-        setProducts(data);
+        const searchProd = data.map(item => item.product?.slug);
+        setProducts(productsState.filter((item) => searchProd.includes(item.product.slug)));
         setLoading(false);
       });
   }, [searchQuery]);

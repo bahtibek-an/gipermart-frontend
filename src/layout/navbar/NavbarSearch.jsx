@@ -23,7 +23,7 @@ const NavbarSearch = ({ products }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('seac')
+        if(search.trim()) navigate(`/search?query=${search}`, {replace: true});
     }
     
     useEffect(() => {
@@ -56,7 +56,7 @@ const NavbarSearch = ({ products }) => {
             />
             <div className="search-category py-1">
                 {filterItems.map((item) => (
-                    <Link to={`/product/${item.id}`}>
+                    <Link key={item.id} to={`/product/${item.id}`}>
                         <div className="flex items-center gap-x-6 px-5 py-3" key={item.id}>
                             <AiOutlineSearch fill="#534343" size={24} />
                             {item.product.name}
