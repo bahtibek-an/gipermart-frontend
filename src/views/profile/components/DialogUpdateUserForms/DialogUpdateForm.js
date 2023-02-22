@@ -25,6 +25,7 @@ const DialogUpdateForm = ({ handleCloseModal, openModal }) => {
         e.preventDefault();
         if(confirmPassword !== password) return setErrorMessage("Passwords don't match!");
         await updateUser(user.id, firstName, email, number, password);
+        window.location.reload();
         handleCloseModal();
     }
 

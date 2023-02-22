@@ -16,8 +16,8 @@ import { useSelector } from "react-redux";
 import Cart from "../../components/cart/Cart";
 
 const SpecialOrder = () => {
-  const products = useSelector((state) => state?.products?.filter((item) => !item?.product?.USA_product));
-  console.log(products)
+  const products = useSelector((state) => state?.products?.filter((item) => item?.product?.USA_product));
+  
   let settings = {
     dots: false,
     infinite: false,

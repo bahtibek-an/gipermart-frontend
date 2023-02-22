@@ -5,14 +5,17 @@ import Title from "../../../../components/title/Title";
 import { countrySource } from "../../../../helper/countryData";
 import AlertError from "../../../../UI/Alert/AlertError";
 import $host from "../../../../http";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { createMapUser } from "../../../../redux/actions";
 
 const DialogCreateAddressForm = ({ openModal, handleCloseModal }) => {
     const user = useSelector((state) => state.user?.user);
+    const dispatch = useDispatch();
     const [ name, setName ] = useState('');
     const [ number, setNumber ] = useState('');
     const [ address, setAddress ] = useState('');
-    const [ region, setRegion ] = useState({});
+    const [ region, setRegion ] = useState("");
+    const regionItem = countrySource.country.find((item) => item.name == region)
     const [ town, setTown ] = useState(''); 
     const [ error, setError ] = useState('');
 
@@ -20,7 +23,6 @@ const DialogCreateAddressForm = ({ openModal, handleCloseModal }) => {
         setError(message);
         setTimeout(() => setError(''), 4000);
     }
-
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -34,6 +36,7 @@ const DialogCreateAddressForm = ({ openModal, handleCloseModal }) => {
             town: town,
             user: user.id
         });
+        dispatch(createMapUser(data));
         handleCloseModal();
     }
 
@@ -68,16 +71,17 @@ const DialogCreateAddressForm = ({ openModal, handleCloseModal }) => {
             <div>Регион/область*</div>
             <Stack className="mt-4 mb-1">
                   <Select
+                    className="border border-neutral-300"
                     error={error !== ''}
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    value={region.name}
+                    value={regionItem?.name || ""}
+                    onChange={(e) => setRegion(e.target.value)}
                   >
                     {countrySource.country.map((item) => (
                       <MenuItem 
-                        key={item.name} 
-                        value={item.id} 
-                        onClick={() => setRegion({id: item.id, name: item.name})}
+                        key={item.id} 
+                        value={item.name} 
                       >
                           {item.name}
                       </MenuItem>
@@ -87,13 +91,14 @@ const DialogCreateAddressForm = ({ openModal, handleCloseModal }) => {
             <div >Город/район*</div>
             <Stack className="mt-4 mb-1">
                 <Select
+                  className="border border-neutral-300"
                   error={error !== ''}
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={town}
                   onChange={(e) => setTown(e.target.value)}
                 >
-                  {countrySource[region.id] && countrySource[region.id].map((i) => (
+                  {countrySource[regionItem?.id] && countrySource[regionItem?.id].map((i) => (
                     <MenuItem key={i.name} value={i.name}>{i.name}</MenuItem>
                   ))}
                 </Select>

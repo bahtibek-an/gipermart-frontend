@@ -1,6 +1,29 @@
 import { categoriesAlgo } from "../helper"
-import { fetchAllBasketCarts, fetchAllCategories, fetchAllProducts, getWishListsByUserId } from "../http/ProductAPI"
-import { CREATE_BASKET_PRODUCT, CREATE_BASKET_TO_LOCAL, CREATE_CHECKOUT_IN_USER, CREATE_USER, CREATE_WISHLIST, DECREMENT_BASKET_COUNTER, DELETE_BASKET_IN_LOCAL, DELETE_BASKET_PRODUCT, DELETE_USER, DELETE_WISHLIST, FETCH_BASKET_PRODUCTS, FETCH_CATEGORIES, FETCH_PRODUCTS, FETCH_USER_WISHLISTS, HIDE_LOADER, HIDE_RIGHT_MODAL, INCREMENT_BASKET_COUNTER, SHOW_LOADER, SHOW_MODAL_LOGIN, SHOW_MODAL_SIGNUP, SHOW_RIGHT_MODAL, UPDATE_BASKET_COUNTER } from "./types"
+import { fetchAllBasketCarts, getWishListsByUserId } from "../http/ProductAPI"
+import { 
+    CREATE_BASKET_PRODUCT, 
+    CREATE_BASKET_TO_LOCAL, 
+    CREATE_CHECKOUT_IN_USER, 
+    CREATE_MAP_USER, CREATE_USER, 
+    CREATE_WISHLIST, 
+    DECREMENT_BASKET_COUNTER, 
+    DELETE_BASKET_IN_LOCAL, 
+    DELETE_BASKET_PRODUCT, 
+    DELETE_MAP_USER, 
+    DELETE_USER, 
+    DELETE_WISHLIST, 
+    FETCH_BASKET_PRODUCTS, 
+    FETCH_CATEGORIES, 
+    FETCH_PRODUCTS, 
+    FETCH_USER_WISHLISTS, 
+    HIDE_LOADER, 
+    HIDE_RIGHT_MODAL, 
+    INCREMENT_BASKET_COUNTER, 
+    SHOW_LOADER, 
+    SHOW_RIGHT_MODAL, 
+    UPDATE_DEFAULT_MAP_USER,
+    UPDATE_MAP_USER
+} from "./types"
 
 export function hideLoader() {
     return {
@@ -133,5 +156,33 @@ export const decrementBasketCounter = (cartId) => {
     return {
         type: DECREMENT_BASKET_COUNTER,
         payload: cartId
+    }
+}
+
+export const createMapUser = (data) => {
+    return {
+        type: CREATE_MAP_USER,
+        payload: data
+    }
+}
+
+export const deleteUserMapInState = (mapId) => {
+    return {
+        type: DELETE_MAP_USER,
+        payload: mapId
+    }
+}
+
+export const updateDefaultMapUser = (mapId) => {
+    return {
+        type: UPDATE_DEFAULT_MAP_USER,
+        payload: mapId
+    }
+}
+
+export const updateMapUser = (data) => {
+    return {
+        type: UPDATE_MAP_USER,
+        payload: data
     }
 }

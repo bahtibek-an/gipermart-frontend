@@ -3,45 +3,45 @@ import SecondNavbar from "../../layout/navbar/SecondNavbar";
 import "../../assets/scss/_basket.scss";
 import { Container } from "@mui/system";
 import TextField from "@mui/material/TextField";
-import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Radio from "@mui/material/Radio";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import { Box, Button, Dialog, IconButton, Modal, Paper, Stack, Typography } from "@mui/material";
-import { BiPencil, BiTrash } from "react-icons/bi";
+import { Box, Button, Dialog, Modal, Paper, Stack } from "@mui/material";
 import Title from "../../components/title/Title";
 import { useDispatch, useSelector } from "react-redux";
 import { createCheckout } from "../../http/CheckoutAPI";
 import { connect } from "react-redux";
-import { createCheckoutInUser, deleteBasketInLocal } from "../../redux/actions";
+import { createCheckoutInUser, deleteBasketInLocal, updateDefaultMapUser } from "../../redux/actions";
 import { Link } from "react-router-dom";
 import { countrySource } from "../../helper/countryData";
 import BasketProduct from "./components/BasketProduct";
+import styled from "styled-components";
+import { findRegion } from "./helper";
+import Select from "../../components/select/Select";
 
-const Checkout = ({ user }) => {
+const Checkout = ({ user, defaultUserMapId }) => {
   const [selectedValue, setSelectedValue] = React.useState("a");
   const dispatch = useDispatch();
+  const defaultUserMap = user.map.find((item) => item.id == defaultUserMapId);
   const [disabledButton, setDisabledButton] = useState(false);
   const { baskets: basketProducts } = useSelector((state) => state);
-  const [ fullName, setFullName ] = useState(`${user.first_name} ${user.last_name}`);
-  const [ phone, setPhone ] = useState(`${user.phone_number}`);
-  const [ region, setRegion ] = useState({});
-  const [ town, setTown ] = useState('');
-  const [ address, setAddress ] = useState('');
+  const [ fullName, setFullName ] = useState(defaultUserMap?.title);
+  const [ phone, setPhone ] = useState(defaultUserMap?.phone_number);
+  const [ region, setRegion ] = useState(findRegion(countrySource, defaultUserMap)?.name || "");
+  const regionItem = countrySource.country.find((item) => item.name == region)
+  const [ town, setTown ] = useState(defaultUserMap?.town);
+  const [ address, setAddress ] = useState(defaultUserMap?.address);
   const [ comment, setComment ] = useState('');
   const [ error, setError ] = useState('');
   const [ showModal, setShowModal ] = useState(false);
-
   const onButtonClick = async () => {
     const cashStatus = selectedValue === "a";
-    console.log(region)
     try {
       const { data } = await createCheckout(
         fullName,
         phone,
-        region.name,
+        region,
         town,
         address,
         comment,
@@ -50,14 +50,13 @@ const Checkout = ({ user }) => {
         cashStatus,
         user.id
       );
-      basketProducts.forEach(item => dispatch(deleteBasketInLocal(item.product.id)));
+      basketProducts.forEach(item => dispatch(deleteBasketInLocal(item.product)));
       dispatch(createCheckoutInUser(data));
       setShowModal(true);
     } catch(e) {
       setError(e);
     }
   }
-
   const totalPrice = basketProducts.reduce((acc, item) => +item.total + acc, 0);
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
@@ -70,6 +69,16 @@ const Checkout = ({ user }) => {
   const handleClickOpenModal2 = () => {
     setOpenModal2(true);
   };
+
+  const updateMapUser = (mapId) => {
+    dispatch(updateDefaultMapUser(mapId));
+    const defaultUserMap = user.map.find((item) => item.id == mapId);
+    setFullName(defaultUserMap?.title);
+    setPhone(defaultUserMap?.phone_number);
+    setRegion(findRegion(countrySource, defaultUserMap)?.name || "");
+    setTown(defaultUserMap?.town);
+    setAddress(defaultUserMap?.address);
+  }
   
   const style = {
     position: 'absolute',
@@ -80,6 +89,34 @@ const Checkout = ({ user }) => {
     border: '2px solid #000',
     boxShadow: 24,
   };
+
+  const DetailItem = styled.div`
+    @media(max-width: 640px) {
+      
+    }
+  `
+
+  const DetailButtons = styled.div`
+    @media(max-width: 640px) {
+      margin: 0;
+      margin-top: 2rem;
+      width: 100%;
+    }
+    .buttons {
+      @media(max-width: 640px) {
+        display: flex;
+        justify-content: center;
+      }
+    }
+    .underline {
+      @media(max-width: 640px) {
+        margin: 0;
+        margin-left: 1rem;
+        display: flex;
+        align-items: center;
+      }
+    }
+  `
 
   return (
     <>
@@ -108,34 +145,6 @@ const Checkout = ({ user }) => {
                     </Link>
                   </Button>
                 </div>
-                {/* <Typography variant="h4">
-                  Заказ №:{' '}
-                  <Typography component="span" variant="h2" fontWeight={300}>
-                    {checkoutCompleteData?.checkoutComplete?.order?.number}
-                  </Typography>{' '}
-                  оформлен
-                </Typography>
-                <Typography variant="subtitle2">
-                  Отслеживать статус заказа можно в личном кабинете
-                </Typography>
-                <Stack justifyContent="space-between" direction="row">
-                  {paymentGateway !== '1' && (
-                    <Button
-                      loading={paymeLoading}
-                      onClick={handlePayment}
-                      variant="contained"
-                    >
-                      ОПЛАТИТЬ
-                    </Button>
-                  )}
-                  <Button
-                    onClick={() => router.push(Paths.HOME)}
-                    variant="text"
-                    sx={{ color: colors.black }}
-                  >
-                    ПРОДОЛЖИТЬ ПОКУПКИ
-                  </Button>
-                </Stack> */}
               </Stack>
             </Paper>
           </Box>
@@ -148,22 +157,55 @@ const Checkout = ({ user }) => {
           aria-describedby="alert-dialog-description"
         >
           <div className="!p-8">
-            <Title title="Изменить адрес" style="f-medium mb-4" />
-            <div>Имя</div>
-            <TextField defaultValue="Ilhom" className="!w-full !my-4" />
-            <div>Номер телефона</div>
-            <TextField defaultValue="+998900511676" className="!w-full !my-4" />
-            <div>Адрес</div>
-            <TextField defaultValue="Diydor 10" className="!w-full !my-4" />
-            <div>Город</div>
-            <TextField defaultValue="UZ" className="!w-full !my-4" />
-            <Button
-              className="yellow-btn-hover !w-full !rounded-none !py-3 !text-base"
-              onClick={handleCloseModal2}
-              autoFocus
+            <Title title="Выбрать другой адрес" style="f-medium mb-4"/>
+            {user.map.map((item) => (
+            <DetailItem
+              className="flex justify-between border-4 border p-5 mb-4 flex-wrap"
+              key={item.id}
             >
-              Обновлять
-            </Button>
+              <div>
+                <div className="flex items-baseline gap-4 mb-2 leading-none">
+                  <div className="f-bold text-xl">Имя</div>
+                  <div>{ item.title }</div>
+                </div>
+                <div className="flex items-baseline gap-4 mb-2 leading-none">
+                  <div className="f-bold text-xl">Tелефон</div>
+                  <div>{ item.phone_number }</div>
+                </div>
+                <div className="flex items-baseline gap-4 leading-none">
+                  <div className="f-bold text-xl">Адрес</div>
+                  <div>{ item.town } { item.address }</div>
+                </div>
+              </div>
+              <DetailButtons className="flex items-center ml-16">
+                <div className="buttons">
+                  <div className="flex items-center">
+                    <Button
+                      disabled={item.id == defaultUserMap?.id}
+                      onClick={() => item.id != defaultUserMap?.id && updateMapUser(item.id)}
+                      className={`yellow-btn-hover !rounded-none !text-base !w-full`}
+                    >
+                      {item.id == defaultUserMap?.id ? "Выбрано" : "Выбрать"}
+                    </Button>
+                  </div>
+                  <Link to="/profile/adresses">
+                    <div className="underline cursor-pointer mt-2">
+                      Редактировать
+                    </div>
+                  </Link>
+                </div>
+              </DetailButtons>
+            </DetailItem>
+            ))}
+            <Link to="/profile/adresses">
+              <Button
+                className="yellow-btn-hover !w-full !rounded-none !py-3 !text-base"
+                onClick={handleCloseModal2}
+                autoFocus
+              >
+                Добавить новый адрес
+              </Button>
+            </Link> 
           </div>
         </Dialog>
       </div>
@@ -171,28 +213,42 @@ const Checkout = ({ user }) => {
         <div className="checkout-section grid lg:grid-cols-2 grid-cols-1 mt-6">
           <div className="left lg:pr-4 lg:border-r border-black">
             <div className="md:text-4xl text-2xl f-bold my-6">Оформление заказа</div>
-            <div className="border-4 border p-5 mb-4">
-              <div className="flex items-center justify-end">
-                <IconButton onClick={handleClickOpenModal2}>
-                  <BiPencil color="#999" size={20} />
-                </IconButton>
-                <IconButton>
-                  <BiTrash color="#999" size={20} />
-                </IconButton>
+            {!defaultUserMap ? (
+              <div className="mb-4">
+                <div>
+                  <Button 
+                    className="yellow-btn-hover !w-full !rounded-none !py-3 !text-base"
+                    onClick={handleClickOpenModal2}  
+                  >
+                    Выбрать адрес по умолчанию
+                  </Button>
+                </div>
               </div>
-              <div className="flex items-baseline gap-4 mb-2 leading-none">
-                <div className="f-bold text-xl">Имя</div>
-                <div>{ user.first_name }</div>
+            ) : (
+              <div className="border-4 border p-5 mb-4">
+                <div className="flex justify-end">
+                  <h2 
+                    className="underline cursor-pointer"
+                    onClick={handleClickOpenModal2}  
+                  >
+                    Выбрать другой адрес
+                  </h2>
+                </div>
+                <div className="flex items-baseline gap-4 mb-2 leading-none">
+                  <div className="f-bold text-xl">Имя</div>
+                  <div>{ defaultUserMap.title }</div>
+                </div>
+                <div className="flex items-baseline gap-4 mb-2 leading-none">
+                  <div className="f-bold text-xl">Tелефон</div>
+                  <div>{ defaultUserMap.phone_number }</div>
+                </div>
+                <div className="flex items-baseline gap-4 mb-2 leading-none">
+                  <div className="f-bold text-xl">Адрес</div>
+                  <div>{ defaultUserMap.town } { defaultUserMap.address }</div>
+                </div>
               </div>
-              <div className="flex items-baseline gap-4 mb-2 leading-none">
-                <div className="f-bold text-xl">Tелефон</div>
-                <div>{ user.phone_number }</div>
-              </div>
-              <div className="flex items-baseline gap-4 mb-2 leading-none">
-                <div className="f-bold text-xl">Адрес</div>
-                <div>Chilonzor 20kv Diydor 10</div>
-              </div>
-            </div>
+            )}
+            
             <div className="text-2xl f-medium mt-2">Контактные данные</div>
             <div className="mt-4">Контактное лицо (ФИО)</div>
             <TextField
@@ -209,44 +265,42 @@ const Checkout = ({ user }) => {
               onChange={(e) => setPhone(e.target.value)}
               className="!rounded-none w-full !my-4"
               id="outlined-required"
-              defaultValue="+998 __ ___ __ __"
             />
             <div className="text-2xl f-medium">Доставка</div>
             <div className="mt-4">Адрес</div>
             <Stack>
               <div className="mt-4 mb-1">Регион/область*</div>
-              <FormControl fullWidth sx>
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
-                  // onChange={(e) => setRegion(e.target.value)}
+                  className="border border-neutral-300"
+                  value={regionItem?.name ?? ''}
+                  onChange={(e) => setRegion(e.target.value)}
                 >
                   {countrySource.country.map((item) => (
-                    <MenuItem 
-                      key={item.name} 
-                      value={item.id} 
-                      onClick={() => setRegion({id: item.id, name: item.name})}
+                    <MenuItem
+                      key={item.id} 
+                      value={item.name} 
                     >
                         {item.name}
                     </MenuItem>
                   ))}
                 </Select>
-              </FormControl>
             </Stack>
 
             <Stack>
               <div className="mt-4 mb-1">Город/район*</div>
-              <FormControl fullWidth>
                 <Select
+                  className="border border-neutral-300"
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
+                  value={town ?? ''}
                   onChange={(e) => setTown(e.target.value)}
                 >
-                  {countrySource[region.id] && countrySource[region.id].map((i) => (
+                  {countrySource[regionItem?.id] && countrySource[regionItem?.id].map((i) => (
                     <MenuItem key={i.name} value={i.name}>{i.name}</MenuItem>
                   ))}
                 </Select>
-              </FormControl>
             </Stack>
 
             <div className="mt-4 mb-1">Адрес*</div>
@@ -350,7 +404,8 @@ const Checkout = ({ user }) => {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.user.user
+    user: state.user.user,
+    defaultUserMapId: state.user.defaultMap
   }
 }
 

@@ -1,4 +1,4 @@
-import { Button, Dialog, IconButton, TextField } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
 import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Title from "../../components/title/Title";
@@ -7,13 +7,23 @@ import SecondNavbar from "../../layout/navbar/SecondNavbar";
 import { Container } from "@mui/system";
 import { BiPencil, BiTrash } from "react-icons/bi";
 import DialogCreateAddressForm from "./components/DialogCreateAddressForm";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteUserMapById } from "./components/http";
+import { deleteUserMapInState } from "../../redux/actions";
+import AddressItem from "./components/AdressItem";
 
 const Adresses = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const userMap = useSelector((state) => state.user?.user?.map);
   const location = useLocation();
   const pathName = location.pathname;
   const [openModal, setOpenModal] = useState(false);
-  const [openModal2, setOpenModal2] = useState(false);
+
+  const deleteUserMap = async (mapId) => {
+    const data = await deleteUserMapById(mapId);
+    dispatch(deleteUserMapInState(mapId));
+  }
 
   const handleClickOpenModal = () => {
     setOpenModal(true);
@@ -23,13 +33,6 @@ const Adresses = () => {
     setOpenModal(false);
   };
 
-  const handleClickOpenModal2 = () => {
-    setOpenModal2(true);
-  };
-
-  const handleCloseModal2 = () => {
-    setOpenModal2(false);
-  };
 
   return (
     <>
@@ -83,94 +86,12 @@ const Adresses = () => {
               </Button>
             </div>
             <div className="grid md:grid-cols-2 gap-4 my-8">
-              <div className="border-4 border p-5">
-                <div className="flex items-center justify-end">
-                  <IconButton onClick={handleClickOpenModal2}>
-                    <BiPencil color="#999" size={20} />
-                  </IconButton>
-                  <IconButton>
-                    <BiTrash color="#999" size={20} />
-                  </IconButton>
-                </div>
-                <div className="flex items-baseline gap-4 mb-2 leading-none">
-                  <div className="f-bold text-xl">Имя</div>
-                  <div>ILKHOM</div>
-                </div>
-                <div className="flex items-baseline gap-4 mb-2 leading-none">
-                  <div className="f-bold text-xl">Tелефон</div>
-                  <div>+998994064667</div>
-                </div>
-                <div className="flex items-baseline gap-4 mb-2 leading-none">
-                  <div className="f-bold text-xl">Адрес</div>
-                  <div>Chilonzor 20kv Diydor 10</div>
-                </div>
-              </div>
-              <div className="border-4 border p-5">
-                <div className="flex items-center justify-end">
-                  <IconButton onClick={handleClickOpenModal2}>
-                    <BiPencil color="#999" size={20} />
-                  </IconButton>
-                  <IconButton>
-                    <BiTrash color="#999" size={20} />
-                  </IconButton>
-                </div>
-                <div className="flex items-baseline gap-4 mb-2 leading-none">
-                  <div className="f-bold text-xl">Имя</div>
-                  <div>ILKHOM</div>
-                </div>
-                <div className="flex items-baseline gap-4 mb-2 leading-none">
-                  <div className="f-bold text-xl">Tелефон</div>
-                  <div>+998994064667</div>
-                </div>
-                <div className="flex items-baseline gap-4 mb-2 leading-none">
-                  <div className="f-bold text-xl">Адрес</div>
-                  <div>Chilonzor 20kv Diydor 10</div>
-                </div>
-              </div>
-              <div className="border-4 border p-5">
-                <div className="flex items-center justify-end">
-                  <IconButton onClick={handleClickOpenModal2}>
-                    <BiPencil color="#999" size={20} />
-                  </IconButton>
-                  <IconButton>
-                    <BiTrash color="#999" size={20} />
-                  </IconButton>
-                </div>
-                <div className="flex items-baseline gap-4 mb-2 leading-none">
-                  <div className="f-bold text-xl">Имя</div>
-                  <div>ILKHOM</div>
-                </div>
-                <div className="flex items-baseline gap-4 mb-2 leading-none">
-                  <div className="f-bold text-xl">Tелефон</div>
-                  <div>+998994064667</div>
-                </div>
-                <div className="flex items-baseline gap-4 mb-2 leading-none">
-                  <div className="f-bold text-xl">Адрес</div>
-                  <div>Chilonzor 20kv Diydor 10</div>
-                </div>
-              </div>
-              <div className="border-4 border p-5">
-                <div className="flex items-center justify-end">
-                  <IconButton onClick={handleClickOpenModal2}>
-                    <BiPencil color="#999" size={20} />
-                  </IconButton>
-                  <IconButton>
-                    <BiTrash color="#999" size={20} />
-                  </IconButton>
-                </div>
-                <div className="flex items-baseline gap-4 mb-2 leading-none">
-                  <div className="f-bold text-xl">Имя</div>
-                  <div>ILKHOM</div>
-                </div>
-                <div className="flex items-baseline gap-4 mb-2 leading-none">
-                  <div className="f-bold text-xl">Tелефон</div>
-                  <div>+998994064667</div>
-                </div>
-                <div className="flex items-baseline gap-4 mb-2 leading-none">
-                  <div className="f-bold text-xl">Адрес</div>
-                  <div>Chilonzor 20kv Diydor 10</div>
-                </div>
-              </div>
+              {userMap.map((item) => (
+                <AddressItem 
+                  key={item.id}
+                  map={item}
+                />
+              ))}
             </div>
           </div>
         </div>
@@ -179,12 +100,6 @@ const Adresses = () => {
         <DialogCreateAddressForm
           openModal={openModal}
           handleCloseModal={handleCloseModal}
-        />
-      </div>
-      <div>
-        <DialogCreateAddressForm
-          handleCloseModal2={handleCloseModal2}
-          openModal2={openModal2}
         />
       </div>
     </>

@@ -14,6 +14,7 @@ import { appendProductToUserCart, appendProductToWishList, fetchOneProduct, dele
 import { connect, useDispatch, useSelector } from "react-redux";
 import { craeteWishListProduct, createBasketProduct, createBasketToLocal, deleteWishList, showRightModal } from "../../redux/actions";
 import Spinner from "../../UI/spinner/Spinner";
+import { createRatingProduct } from "./http";
 // import SimilarCarts from "../../components/similarCarts/SimilarCarts";
 
 const Detail = ({ products, user }) => {
@@ -100,6 +101,14 @@ const Detail = ({ products, user }) => {
     }
   }
 
+  const createRating = async (newValue) => {
+    const data = await createRatingProduct({
+      rating: Math.floor(newValue),
+      product: productDetail.id
+    });
+    return data;
+  }
+
   useEffect(() => {
     fetchProduct()
       .then((data) => {
@@ -134,6 +143,9 @@ const Detail = ({ products, user }) => {
         </div>
         <div className="flex items-center gap-4 border-b-2">
           <Rating
+            onChange={(event, newValue) => {
+              createRating(newValue)
+            }}
             name="half-rating"
             defaultValue={productDetail.rating}
             precision={0.5}

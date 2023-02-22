@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import Title from "../title/Title";
 import "../../assets/scss/_stock.scss";
 import Slider from "react-slick";
-import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
 import SlickArrowRight from "../SlickArrow/SlickArrowRight";
 import SlickArrowLeft from "../SlickArrow/SlickArrowLeft";
 

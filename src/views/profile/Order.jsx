@@ -20,7 +20,6 @@ const Order = () => {
   const location = useLocation();
   const pathName = location.pathname;
   const [value, setValue] = React.useState("1");
-
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -181,7 +180,7 @@ const Order = () => {
                           <div className="department-image relative">
                             <div className="discount">-6%</div>
                             <img
-                              src={API_URL + cart.product.media[0]?.img_url}
+                              src={API_URL + cart?.product?.media?.[0]?.img_url}
                               alt=""
                             />
                           </div>
