@@ -6,11 +6,11 @@ import Title from "../../components/title/Title";
 import SecondNavbar from "../../layout/navbar/SecondNavbar";
 import { Button } from "@mui/material";
 import BasketModal from "../../components/modal/BasketModal";
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import BasketCart from "./BasketCart";
 import 'react-loading-skeleton/dist/skeleton.css'
 import { deleteBasketProduct } from "../../redux/actions";
+import { numberWithCommas } from "../../helper";
 // import { removeRepeatItems } from "../../helper";
 
 const Basket = () => {
@@ -18,8 +18,8 @@ const Basket = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState(false);
-  const userId = useSelector(state => state.user.userId);
-  const totalPrice = carts.reduce((acc, item) => acc + +item.total, 0);
+  console.log(carts)
+  const totalPrice = carts.reduce((acc, item) => acc + +item.total * item.quantity, 0);
 
   const deleteCart = (id) => {
     dispatch(deleteBasketProduct(id));
@@ -56,7 +56,7 @@ const Basket = () => {
                 <div className="px-6">
                   <div className="text-2xl f-bold">В корзине</div>
                   <div className="mt-1">Товаров: {carts.length}</div>
-                  <div className="text-2xl f-bold mt-1">{totalPrice} Сум</div>
+                  <div className="text-2xl f-bold mt-1">{numberWithCommas(totalPrice)} Сум</div>
                 </div>
                 <Button
                   onClick={() => navigate("/checkout")}

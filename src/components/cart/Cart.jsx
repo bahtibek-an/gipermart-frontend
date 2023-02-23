@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { createBasketProduct, craeteWishListProduct, deleteWishList, showRightModal, deleteBasketProduct, createBasketToLocal } from "../../redux/actions";
 import { appendProductToUserCart, appendProductToWishList, deleteCart, deleteProductFromWishList } from "../../http/ProductAPI";
+import { numberWithCommas } from "../../helper";
 
 const Cart = ({ cart/*, favorite */ }) => {
   const navigate = useNavigate();
@@ -31,11 +32,6 @@ const Cart = ({ cart/*, favorite */ }) => {
     }
   }
 
-  function numberWithCommas(x) {
-    let parts = x.toString().split(".");
-    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g,".");
-    return parts.join(",");
-  }
 
   const handleClick = async (e) => {
     e.preventDefault();
@@ -73,7 +69,7 @@ const Cart = ({ cart/*, favorite */ }) => {
           </div>
           <div className="rassrochka f-bold text-center">{ cart.installment_plan }</div>
           <div className="cart-action">
-            <div className="cart-price f-bold">{ (cart.price) },000 сум</div>
+            <div className="cart-price f-bold">{ numberWithCommas(cart.price) } сум</div>
             <button onClick={addProductToCart} className="cart-basket hover:shadow-lg shadow-none">
               {!hasInCart ? (
                 <HiOutlineShoppingCart stroke="rgb(33, 26, 26)" size={24} />

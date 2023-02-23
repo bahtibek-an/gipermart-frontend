@@ -19,6 +19,7 @@ import BasketProduct from "./components/BasketProduct";
 import styled from "styled-components";
 import { findRegion } from "./helper";
 import Select from "../../components/select/Select";
+import { numberWithCommas } from "../../helper";
 
 const Checkout = ({ user, defaultUserMapId }) => {
   const [selectedValue, setSelectedValue] = React.useState("a");
@@ -57,7 +58,7 @@ const Checkout = ({ user, defaultUserMapId }) => {
       setError(e);
     }
   }
-  const totalPrice = basketProducts.reduce((acc, item) => +item.total + acc, 0);
+  const totalPrice = basketProducts.reduce((acc, item) => (+item.total * item.quantity) + acc, 0);
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
   };
@@ -384,7 +385,7 @@ const Checkout = ({ user, defaultUserMapId }) => {
             <div className="border-t border-b py-6 my-6">
               <div className="flex items-center justify-between">
                 <div>Сумма по товарам</div>
-                <div className="text-xl f-bold">{totalPrice} Сум</div>
+                <div className="text-xl f-bold">{numberWithCommas(totalPrice)} Сум</div>
               </div>
               <div className="flex items-center justify-between mt-4">
                 <div>Стоимость доставки</div>
@@ -393,7 +394,7 @@ const Checkout = ({ user, defaultUserMapId }) => {
             </div>
             <div className="flex items-center justify-between mt-4">
               <div className="text-xl">Итого:</div>
-              <div className="text-xl f-bold">{totalPrice} Сум</div>
+              <div className="text-xl f-bold">{numberWithCommas(totalPrice)} Сум</div>
             </div>
           </div>
         </div>

@@ -15,6 +15,7 @@ import { connect, useDispatch, useSelector } from "react-redux";
 import { craeteWishListProduct, createBasketProduct, createBasketToLocal, deleteWishList, showRightModal } from "../../redux/actions";
 import Spinner from "../../UI/spinner/Spinner";
 import { createRatingProduct } from "./http";
+import { numberWithCommas } from "../../helper";
 // import SimilarCarts from "../../components/similarCarts/SimilarCarts";
 
 const Detail = ({ products, user }) => {
@@ -155,7 +156,7 @@ const Detail = ({ products, user }) => {
             className="detail-comment-length"
             style={{ color: "rgb(181, 238, 111)" }}
           >
-            (0)
+            ({productDetail.rating.toFixed(1)})
           </div>
           <Button
             className="!capitalize"
@@ -194,7 +195,7 @@ const Detail = ({ products, user }) => {
           <div className="xl:col-span-3 lg:col-span-4 col-span-6 lg:col-start-4 lg:col-end-10 xl:mt-0 lg:mt-8">
             <div className="detail-payment rounded">
               <div className="p-4 border">
-                <div className="text-4xl f-bold">{productPrice} Сум</div>
+                <div className="text-4xl f-bold">{numberWithCommas(productPrice)} Сум</div>
                 <div className="detail-counter grid grid-cols-3 my-4">
                   <Button onClick={minusCounter} className="minus">
                     <AiOutlineMinus size={24} fill="#C4C4C4" />

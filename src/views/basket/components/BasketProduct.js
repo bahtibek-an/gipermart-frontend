@@ -1,5 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { numberWithCommas } from "../../../helper";
 import { API_URL } from "../../../http";
 
 const BasketProduct = ({ basket }) => {
@@ -21,7 +22,7 @@ const BasketProduct = ({ basket }) => {
                 </div>
             </div>
             <div className="checkout-price gap-x-2">
-                {basket.quantity} x <span className="f-bold price">{product.price} Сум</span>
+                {basket.quantity} x <span className="f-bold price">{numberWithCommas(product.price)} Сум</span>
                 {/* <span className="f-bold price">{product.price} Сум</span> */}
             </div>
         </div>

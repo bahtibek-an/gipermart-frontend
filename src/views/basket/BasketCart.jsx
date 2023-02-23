@@ -6,6 +6,7 @@ import { deleteCart } from "../../http/ProductAPI";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteBasketInLocal, updateBasketCounter, incrementBasketCounter, decrementBasketCounter } from "../../redux/actions";
 import { updateCart } from "../../http/ProductAPI";
+import { numberWithCommas } from "../../helper";
 
 const BasketCart = ({ cart, deleteCartItem }) => {
     const [ counter, setCounter ] = useState(cart.quantity);
@@ -52,7 +53,7 @@ const BasketCart = ({ cart, deleteCartItem }) => {
             <div className="basket-cart">
                 <div className="basket-image">
                 <img
-                    src={"https://yruoebgair.tk/" + product.media[0]?.img_url}
+                    src={"https://yruoebgair.tk/" + product.media?.[0]?.img_url}
                     alt=""
                 />
                 </div>
@@ -60,7 +61,7 @@ const BasketCart = ({ cart, deleteCartItem }) => {
                 <Link to="" className="basket-name">
                     {product?.product.name}
                 </Link>
-                <div className="basket-price">{totalPrice} Сум</div>
+                <div className="basket-price">{numberWithCommas(totalPrice)} Сум</div>
                 <div className="basket-action" onClick={(e) => e.preventDefault()}>
                     <div className="basket-remove" onClick={removeCart}>
                         <BiTrash size={16}/>
