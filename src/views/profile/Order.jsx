@@ -5,10 +5,10 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import SecondNavbar from "../../layout/navbar/SecondNavbar";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import Box from "@mui/material/Box";
 import { useSelector } from "react-redux";
 import { addBasketsCartToCheckouts, addUSABasketsCartToCheckouts } from "./helper";
 import { API_URL } from "../../http";
+import { numberWithCommas } from "../../helper";
 
 const Order = () => {
   const navigate = useNavigate();
@@ -190,7 +190,7 @@ const Order = () => {
                             </div>
                             {/* <div className="department-rassrochka">462 000 сум/ 12 мес</div> */}
                             <div className="department-price">
-                              <div className="price">{cart.total} Сум</div>
+                              <div className="price">{numberWithCommas(cart.total)} Сум</div>
                               {/* <div className="price_old">3 474 240 Сум</div> */}
                             </div>
                           </div>
@@ -199,7 +199,7 @@ const Order = () => {
                       <div className="text-end text-lg mt-6">
                         <strong>
                           Стоимость:{" "}
-                          <span className="order-price">{item.totalPrice} Сум</span>
+                          <span className="order-price">{numberWithCommas(item.totalPrice)} Сум</span>
                         </strong>
                       </div>
                     </div>
@@ -320,7 +320,7 @@ const Order = () => {
                             </div>
                             {/* <div className="department-rassrochka">462 000 сум/ 12 мес</div> */}
                             <div className="department-price">
-                              <div className="price">{cart.total} Сум</div>
+                              <div className="price">{numberWithCommas(cart.total)} Сум</div>
                               {/* <div className="price_old">3 474 240 Сум</div> */}
                             </div>
                           </div>
@@ -329,7 +329,7 @@ const Order = () => {
                       <div className="text-end text-lg mt-6">
                         <strong>
                           Стоимость:{" "}
-                          <span className="order-price">{item.totalPrice} Сум</span>
+                          <span className="order-price">{numberWithCommas(item.totalPrice)} Сум</span>
                         </strong>
                       </div>
                     </div>
