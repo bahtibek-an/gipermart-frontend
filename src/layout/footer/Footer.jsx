@@ -2,10 +2,10 @@ import { Container } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../../assets/scss/_footer.scss";
-import { AiFillFacebook, AiOutlineArrowUp } from "react-icons/ai";
-import { FaInstagramSquare, FaYoutubeSquare } from "react-icons/fa";
-import { FaTelegramPlane } from "react-icons/fa";
-import { Button, IconButton } from "@mui/material";
+import { AiOutlineArrowUp } from "react-icons/ai";
+// import { FaInstagramSquare, FaYoutubeSquare } from "react-icons/fa";
+// import { FaTelegramPlane } from "react-icons/fa";
+import { IconButton } from "@mui/material";
 import $host from "../../http";
 
 const Footer = () => {
@@ -81,8 +81,9 @@ const Footer = () => {
               </div>
               <div className="footer__icons flex items-center gap-4 mt-3">
                 { socMedia.length > 0 && socMedia?.map((item) => (
-                  <a key={item.id} href={item.link} target="_blank">
+                  <a key={item.id} href={item.link} target="_blank" rel="noreferrer">
                     <img 
+                      alt=""
                       src={item.logo} 
                       className="h-7 rounded"
                     />
@@ -163,9 +164,9 @@ const Footer = () => {
             </div>
             <div className="flex items-center md:justify-start justify-between md:w-auto w-full gap-6">
               <div>Разработка сайта</div>
-              <a href="https://itdodasi.uz/" className="block f-bold">
-                ITDodasi
-              </a>
+              <div className="block f-bold">
+                MaxWellConsult
+              </div>
             </div>
           </div>
         </Container>
