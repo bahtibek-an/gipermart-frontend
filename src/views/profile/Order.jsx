@@ -161,7 +161,7 @@ const Order = () => {
                         <div className="md:col-span-2 media-pt">
                           <strong>Число:</strong>
                           <span style={{ color: "#828282", marginLeft: "4px" }}>
-                            `{moment(item.created_at).calendar()} {moment(item.created_at).format("h:mm")}`
+                            {moment(item.created_at).format("MMMM D YYYY, h:mm")}
                           </span>
                         </div>
                       </div>
@@ -278,7 +278,7 @@ const Order = () => {
                         <div className="md:col-span-2 media-pt">
                           <strong>Число:</strong>
                           <span style={{ color: "#828282", marginLeft: "4px" }}>
-                            {moment(item.created_at).calendar()} {moment(item.created_at).format("h:mm")}
+                            {moment(item.created_at).format("MMMM D YYYY, h:mm")}
                           </span>
                         </div>
                       </div>

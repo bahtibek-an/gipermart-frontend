@@ -55,6 +55,7 @@ const Checkout = ({ user, defaultUserMapId }) => {
         user.id
       );
       dispatch(createCheckoutInUser(data));
+      basketProducts.forEach(item => dispatch(deleteBasketInLocal(item.product)));
       setModalSuccessData(data);
       setShowModal(true);
     } catch(e) {
@@ -64,8 +65,9 @@ const Checkout = ({ user, defaultUserMapId }) => {
 
   useEffect(() => {
     return () => {
-      if(showModal)
-        basketProducts.forEach(item => dispatch(deleteBasketInLocal(item.product)));
+      // console.log("hello")
+      // if(showModal)
+      //   basketProducts.forEach(item => store.dispatch(deleteBasketInLocal(item.product)));
     }
   }, [])
 
