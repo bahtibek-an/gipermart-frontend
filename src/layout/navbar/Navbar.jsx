@@ -16,9 +16,7 @@ import {
 import NavbarCatalog from "../../components/modal/NavbarCatalog";
 import { IoMdClose } from "react-icons/io";
 import { GrCatalogOption, GrDeliver } from "react-icons/gr";
-import { CiLocationOn } from "react-icons/ci";
-import { BiMapAlt, BiMailSend } from "react-icons/bi";
-import { SlScreenSmartphone } from "react-icons/sl";
+import { BiMailSend } from "react-icons/bi";
 import MobileNavbar from "./MobileNavbar";
 import NavbarSearch from "./NavbarSearch";
 import AuthSidebar from "./Auth/AuthSidebar";
@@ -26,7 +24,7 @@ import { connect, useDispatch, useSelector } from "react-redux";
 import { hideRightModal, showRightModal } from "../../redux/actions";
 import { AiOutlineShop, AiOutlineUser } from "react-icons/ai";
 import { RemoveScrollBar } from "react-remove-scroll-bar";
-import {zeroRightClassName,fullWidthClassName, noScrollbarsClassName} from 'react-remove-scroll-bar';
+import { noScrollbarsClassName } from 'react-remove-scroll-bar';
 
 const Navbar = ({ isAuth, basketProductsLength, wishListsLength }) => {
   const navigate = useNavigate();
@@ -248,9 +246,9 @@ const Navbar = ({ isAuth, basketProductsLength, wishListsLength }) => {
           <div className={`navbar-top ${navbarFixed && "fix"}`}>
             <Container maxWidth="xl">
               <div className="flex justify-end items-center gap-x-6">
-                <Link to="" className="">
+                <a href="tel:+998900511676" className="flex items-center gap-x-3">
                   Поддержка
-                </Link>
+                </a>
                 <a href="tel:+998900511676" className="flex items-center gap-x-3">
                   <MdOutlinePhone size={24} />
                   +998 90 051 16 76

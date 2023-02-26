@@ -6,12 +6,14 @@ import { legacy_createStore as createStore, compose, applyMiddleware } from "red
 import { rootReducer } from "./redux/rootReducer";
 import thunk from "redux-thunk";
 import { Provider } from 'react-redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 export const store = createStore(rootReducer, compose(
-  applyMiddleware(
-    thunk
-  ),
-  // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  composeWithDevTools(
+    applyMiddleware(
+      thunk
+    )
+  )
 )); 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

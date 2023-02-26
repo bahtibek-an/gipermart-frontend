@@ -56,7 +56,7 @@ const Router = () => {
           <Route path="/stock" element={<Stock />} />
           <Route element={<PrivateRoutes/>}>
             <Route path="/profile/order" element={<Order />} />
-            <Route path="/profile/adresses" element={<Adresses />} />
+            <Route path="/profile/addresses" element={<Adresses />} />
             <Route path="/profile" element={<Profile />}/>
             <Route path="/favorites" element={<Favorites />}/>
             <Route path="/checkout" element={<Checkout />}/>

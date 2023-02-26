@@ -7,7 +7,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Radio from "@mui/material/Radio";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import { Box, Button, Dialog, Modal, Paper, Stack } from "@mui/material";
+import { Button, Dialog, Stack } from "@mui/material";
 import Title from "../../components/title/Title";
 import { useDispatch, useSelector } from "react-redux";
 import { createCheckout } from "../../http/CheckoutAPI";
@@ -20,6 +20,7 @@ import styled from "styled-components";
 import { findRegion } from "./helper";
 import Select from "../../components/select/Select";
 import { numberWithCommas } from "../../helper";
+import CheckoutModal from "./components/CheckoutModal";
 
 const Checkout = ({ user, defaultUserMapId }) => {
   const [selectedValue, setSelectedValue] = React.useState("a");
@@ -36,6 +37,8 @@ const Checkout = ({ user, defaultUserMapId }) => {
   const [ comment, setComment ] = useState('');
   const [ error, setError ] = useState('');
   const [ showModal, setShowModal ] = useState(false);
+  const [ modalSuccessData, setModalSuccessData ] = useState({});
+
   const onButtonClick = async () => {
     const cashStatus = selectedValue === "a";
     try {
@@ -51,6 +54,7 @@ const Checkout = ({ user, defaultUserMapId }) => {
         cashStatus,
         user.id
       );
+      setModalSuccessData(data);
       basketProducts.forEach(item => dispatch(deleteBasketInLocal(item.product)));
       dispatch(createCheckoutInUser(data));
       setShowModal(true);
@@ -81,15 +85,6 @@ const Checkout = ({ user, defaultUserMapId }) => {
     setAddress(defaultUserMap?.address);
   }
   
-  const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-  };
 
   const DetailItem = styled.div`
     @media(max-width: 640px) {
@@ -122,34 +117,10 @@ const Checkout = ({ user, defaultUserMapId }) => {
   return (
     <>
       <SecondNavbar />
-        <Modal
-          open={showModal}
-        >
-          <Box sx={{ ...style}}>
-            <Paper sx={{ borderRadius: 0, padding: '40px' }}>
-              <Stack sx={{ gap: '1rem' }}>
-                <h2 className="font-medium text-2xl">Заказ №: 245 оформлен</h2>
-                <p className="mt-4">Отслеживать статус заказа можно в личном кабинете</p>
-                <div className="mt-8 flex">
-                  <Button
-                    className={`!mr-4 yellow-btn-hover !rounded-none !py-3 !text-base !w-full`}
-                  >
-                    <Link to="/profile/order">
-                      Смотреть заказы
-                    </Link>
-                  </Button>
-                  <Button
-                    className={`yellow-btn-hover !rounded-none !py-3 !text-base !w-full`}
-                  >
-                    <Link to="/">
-                      Продолжить покупки
-                    </Link>
-                  </Button>
-                </div>
-              </Stack>
-            </Paper>
-          </Box>
-        </Modal>
+        <CheckoutModal 
+          showModal={showModal}
+          data={modalSuccessData}
+        />
       <div>
         <Dialog
           open={openModal2}
