@@ -9,17 +9,20 @@ import { useSelector } from "react-redux";
 import { addBasketsCartToCheckouts, addUSABasketsCartToCheckouts } from "./helper";
 import { API_URL } from "../../http";
 import { numberWithCommas } from "../../helper";
+import moment from "moment-timezone";
 
 const Order = () => {
   const navigate = useNavigate();
   const basket = useSelector((state) => state.basket);
-  const checkouts = useSelector((state) => 
+  const checkouts = useSelector((state) =>
     addBasketsCartToCheckouts(basket, state.user?.user?.checkout));
-  const USAcheckouts = useSelector((state) => 
+  const USAcheckouts = useSelector((state) =>
     addUSABasketsCartToCheckouts(basket, state.user?.user?.checkout));
   const location = useLocation();
   const pathName = location.pathname;
   const [value, setValue] = React.useState("1");
+
+  console.log(checkouts)
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -99,24 +102,15 @@ const Order = () => {
                             Acer Aspire 3 Intel Pentium N4500/4GB/1TB HDD/Intel
                             Cor i 10
                           </div> */}
-                          <div className="flex gap-x-6">
-                            <div>
-                              <strong>ID заказа:</strong>
-                              <span
-                                style={{ color: "#828282", marginLeft: "4px" }}
-                              >
-                                №{i + 1}
-                              </span>
-                            </div>
-                          </div>
+
                         </div>
-                        <div className="md:text-end text-lg">
+                        <div className="md:text-end text-lg mb-4">
                           <strong>
                             Статус оплаты:{" "}
-                            {item.PAY_STATUS ? (
-                              <span className="text-green-700">Оплачено</span>  
+                            {item.NAXT_STATUS ? (
+                              <span className="status-payment">Ожидает подтверждения</span>
                             ) : (
-                              <span className="status-payment">Не оплачено</span>  
+                              <span className="text-green-700">Подтверждено</span>
                             )}
                           </strong>
                         </div>
@@ -141,10 +135,6 @@ const Order = () => {
                           </div>
                         </div>
                         <div className="flex flex-col gap-y-2 media-pt">
-                          <div>
-                            <strong>Цвет:</strong>
-                            <span style={{ color: "#828282" }}>Чёрный</span>
-                          </div>
                           <div>
                             <strong>Номер телефона:</strong>
                             <span
@@ -171,7 +161,7 @@ const Order = () => {
                         <div className="md:col-span-2 media-pt">
                           <strong>Число:</strong>
                           <span style={{ color: "#828282", marginLeft: "4px" }}>
-                            {item.created_at.split('T')[0]} {item.created_at.split('T')[1]}
+                            `{moment(item.created_at).calendar()} {moment(item.created_at).format("h:mm")}`
                           </span>
                         </div>
                       </div>
@@ -229,24 +219,15 @@ const Order = () => {
                             Acer Aspire 3 Intel Pentium N4500/4GB/1TB HDD/Intel
                             Cor i 10
                           </div> */}
-                          <div className="flex gap-x-6">
-                            <div>
-                              <strong>ID заказа:</strong>
-                              <span
-                                style={{ color: "#828282", marginLeft: "4px" }}
-                              >
-                                №{i + 1}
-                              </span>
-                            </div>
-                          </div>
+
                         </div>
-                        <div className="md:text-end text-lg">
+                        <div className="md:text-end text-lg mb-4">
                           <strong>
                             Статус оплаты:{" "}
-                            {item.PAY_STATUS ? (
-                              <span className="text-green-700">Оплачено</span>  
+                            {item.NAXT_STATUS ? (
+                                <span className="status-payment">Ожидает подтверждения</span>
                             ) : (
-                              <span className="status-payment">Не оплачено</span>  
+                                <span className="text-green-700">Подтверждено</span>
                             )}
                           </strong>
                         </div>
@@ -271,10 +252,6 @@ const Order = () => {
                           </div>
                         </div>
                         <div className="flex flex-col gap-y-2 media-pt">
-                          <div>
-                            <strong>Цвет:</strong>
-                            <span style={{ color: "#828282" }}>Чёрный</span>
-                          </div>
                           <div>
                             <strong>Номер телефона:</strong>
                             <span
@@ -301,7 +278,7 @@ const Order = () => {
                         <div className="md:col-span-2 media-pt">
                           <strong>Число:</strong>
                           <span style={{ color: "#828282", marginLeft: "4px" }}>
-                            {item.created_at.split('T')[0]} {item.created_at.split('T')[1]}
+                            {moment(item.created_at).calendar()} {moment(item.created_at).format("h:mm")}
                           </span>
                         </div>
                       </div>

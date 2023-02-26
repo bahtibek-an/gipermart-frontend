@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import SecondNavbar from "../../layout/navbar/SecondNavbar";
 import "../../assets/scss/_basket.scss";
 import { Container } from "@mui/system";
@@ -54,14 +54,21 @@ const Checkout = ({ user, defaultUserMapId }) => {
         cashStatus,
         user.id
       );
-      setModalSuccessData(data);
-      basketProducts.forEach(item => dispatch(deleteBasketInLocal(item.product)));
       dispatch(createCheckoutInUser(data));
+      setModalSuccessData(data);
       setShowModal(true);
     } catch(e) {
       setError(e);
     }
   }
+
+  useEffect(() => {
+    return () => {
+      if(showModal)
+        basketProducts.forEach(item => dispatch(deleteBasketInLocal(item.product)));
+    }
+  }, [])
+
   const totalPrice = basketProducts.reduce((acc, item) => (+item.total * item.quantity) + acc, 0);
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
