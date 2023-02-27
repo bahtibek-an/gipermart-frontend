@@ -57,7 +57,7 @@ const Profile = () => {
                 Мои заказы
               </div>
               <div
-                onClick={() => navigate("/profile/adresses")}
+                onClick={() => navigate("/profile/addresses")}
                 className={`item ${
                   pathName === "/profile/adresses" && "active"
                 }`}

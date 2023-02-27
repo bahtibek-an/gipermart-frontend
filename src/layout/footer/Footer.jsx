@@ -36,7 +36,7 @@ const Footer = () => {
     setPhoneNumbers(results);
     return results;
   }
-  
+
   useEffect(() => {
     fetchSocMedia();
     fetchNumbers();
