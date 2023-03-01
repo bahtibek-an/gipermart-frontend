@@ -10,17 +10,16 @@ import { numberWithCommas } from "../../helper";
 
 const BasketCart = ({ cart, deleteCartItem }) => {
     const [ counter, setCounter ] = useState(cart.quantity);
-    const product = useSelector((state) => state.products.find((item) => item.id == cart.product));
+    const product = useSelector((state) => state.products.find((item) => item.id == cart?.product?.id));
     const dispatch = useDispatch();
     const totalPrice = counter * product.price;
     const removeCart = () => {
-        dispatch(deleteBasketInLocal(cart.product));
+        dispatch(deleteBasketInLocal(cart.product.id));
         deleteCart(cart.id)
             .then((data) => {
                 deleteCartItem(cart.product.id);
             });
     }
-
     const minusCounter = () => {
         if (counter > 1) {
             dispatch(decrementBasketCounter(cart.id));
@@ -28,9 +27,9 @@ const BasketCart = ({ cart, deleteCartItem }) => {
             return updateCart(
                 cart.id, 
                 cart.user?.id, 
-                cart.product,
+                cart.product?.id,
                 counter - 1,
-                `${(counter - 1) * product.price}` 
+                `${(counter - 1) * product?.price}`
             );
         }
     };
@@ -41,7 +40,7 @@ const BasketCart = ({ cart, deleteCartItem }) => {
         return updateCart(
             cart.id, 
             cart.user?.id,
-            cart.product,
+            cart.product?.id,
             counter + 1,
             `${(counter + 1) * product.price}` 
         );

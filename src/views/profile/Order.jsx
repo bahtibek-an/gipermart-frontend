@@ -10,6 +10,8 @@ import { addBasketsCartToCheckouts, addUSABasketsCartToCheckouts } from "./helpe
 import { API_URL } from "../../http";
 import { numberWithCommas } from "../../helper";
 import moment from "moment-timezone";
+import 'moment/locale/ru'
+moment.locale("ru")
 
 const Order = () => {
   const navigate = useNavigate();
@@ -22,7 +24,6 @@ const Order = () => {
   const pathName = location.pathname;
   const [value, setValue] = React.useState("1");
 
-  console.log(checkouts)
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -54,9 +55,9 @@ const Order = () => {
                 Мои заказы
               </div>
               <div
-                onClick={() => navigate("/profile/adresses")}
+                onClick={() => navigate("/profile/addresses")}
                 className={`item ${
-                  pathName === "/profile/adresses" && "active"
+                  pathName === "/profile/addresses" && "active"
                 }`}
               >
                 <CgFileDocument color="#2E3A59" size={24} />
@@ -85,24 +86,18 @@ const Order = () => {
               <>
                 {checkouts.map((item, i) => (
                 <div className="order-block" key={i}>
-                  {/* <div style={{ font: "-webkit-mini-control" }}>
-                    Адрес из карты: 41.43254634546 63.2435344
-                  </div> */}
                   <div className="order-cart border-b md:flex gap-x-4 bg-gray md:p-6 p-2">
                     <div>
-                      {/* <img
-                        src="https://picsum.photos/120/120"
-                        alt=""
-                      /> */}
                     </div>
                     <div style={{ width: "-webkit-fill-available" }}>
-                      <div className="grid lg:grid-cols-2 gap-2 mb-2">
+                      <div className="grid lg:grid-cols-2 gap-2">
                         <div>
-                          {/* <div className="order-name mb-2 f-medium">
-                            Acer Aspire 3 Intel Pentium N4500/4GB/1TB HDD/Intel
-                            Cor i 10
-                          </div> */}
-
+                          <strong>ID заказа: </strong>
+                          <span
+                              style={{ color: "#828282", marginLeft: "4px" }}
+                          >
+                            {i + 1}
+                          </span>
                         </div>
                         <div className="md:text-end text-lg mb-4">
                           <strong>
@@ -168,7 +163,7 @@ const Order = () => {
                       {item.cart?.map((cart) => (
                         <Link to="/" className="department-box" key={cart.id}>
                           <div className="department-image relative">
-                            <div className="discount">-6%</div>
+                            {/*<div className="discount">-6%</div>*/}
                             <img
                               src={API_URL + cart?.product?.media?.[0]?.img_url}
                               alt=""
@@ -179,6 +174,7 @@ const Order = () => {
                               {cart?.product?.product?.name}
                             </div>
                             {/* <div className="department-rassrochka">462 000 сум/ 12 мес</div> */}
+                            <div className="department-description">{ cart.product?.product?.description }</div>
                             <div className="department-price">
                               <div className="price">{numberWithCommas(cart.total)} Сум</div>
                               {/* <div className="price_old">3 474 240 Сум</div> */}
@@ -213,13 +209,14 @@ const Order = () => {
                       /> */}
                     </div>
                     <div style={{ width: "-webkit-fill-available" }}>
-                      <div className="grid lg:grid-cols-2 gap-2 mb-2">
+                      <div className="grid lg:grid-cols-2 gap-2">
                         <div>
-                          {/* <div className="order-name mb-2 f-medium">
-                            Acer Aspire 3 Intel Pentium N4500/4GB/1TB HDD/Intel
-                            Cor i 10
-                          </div> */}
-
+                            <strong>ID заказа: </strong>
+                            <span
+                                style={{ color: "#828282", marginLeft: "4px" }}
+                            >
+                            {i + 1}
+                            </span>
                         </div>
                         <div className="md:text-end text-lg mb-4">
                           <strong>
@@ -285,7 +282,7 @@ const Order = () => {
                       {item.cart?.map((cart) => (
                         <Link to="/" className="department-box" key={cart.id}>
                           <div className="department-image relative">
-                            <div className="discount">-6%</div>
+                            {/*<div className="discount">-6%</div>*/}
                             <img
                               src={API_URL + cart.product.media[0]?.img_url}
                               alt=""
@@ -295,7 +292,8 @@ const Order = () => {
                             <div className="department-name">
                             {cart?.product?.product?.name}
                             </div>
-                            {/* <div className="department-rassrochka">462 000 сум/ 12 мес</div> */}
+                             {/*<div className="department-rassrochka">462 000 сум/ 12 мес</div>*/}
+                            <div className="department-description">{ cart.product?.product?.description }</div>
                             <div className="department-price">
                               <div className="price">{numberWithCommas(cart.total)} Сум</div>
                               {/* <div className="price_old">3 474 240 Сум</div> */}

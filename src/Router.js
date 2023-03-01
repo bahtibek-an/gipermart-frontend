@@ -20,7 +20,7 @@ import Checkout from "./views/basket/Checkout";
 import Favorites from "./views/favorites/Favorites";
 import SearchPage from "./views/search/SearchPage";
 import Profile from "./views/profile/Profile";
-import Adresses from "./views/profile/Adresses";
+import Addresses from "./views/profile/Addresses";
 import Order from "./views/profile/Order";
 import Filter from "./views/filter/Filter";
 import Detail from "./views/detail/Detail";
@@ -56,7 +56,7 @@ const Router = () => {
           <Route path="/stock" element={<Stock />} />
           <Route element={<PrivateRoutes/>}>
             <Route path="/profile/order" element={<Order />} />
-            <Route path="/profile/addresses" element={<Adresses />} />
+            <Route path="/profile/addresses" element={<Addresses />} />
             <Route path="/profile" element={<Profile />}/>
             <Route path="/favorites" element={<Favorites />}/>
             <Route path="/checkout" element={<Checkout />}/>

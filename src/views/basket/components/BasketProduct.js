@@ -4,7 +4,7 @@ import { numberWithCommas } from "../../../helper";
 import { API_URL } from "../../../http";
 
 const BasketProduct = ({ basket }) => {
-    const product = useSelector((state) => state.products.find((item) => item.id == basket.product));
+    const product = useSelector((state) => state.products.find((item) => item.id == basket.product.id));
     
     return (
         <div className="checkout-cart p-1" >

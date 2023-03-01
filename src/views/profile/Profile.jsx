@@ -59,7 +59,7 @@ const Profile = () => {
               <div
                 onClick={() => navigate("/profile/addresses")}
                 className={`item ${
-                  pathName === "/profile/adresses" && "active"
+                  pathName === "/profile/addresses" && "active"
                 }`}
               >
                 <CgFileDocument color="#2E3A59" size={24} />

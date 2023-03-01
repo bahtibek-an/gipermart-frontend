@@ -12,7 +12,7 @@ import { deleteUserMapById } from "./components/http";
 import { deleteUserMapInState } from "../../redux/actions";
 import AddressItem from "./components/AdressItem";
 
-const Adresses = () => {
+const Addresses = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userMap = useSelector((state) => state.user?.user?.map);
@@ -61,9 +61,9 @@ const Adresses = () => {
                 Мои заказы
               </div>
               <div
-                onClick={() => navigate("/profile/adresses")}
+                onClick={() => navigate("/profile/addresses")}
                 className={`item ${
-                  pathName === "/profile/adresses" && "active"
+                  pathName === "/profile/addresses" && "active"
                 }`}
               >
                 <CgFileDocument color="#2E3A59" size={24} />
@@ -106,4 +106,4 @@ const Adresses = () => {
   );
 };
 
-export default Adresses;
+export default Addresses;

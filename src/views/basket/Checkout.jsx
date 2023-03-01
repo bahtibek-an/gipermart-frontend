@@ -169,7 +169,7 @@ const Checkout = ({ user, defaultUserMapId }) => {
                       {item.id == defaultUserMap?.id ? "Выбрано" : "Выбрать"}
                     </Button>
                   </div>
-                  <Link to="/profile/adresses">
+                  <Link to="/profile/addresses">
                     <div className="underline cursor-pointer mt-2">
                       Редактировать
                     </div>
@@ -178,7 +178,7 @@ const Checkout = ({ user, defaultUserMapId }) => {
               </DetailButtons>
             </DetailItem>
             ))}
-            <Link to="/profile/adresses">
+            <Link to="/profile/addresses">
               <Button
                 className="yellow-btn-hover !w-full !rounded-none !py-3 !text-base"
                 onClick={handleCloseModal2}
