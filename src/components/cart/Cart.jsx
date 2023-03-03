@@ -13,8 +13,8 @@ const Cart = ({ cart/*, favorite */ }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state?.user);
-  const favorite = useSelector((state) => state?.wishLists.find((item) => item?.product?.id == cart.id));
-  const hasInCart = useSelector((state) => state?.baskets?.find((item) => item.product == cart.id));
+  const favorite = useSelector((state) => state?.wishLists.find((item) => item?.product?.id == cart.product?.id));
+  const hasInCart = useSelector((state) => state?.baskets?.find((item) => item?.product?.id == cart.product.id));
   const addProductToCart = async (e) => {
     e.preventDefault();
     if(!user.isAuth) {
@@ -24,7 +24,7 @@ const Cart = ({ cart/*, favorite */ }) => {
       return navigate("/basket");
     }
     try {
-      const data = await appendProductToUserCart(user?.user?.id, cart.id, 1, cart.price);
+      const data = await appendProductToUserCart(user?.user?.id, cart.product.id, 1, cart.price);
       dispatch(createBasketToLocal(data));
       dispatch(createBasketProduct(data));
     } catch (error) {
@@ -49,7 +49,6 @@ const Cart = ({ cart/*, favorite */ }) => {
         dispatch(craeteWishListProduct(data));
       });
   }
-  
 
   return (
     <div className="cart">

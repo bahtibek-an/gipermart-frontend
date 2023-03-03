@@ -37,6 +37,7 @@ export const fetchOneProduct = async (id) => {
 
 export const appendProductToUserCart = async (userId, productId, quantity, total) => {
     const { data } = await $host.post("cart/add-cart", {user: userId, product: productId, quantity, total });
+    console.log(data);
     return data;
 }
 
