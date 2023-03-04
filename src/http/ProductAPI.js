@@ -91,7 +91,6 @@ export const fetchFilterProducts = async (params, productSlug, sortType) => {
 }
 
 export const updateCart = async (cartId, userId, productId, quantity, totalPrice) => {
-    console.log(productId)
     try {
         const { data } = await $host.put(`https://yruoebgair.tk/cart/update-cart/${cartId}`, {
             user: userId,

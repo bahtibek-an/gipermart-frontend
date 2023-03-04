@@ -9,7 +9,7 @@ export const basketsReducer = (state = initialState, action) => {
             localStorage.setItem("carts", JSON.stringify([...state, action.payload]));
             return [...state, action.payload];
         case DELETE_BASKET_IN_LOCAL:
-            const filter = state.filter((item) => item.product != action.payload);    
+            const filter = state.filter((item) => item.product.id != action.payload);
             localStorage.setItem("carts", JSON.stringify(filter));
             return [...filter];
         case INCREMENT_BASKET_COUNTER:
