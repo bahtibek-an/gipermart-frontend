@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 import SecondNavbar from "../../layout/navbar/SecondNavbar";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
 import Typography from "@mui/material/Typography";
 import { IoIosArrowDown } from "react-icons/io";
 import { Container } from "@mui/system";
 import "../../assets/scss/_filter.scss";
 import { Link, useParams } from "react-router-dom";
-import { FormControlLabel, MenuItem, Stack } from "@mui/material";
+import {Accordion as AccordionDefault, Box, FormControlLabel, MenuItem, Stack, AccordionDetails, InputAdornment, AccordionSummary as AccordionSummaryDefault} from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import Title from "../../components/title/Title";
 import Cart from "../../components/cart/Cart";
@@ -16,7 +14,10 @@ import { fetchFilterProducts } from "../../http/ProductAPI";
 import { sortFilterCategories } from "../../helper";
 import LoadingCart from "../../components/cart/LoadingCart";
 import Select from "../../components/select/Select";
-
+import Accordion from "../../components/accordion/accordion";
+import AccordionSummary from "../../components/accordion-summary";
+import {CurensyIcon} from "../../components/icons/curensy-icon";
+import Input from "../../components/input";
 const Category = () => {
     const { categoryId } = useParams();
     const category = useSelector((state) => state.categories?.find((item) => item?.id == categoryId))
@@ -25,6 +26,8 @@ const Category = () => {
     const [ loading, setLoading ] = useState(true);
     const [ searchParams, setSearchParams ] = useState([]);
     const [ sortType, setSortType ] = useState("price");
+    const productRange = React.useRef({ min: 0, max: 0 });
+    const [ filterPriceRange, setFilterPriceRange ] = useState({ min: productRange.current.min, max: productRange.current.max });
     const fetchAttributes = async (products) => {
       const attributes = [];
       const map = {};
@@ -32,7 +35,7 @@ const Category = () => {
         return item.attributes?.forEach((attr, j) => {
           if(map[item.attribute_values[j]] !== undefined) {
             return;
-          }           
+          }
           map[item.attribute_values[j]] = attr;
           attributes.push({
             id: item.attribute_values[j],
@@ -51,9 +54,28 @@ const Category = () => {
 
     const fetchProducts = async () => {
       const param = searchParams.map((item) => `attribute_values=${item.id}`).join('&');
-      const data = await fetchFilterProducts(param, category.slug, sortType);
-      setProducts(data.results);
+      const data = await fetchFilterProducts(param, category.slug, sortType, filterPriceRange);
+      const results = data.results;
+      setProducts(results);
+      const productPrices = results?.map((item) => +(item?.price)) || [0, 0];
+      productRange.current.min = Math.min(...productPrices);
+      productRange.current.max = Math.max(...productPrices);
       return data.results;
+    }
+
+    const handleChangePriceFilter = (event, type) => {
+        const price = +event.target.value;
+        if (type === "min") {
+            if (price < productRange.min || price > productRange.max) {
+                return;
+            }
+            setFilterPriceRange(prev => ({...prev, min: price}));
+        } else if (type === "max") {
+            if(price > productRange.max || price < productRange.min) {
+                return;
+            }
+            setFilterPriceRange(prev => ({...prev, max: price}));
+        }
     }
 
     useEffect(() => {
@@ -68,6 +90,12 @@ const Category = () => {
         .then((data) => fetchAttributes(data))
         .then(() => setLoading(false));
     }, [categoryId]);
+
+    // useEffect(() => {
+    //     const sortedProducts = () => {
+    //
+    //     }
+    // }, [filterPriceRange]);
 
     const addToSearch = (e, data) => {
       const checked = e.target.checked;
@@ -85,53 +113,50 @@ const Category = () => {
           <div className="grid lg:grid-cols-12 grid-cols-6 gap-4 filter my-12" >
             <div className="lg:col-span-3 col-span-6">
               <div>
-                <Accordion className="all-category">
-                  <AccordionSummary
+                <AccordionDefault className="all-category">
+                  <AccordionSummaryDefault
                     expandIcon={<IoIosArrowDown />}
                     aria-controls="panel1a-content"
                     id="panel1a-header"
                   >
                     <Typography>Все категории</Typography>
-                  </AccordionSummary>
+                  </AccordionSummaryDefault>
                   {category?.children?.map((item) => (
                       <Link to={`/category/${item.id}`} key={item.id} className="item">
                           {item.name}
                       </Link>
                   ))}
-                </Accordion>
+                </AccordionDefault>
                 {attr.map((item, i) => (
-                  <Accordion key={i}>
-                    <AccordionSummary
+                  <AccordionDefault key={i}>
+                    <AccordionSummaryDefault
                       expandIcon={<IoIosArrowDown />}
                       aria-controls="panel2a-content"
                       id="panel2a-header"
                     >
                       <Typography>{item.name}</Typography>
-                    </AccordionSummary>
+                    </AccordionSummaryDefault>
                     <div className="all-category">
                       {item.children?.map((value) => (
                         <label className="item" key={value.id}>
-                          <FormControlLabel 
+                          <FormControlLabel
                             control={
-                              <Checkbox 
+                              <Checkbox
                                 onClick={(e) => addToSearch(e, value)}
                               />
-                              } 
+                              }
                               label={value.value} />
                         </label>
                       ))}
                     </div>
-                  </Accordion>
+                  </AccordionDefault>
                 ))}
                 <Stack sx={{ padding: '1rem 0' }} gap={2}>
                   <Select
                     value={sortType}
                     onChange={(e) =>
-                      //@ts-expect-error
-                      // dispatch(sortFn({ direction: e.target.value }))
                       setSortType(e.target.value)
                     }
-                    // value={sort?.direction}
                     placeholder="Сортировка"
                 >
                     <MenuItem value={"price"}>
@@ -142,6 +167,43 @@ const Category = () => {
                     </MenuItem>
                   </Select>
                 </Stack>
+                  <Stack>
+                      <Accordion sx={{ border: '1px solid #e5e5e5' }}>
+                          <AccordionSummary>
+                              <Typography
+                                  // variant="subtitle2"
+                              >Цена</Typography>
+                          </AccordionSummary>
+                          <AccordionDetails>
+                              <Stack alignItems="center" gap={2} direction="row">
+                                  <Input
+                                      style={{flex: "1"}}
+                                      startAdornment={
+                                          <InputAdornment position="start">
+                                              <CurensyIcon />
+                                          </InputAdornment>
+                                      }
+                                      value={filterPriceRange.min}
+                                      type="number"
+                                      onChange={(e) => handleChangePriceFilter(e, "min")}
+                                      // size="small"
+                                  />
+                                  <Input
+                                      style={{flex: "1"}}
+                                      startAdornment={
+                                          <InputAdornment position="start">
+                                              <CurensyIcon />
+                                          </InputAdornment>
+                                      }
+                                      value={filterPriceRange.max}
+                                      type="number"
+                                      onChange={(e) => handleChangePriceFilter(e, "max")}
+                                      // size="small"
+                                  />
+                              </Stack>
+                          </AccordionDetails>
+                      </Accordion>
+                  </Stack>
               </div>
             </div>
             <div className="lg:col-span-9 col-span-6">

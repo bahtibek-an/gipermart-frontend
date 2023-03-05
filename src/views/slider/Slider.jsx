@@ -4,7 +4,7 @@ import "../../assets/scss/_slider.scss";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Link } from "react-router-dom";
-import { FiArrowLeftCircle, FiArrowRightCircle } from "react-icons/fi";
+// import { FiArrowLeftCircle, FiArrowRightCircle } from "react-icons/fi";
 import SlickArrowRight from "../../components/SlickArrow/SlickArrowRight";
 import SlickArrowLeft from "../../components/SlickArrow/SlickArrowLeft";
 
@@ -12,7 +12,7 @@ const HomeSlider = () => {
   const [ sliders, setSliders ] = useState([]);
 
   const fetchSliders = async () => {
-    const response = await fetch("https://yruoebgair.tk/outside/slider/");
+    const response = await fetch("https://yruoebgair.tk/dashboard/sliders/");
     const sliders = await response.json();
     if(sliders.count === 0) return;
     setSliders(sliders.results);
@@ -24,7 +24,7 @@ const HomeSlider = () => {
 
   return (
     <Slider
-      className="slider"
+      className="home-slider"
       infinite={true}
       speed={2000}
       autoplay={true}
@@ -35,9 +35,9 @@ const HomeSlider = () => {
       prevArrow={<SlickArrowLeft size={16} stroke="#000" fill="#fff" />}
     >
       {sliders?.map((item) => (
-        <Link to="/special-order" key={item.id}>
+        <a href={item.url} key={item.id}>
           <img src={item.images} alt="" />
-        </Link>
+        </a>
       ))}
     </Slider>
   );

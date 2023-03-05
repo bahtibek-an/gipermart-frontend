@@ -81,9 +81,9 @@ export const fetchAttributesByCategoryId = async (id) => {
     }
 }
 
-export const fetchFilterProducts = async (params, productSlug, sortType) => {
+export const fetchFilterProducts = async (params, productSlug, sortType, filterPrice) => {
     try {
-        const { data } = await $host.get(`product/product_filter/?ordering=${sortType}&search=${productSlug}&${params}`);
+        const { data } = await $host.get(`product/product_filter/?ordering=${sortType}&search=${productSlug}&${params}&min_price=${filterPrice.min}&max_price=${filterPrice.max}`);
         return data;
     } catch (error) {
         console.log(error);

@@ -14,18 +14,14 @@ export const getUserById = async (id) => {
 }
 
 export const signUp = async (phoneNumber, firstName, lastName, password, confirmPassword) => {
-    try {
-        const { data }  = await $host.post("user/signup/", {
-            phone_number: phoneNumber,
-            first_name: firstName,
-            last_name: lastName,
-            password,
-            confirm_password: confirmPassword
-        });
-        return data;
-    } catch (error) {
-        console.log(error);
-    }
+    const { data } = await $host.post("user/signup/", {
+        phone_number: phoneNumber,
+        first_name: firstName,
+        last_name: lastName,
+        password,
+        confirm_password: confirmPassword
+    });
+    return data;
 }
 
 export const signIn = async (number, password) => {

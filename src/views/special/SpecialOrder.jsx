@@ -6,12 +6,12 @@ import { Link } from "react-router-dom";
 import Title from "../../components/title/Title";
 import { BsArrowRight, BsArrowLeft } from "react-icons/bs";
 import Slider from "react-slick";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import TextField from "@mui/material/TextField";
-import { Button, Card } from "@mui/material";
+// import InputLabel from "@mui/material/InputLabel";
+// import MenuItem from "@mui/material/MenuItem";
+// import FormControl from "@mui/material/FormControl";
+// import Select, { SelectChangeEvent } from "@mui/material/Select";
+// import TextField from "@mui/material/TextField";
+// import { Button, Card } from "@mui/material";
 import { useSelector } from "react-redux";
 import Cart from "../../components/cart/Cart";
 

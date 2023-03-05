@@ -1,10 +1,16 @@
-import { Button, Dialog } from "@mui/material";
+import { Dialog } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { categoriesAlgo } from "../../helper";
+// import { categoriesAlgo } from "../../helper";
 
-const NavbarCatalog = ({ openModal, closeModal, categories }) => {
+const NavbarCatalog = ({ openModal, closeModal, categories, closeLeftModal }) => {
+
+    const closeAllModals = () => {
+        closeModal();
+        closeLeftModal();
+    }
+
   return (
     <div>
       <Dialog
@@ -18,7 +24,7 @@ const NavbarCatalog = ({ openModal, closeModal, categories }) => {
           {categories.map((item) => (
             item.parent && (
             <div className="catalog-box flex flex-col gap-y-2" key={item.id}>
-              <Link to={`/category/${item.id}`} onClick={closeModal} className="catalog-main">
+              <Link to={`/category/${item.id}`} onClick={closeAllModals} className="catalog-main">
                 <div className="main-image">
                   <img
                     src={"https://yruoebgair.tk/" + item?.background_image}
@@ -29,7 +35,7 @@ const NavbarCatalog = ({ openModal, closeModal, categories }) => {
               </Link>
               {item.children && (
                 item.children.map((item) => (
-                  <Link to={`/category/${item.id}`} onClick={closeModal} className="red" key={item.id}>
+                  <Link to={`/category/${item.id}`} onClick={closeAllModals} className="red" key={item.id}>
                     {item.name}
                   </Link>
                 ))

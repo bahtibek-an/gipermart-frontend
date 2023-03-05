@@ -11,6 +11,7 @@ import { getUserById, signUp } from "../../../http/UserAPI";
 import { useDispatch } from "react-redux";
 import { createUser, hideRightModal } from "../../../redux/actions";
 import { setCookie } from "../../../helper";
+import AlertError from "../../../UI/Alert/AlertError";
 
 const SignUp = ({ setRightModalStep, setRightModal }) => {
     const [showPassword, setShowPassword] = useState(false);
@@ -19,6 +20,7 @@ const SignUp = ({ setRightModalStep, setRightModal }) => {
     const [ lastName, setLastName ] = useState('');
     const [ password, setPassword ] = useState('');
     const [ confirmPassword, setConfirmPassword ] = useState('');
+    const [ errorMessage, setErrorMessage ] = useState([]);
     const dispatch = useDispatch();
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -26,9 +28,14 @@ const SignUp = ({ setRightModalStep, setRightModal }) => {
         event.preventDefault();
     };
 
+    const setErrorMessageTimeout = (error) => {
+        setErrorMessage(error);
+        setTimeout(() => setErrorMessage([]), 6000);
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        if(password !== confirmPassword) return;
+        // if(password !== confirmPassword) return;
         signUp(
             number,
             firstName,
@@ -43,11 +50,29 @@ const SignUp = ({ setRightModalStep, setRightModal }) => {
                     setCookie("refreshToken", data.token.refresh, 7);
                     dispatch(hideRightModal());
                 });
+        }).catch((error) => {
+            const errorMessages = error.response.data;
+            const keys = Object.keys(errorMessages);
+            const errors = [];
+            keys.forEach((key) => {
+                errorMessages[key].forEach((item) => {
+                    errors.push(`${key}: ${item}`);
+                })
+            })
+            setErrorMessageTimeout(errors);
         });
     }
 
     return (
         <form action="" method="post" onSubmit={handleSubmit}>
+            {errorMessage.length > 0 && errorMessage.map((item, i) => (
+                <AlertError
+                    style={{maxWidth: "300px"}}
+                    className="mb-3"
+                    key={i}
+                    error={item}
+                />
+            ))}
             <div className="text-2xl f-medium">
                 Войти или создать профиль
             </div>

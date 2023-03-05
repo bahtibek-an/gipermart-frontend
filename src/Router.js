@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
 import Footer from "./layout/footer/Footer";
 import Navbar from "./layout/navbar/Navbar";
 import Home from "./views/home/Home";
@@ -27,6 +27,7 @@ import Detail from "./views/detail/Detail";
 import Stock from "./components/stock/Stock";
 import PrivateRoutes from "./components/protectedRoute/PrivateRoutes";
 import Category from "./views/filter/Category";
+import NotFoundPage from "./views/NotFoundPage";
 
 const Router = () => {
     return (
@@ -62,6 +63,8 @@ const Router = () => {
             <Route path="/checkout" element={<Checkout />}/>
             <Route path="/basket" element={<Basket />}/>
           </Route>
+            <Route path="/404" element={ <NotFoundPage /> } />
+            <Route path="*" element={ <Navigate to="/404" replace />} />
         </Routes>
         <Footer />
     </BrowserRouter>

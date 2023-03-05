@@ -55,7 +55,7 @@ const Checkout = ({ user, defaultUserMapId }) => {
         user.id
       );
       dispatch(createCheckoutInUser(data));
-      basketProducts.forEach(item => dispatch(deleteBasketInLocal(item.product)));
+      basketProducts.forEach(item => dispatch(deleteBasketInLocal(item.product.id)));
       setModalSuccessData(data);
       setShowModal(true);
     } catch(e) {

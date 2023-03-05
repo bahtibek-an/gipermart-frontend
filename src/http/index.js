@@ -18,8 +18,8 @@ $host.interceptors.response.use((config) => {
     return config;
 }, async (error) => {
     const originalRequest = error.config;
-    if(error.response.status === 401 && error.config /*0 && !error.config._isRetry */) {
-        // originalRequest._isRetry = true;
+    if(error.response.status === 401 && error.config && !error.config._isRetry) {
+        originalRequest._isRetry = true;
         try {
             const refreshToken = getCookie("refreshToken");
             const response = await $host.post("api/v1/token/refresh/" , {refresh: refreshToken});
@@ -29,8 +29,10 @@ $host.interceptors.response.use((config) => {
             setCookie("refreshToken", "", 0);
             localStorage.removeItem("accessToken");
             console.error(error);
+            return Promise.reject(error);
         }
     }
+    return Promise.reject(error);
 });
 
 export default $host;

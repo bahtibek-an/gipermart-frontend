@@ -25,9 +25,9 @@ const Brands = () => {
       <Title title={"Популярные бренды"} style="f-bold" />
       <div className="brands my-4">
         {brands?.map((item) => (
-          <Link to="/" className="brand" key={item.id}>
+          <a href={item.url} className="brand" key={item.id}>
             <img src={item.images} alt="" />
-          </Link>
+          </a>
         ))}
       </div>
     </Container>
