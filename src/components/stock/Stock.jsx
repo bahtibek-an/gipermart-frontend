@@ -70,13 +70,13 @@ const Stock = () => {
     <Container maxWidth="xl">
       <Title title="Акции" style="f-bold mt-6 mb-2" />
       <Slider {...settings} className="stock">
-        <div>
+        {/*<div>*/}
           {stockProducts?.map((item) => (
             <a href={item.url} className="pr-4" key={item.id}>
               <img src={item.images} alt="" />
             </a>
           ))}
-        </div>
+        {/*</div>*/}
       </Slider>
     </Container>
   );
