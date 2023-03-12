@@ -16,12 +16,14 @@ import SlickArrowRight from "../SlickArrow/SlickArrowRight";
 const Recommendations = ({ products: productLists, isLoading }) => {
   const [products, setProducts] = useState((() => {
     let result = [...productLists];
-    while(result.length < 6) {
-      result = result.concat(result);
+    if(result.length > 0) {
+      while(result.length < 6) {
+        result = result.concat(result);
+      }
     }
     return result;
   })());
-  
+
   let settings = {
     infinite: true,
     slidesToShow: 6,

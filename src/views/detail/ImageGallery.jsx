@@ -35,7 +35,7 @@ export default class ImageGallery extends Component {
         >
           {this.images?.map((item, i) => (
             <div className="carousel-img" key={i}>
-              <img src={"https://yruoebgair.tk" + item.img_url} alt="" />
+              <img src={item.img_url} alt="" />
             </div>
           ))}
         </Slider>
@@ -63,7 +63,7 @@ export default class ImageGallery extends Component {
         >
           {this.images?.map((item, i) => (
             <div className="carousel-img" key={i}>
-              <img src={"https://yruoebgair.tk" + item.img_url} alt="" />
+              <img src={item.img_url} alt="" />
             </div>
           ))}
         </Slider>

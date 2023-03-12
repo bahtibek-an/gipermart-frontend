@@ -9,6 +9,7 @@ import { connect } from "react-redux";
 import SlickArrowRight from "../../components/SlickArrow/SlickArrowRight";
 import SlickArrowLeft from "../../components/SlickArrow/SlickArrowLeft";
 import { categoriesAlgo } from "../../helper";
+import {API_URL} from "../../http";
 
 const Category = ({ categories }) => {
 
@@ -64,7 +65,7 @@ const Category = ({ categories }) => {
             <div key={i}>
               <Link to={`/category/${item.id}`} className="category-box">
                 <img
-                  src={"https://yruoebgair.tk/" + item.background_image}
+                  src={API_URL + item.background_image}
                   alt=""
                 />
                 <div>{ item.name }</div>

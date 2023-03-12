@@ -17,8 +17,7 @@ const Basket = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState(false);
-  const totalPrice = carts.reduce((acc, item) => acc + +item?.product?.price * item.quantity, 0);
-
+  const totalPrice = carts.reduce((acc, item) => acc + +item?.total * item.quantity, 0);
   const deleteCart = (id) => {
     dispatch(deleteBasketProduct(id));
   }

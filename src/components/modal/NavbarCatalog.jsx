@@ -2,6 +2,7 @@ import { Dialog } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import {API_URL} from "../../http";
 // import { categoriesAlgo } from "../../helper";
 
 const NavbarCatalog = ({ openModal, closeModal, categories, closeLeftModal }) => {
@@ -27,7 +28,7 @@ const NavbarCatalog = ({ openModal, closeModal, categories, closeLeftModal }) =>
               <Link to={`/category/${item.id}`} onClick={closeAllModals} className="catalog-main">
                 <div className="main-image">
                   <img
-                    src={"https://yruoebgair.tk/" + item?.background_image}
+                    src={API_URL + item?.background_image}
                     alt=""
                   />
                 </div>

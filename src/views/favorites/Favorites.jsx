@@ -7,8 +7,8 @@ import "../../assets/scss/_favorites.scss";
 import { useSelector } from "react-redux";
 
 const Favorites = () => {
-  const wishLists = useSelector((state) => state.wishLists?.map((item) => item.product?.id));
-  const products = useSelector((state) => state.products.filter((item) => wishLists.includes(item.product.id)));
+  const wishLists = useSelector((state) => state.wishLists?.map((item) => item.product.id));
+  const products = useSelector((state) => state.products.filter((item) => wishLists.includes(item.id)));
   return (
     <>
       <SecondNavbar />

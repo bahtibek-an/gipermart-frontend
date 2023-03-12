@@ -55,6 +55,7 @@ const Category = () => {
     const fetchProducts = async () => {
       const param = searchParams.map((item) => `attribute_values=${item.id}`).join('&');
       const data = await fetchFilterProducts(param, category.slug, sortType, filterPriceRange);
+      console.log(data);
       const results = data.results;
       setProducts(results);
       const productPrices = results?.map((item) => +(item?.price)) || [0, 0];

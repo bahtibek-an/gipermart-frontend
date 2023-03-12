@@ -7,15 +7,17 @@ import { Link } from "react-router-dom";
 // import { FiArrowLeftCircle, FiArrowRightCircle } from "react-icons/fi";
 import SlickArrowRight from "../../components/SlickArrow/SlickArrowRight";
 import SlickArrowLeft from "../../components/SlickArrow/SlickArrowLeft";
+import {API_URL} from "../../http";
 
 const HomeSlider = () => {
   const [ sliders, setSliders ] = useState([]);
 
   const fetchSliders = async () => {
-    const response = await fetch("https://yruoebgair.tk/dashboard/sliders/");
+    const response = await fetch(API_URL + "dashboard/sliders/");
     const sliders = await response.json();
+    let slidersResult = sliders.results;
     if(sliders.count === 0) return;
-    setSliders(sliders.results);
+    setSliders(slidersResult);
   }
 
   useEffect(() => {

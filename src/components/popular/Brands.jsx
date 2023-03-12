@@ -10,7 +10,7 @@ const Brands = () => {
   const [ brands, setBrands ] = useState([]);
 
   const fetchBrands = async () => {
-    const response = await fetch("https://yruoebgair.tk/outside/brand/");
+    const response = await fetch("https://api.gipermart.uz/outside/brand/");
     const brands = await response.json();
     if(brands.count === 0) return;
     setBrands(brands.results);

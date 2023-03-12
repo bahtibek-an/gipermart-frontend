@@ -83,7 +83,8 @@ export const fetchAttributesByCategoryId = async (id) => {
 
 export const fetchFilterProducts = async (params, productSlug, sortType, filterPrice) => {
     try {
-        const { data } = await $host.get(`product/product_filter/?ordering=${sortType}&search=${productSlug}&${params}&min_price=${filterPrice.min}&max_price=${filterPrice.max}`);
+        // const { data } = await $host.get(`product/product_filter/?ordering=${sortType}&search=${productSlug}&${params}&min_price=${filterPrice.min}&max_price=${filterPrice.max}`);4
+        const { data } = await $host.get(`product/product_filter/?ordering=${sortType}&search=${productSlug}&${params}`);
         return data;
     } catch (error) {
         console.log(error);
@@ -92,7 +93,7 @@ export const fetchFilterProducts = async (params, productSlug, sortType, filterP
 
 export const updateCart = async (cartId, userId, productId, quantity, totalPrice) => {
     try {
-        const { data } = await $host.put(`https://yruoebgair.tk/cart/update-cart/${cartId}`, {
+        const { data } = await $host.put(`cart/update-cart/${cartId}`, {
             user: userId,
             product: productId,
             quantity: quantity,

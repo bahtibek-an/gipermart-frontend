@@ -11,7 +11,7 @@ const Stock = () => {
   const [ stockProducts, setStockProducts ] = useState([]);
   const [ loading, setLoading ] = useState(true);
   const fetchStockProducts = async () => {
-    const response = await fetch("https://yruoebgair.tk/dashboard/stocks/");
+    const response = await fetch("https://api.gipermart.uz/dashboard/stocks/");
     const products = await response.json();
     if(products.count === 0) return;
     setLoading(false);

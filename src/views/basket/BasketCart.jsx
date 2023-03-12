@@ -12,7 +12,8 @@ const BasketCart = ({ cart, deleteCartItem }) => {
     const [ counter, setCounter ] = useState(cart.quantity);
     const product = useSelector((state) => state.products.find((item) => item.id == cart?.product?.id));
     const dispatch = useDispatch();
-    const totalPrice = counter * product.price;
+    const totalPrice = counter * +product.price;
+    console.log(product)
     const removeCart = () => {
         dispatch(deleteBasketInLocal(cart.product.id));
         deleteCart(cart.id)
@@ -46,19 +47,23 @@ const BasketCart = ({ cart, deleteCartItem }) => {
         );
     };
 
+    if(Object.keys(product).length === 0) {
+        return null;
+    }
+
 
     return (
-        <Link to={`/product/${product.id}`}>
+        <Link to={`/product/${product?.id}`}>
             <div className="basket-cart">
                 <div className="basket-image">
                 <img
-                    src={"https://yruoebgair.tk/" + product.media?.[0]?.img_url}
+                    src={product.new_media?.[0]?.img_url}
                     alt=""
                 />
                 </div>
                 <div className="basket-text" style={{flex: "60%"}}>
                 <Link to="" className="basket-name">
-                    {product?.product.name}
+                    {product.title_en}
                 </Link>
                 <div className="basket-price">{numberWithCommas(totalPrice)} Сум</div>
                 <div className="basket-action" onClick={(e) => e.preventDefault()}>

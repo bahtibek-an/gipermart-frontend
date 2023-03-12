@@ -28,7 +28,7 @@ const Detail = ({ products, user }) => {
   const favorite = useSelector((state) => state?.wishLists.find((item) => item?.product?.id == productDetail?.product?.id));
   const hasInProduct = useSelector((state) => state.baskets?.find((item) => item?.product == productDetail?.product?.id));
   const [counter, setCounter] = useState(1);
-  const productPrice = (productDetail.price * counter);
+  const productPrice = (+productDetail.price * counter);
   const fetchProduct = async () => {
     const product = await fetchOneProduct(id);
     setProductDetail(product);
@@ -136,11 +136,11 @@ const Detail = ({ products, user }) => {
           <Link to="/">Магазин /</Link>
           <Link to="/">Аксессуары /</Link>
           <div>
-            {productDetail.product.name}
+            {productDetail.title_en}
           </div>
         </div>
         <div className="laptop-detail-name text-2xl f-medium mb-4">
-          {productDetail.product.name}
+          {productDetail.title_en}
         </div>
         <div className="flex items-center gap-4 border-b-2">
           <Rating
@@ -177,7 +177,7 @@ const Detail = ({ products, user }) => {
         </div>
         <div className="grid lg:grid-cols-12 grid-cols-6 justify-between detail-box mt-8">
           <div className="xl:col-span-4 lg:col-span-6 col-span-6">
-            <ImageGallery images={productDetail.media}/>
+            <ImageGallery images={productDetail.new_media}/>
           </div>
           <div className="xl:col-span-5 lg:col-span-6 col-span-6 character-box xl:pl-8 lg:pl-14 mb-6 lg:mt-0 mt-8">
             <div className="mobile-detail-name text-2xl f-medium mb-4">
@@ -185,7 +185,7 @@ const Detail = ({ products, user }) => {
               (A315-34-P59K) Charcoal Black
             </div>
             <div className="text-lg f-medium">Характеристики</div>
-            {productDetail.attributes?.map((item, i) => (
+            {productDetail.attribute_values?.map((item, i) => (
               <div className="mt-4 flex items-center gap-x-4 gap-y-2" key={i}>
                 <div className="gray">{item.product_attribute?.name}:</div>
                 <div>{item.attribute_value}</div>
@@ -254,7 +254,7 @@ const Detail = ({ products, user }) => {
         </Tabs>
         {value === "1" && (
           <div className="p-6">
-            {productDetail.product?.description}
+            {productDetail.descriptions}
             {/* <div className="f-bold mb-2" style={{ fontSize: "15px" }}>
               Мощный процессор
             </div>
@@ -291,7 +291,7 @@ const Detail = ({ products, user }) => {
             <div className="mb-4" style={{ fontSize: "15px" }}>
               Частота процессора: 1.10-3.30 ГГц
             </div> */}
-            {productDetail.attributes.map((item, i) => (
+            {productDetail.attribute_values.map((item, i) => (
               <div className="mb-4" style={{ fontSize: "15px" }} key={i}>
                 {/* Процессор: Intel® Pentium N5030 */}
                 {item.product_attribute?.name}: {item.attribute_value}
