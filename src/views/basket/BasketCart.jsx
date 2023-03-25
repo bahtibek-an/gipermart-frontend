@@ -57,7 +57,7 @@ const BasketCart = ({ cart, deleteCartItem }) => {
             <div className="basket-cart">
                 <div className="basket-image">
                 <img
-                    src={product.new_media?.[0]?.img_url}
+                    src={product.front_image}
                     alt=""
                 />
                 </div>

@@ -64,7 +64,7 @@ const Cart = ({ cart/*, favorite */ }) => {
             <img src={cart?.front_image} alt="" />
           </div>
           <div onClick={() => navigate(`/product/${cart.id}`)} className="cart-name">
-            { cart.title_en }
+            { cart.title_ru }
           </div>
           <div className="rassrochka f-bold text-center">{ cart.installment_plan }</div>
           <div className="cart-action">

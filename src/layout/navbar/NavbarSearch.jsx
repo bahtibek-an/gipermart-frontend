@@ -13,7 +13,7 @@ const NavbarSearch = ({ products }) => {
     const searchItems = () => {
         if (search.trim()) {
             const filteredArray = products.filter(item =>
-                item.product.name.toLowerCase().includes(search.toLowerCase().trim())
+                item.title_en.toLowerCase().includes(search.toLowerCase().trim())
             );
             setFilterItems(filteredArray);
         } else {
@@ -54,12 +54,19 @@ const NavbarSearch = ({ products }) => {
                 style={{ zIndex: "1" }}
                 size={24}
             />
-            <div className="search-category py-1">
+            <div
+                className="search-category py-1"
+                style={{
+                    maxHeight: "320px",
+                    overflowY: "scroll",
+
+                }}
+            >
                 {filterItems.map((item) => (
                     <Link key={item.id} to={`/product/${item.id}`}>
                         <div className="flex items-center gap-x-6 px-5 py-3" key={item.id}>
                             <AiOutlineSearch fill="#534343" size={24} />
-                            {item.product.name}
+                            {item.title_en}
                         </div>
                     </Link>
                 ))}

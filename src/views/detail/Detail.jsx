@@ -25,8 +25,8 @@ const Detail = ({ products, user }) => {
   const [productDetail, setProductDetail] = useState({});
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
-  const favorite = useSelector((state) => state?.wishLists.find((item) => item?.product?.id == productDetail?.product?.id));
-  const hasInProduct = useSelector((state) => state.baskets?.find((item) => item?.product == productDetail?.product?.id));
+  const favorite = useSelector((state) => state?.wishLists.find((item) => item?.product?.id == productDetail?.id));
+  const hasInProduct = useSelector((state) => state.baskets?.find((item) => item?.product?.id == productDetail?.id));
   const [counter, setCounter] = useState(1);
   const productPrice = (+productDetail.price * counter);
   const fetchProduct = async () => {
@@ -90,10 +90,10 @@ const Detail = ({ products, user }) => {
       if(favorite) {
         return deleteProductFromWishList(favorite.id)
         .then(() => {
-          dispatch(deleteWishList(productDetail?.product?.id));
+          dispatch(deleteWishList(productDetail?.id));
         });
       }
-      return appendProductToWishList(user?.user?.id, productDetail?.product?.id)
+      return appendProductToWishList(user?.user?.id, productDetail?.id)
         .then((data) => {
           dispatch(craeteWishListProduct(data));
         });
