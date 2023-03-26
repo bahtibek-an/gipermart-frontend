@@ -177,7 +177,7 @@ const Detail = ({ products, user }) => {
         </div>
         <div className="grid lg:grid-cols-12 grid-cols-6 justify-between detail-box mt-8">
           <div className="xl:col-span-4 lg:col-span-6 col-span-6">
-            <ImageGallery images={productDetail.new_media}/>
+            <ImageGallery product={productDetail}/>
           </div>
           <div className="xl:col-span-5 lg:col-span-6 col-span-6 character-box xl:pl-8 lg:pl-14 mb-6 lg:mt-0 mt-8">
             <div className="mobile-detail-name text-2xl f-medium mb-4">

@@ -5,7 +5,8 @@ import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 export default class ImageGallery extends Component {
   constructor(props) {
     super(props);
-    this.images = props.images;
+    this.images = [...props.product.new_media];
+    this.images.push({img_url: props.product.front_image});
     this.state = {
       nav1: null,
       nav2: null,
@@ -39,6 +40,7 @@ export default class ImageGallery extends Component {
             </div>
           ))}
         </Slider>
+        {this.props.product?.new_media?.length > 0 && (
         <Slider
           asNavFor={this.state.nav1}
           ref={(slider) => (this.slider2 = slider)}
@@ -67,6 +69,7 @@ export default class ImageGallery extends Component {
             </div>
           ))}
         </Slider>
+        )}
       </div>
     );
   }
