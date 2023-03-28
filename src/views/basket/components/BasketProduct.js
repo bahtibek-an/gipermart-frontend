@@ -3,7 +3,8 @@ import { useSelector } from "react-redux";
 import { numberWithCommas } from "../../../helper";
 
 const BasketProduct = ({ basket }) => {
-    const product = useSelector((state) => state.products.find((item) => item.id == basket.product.id));
+    const product = basket.product;
+    const exchange = useSelector((state) => state.app.exchange);
 
     return (
         <div className="checkout-cart p-1" >
@@ -21,7 +22,7 @@ const BasketProduct = ({ basket }) => {
                 </div>
             </div>
             <div className="checkout-price gap-x-2">
-                {basket.quantity} x <span className="f-bold price">{numberWithCommas(product.price)} Сум</span>
+                {basket.quantity} x <span className="f-bold price">{numberWithCommas(product.price * exchange)} Сум</span>
                 {/* <span className="f-bold price">{product.price} Сум</span> */}
             </div>
         </div>

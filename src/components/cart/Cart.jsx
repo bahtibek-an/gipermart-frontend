@@ -15,6 +15,7 @@ const Cart = ({ cart/*, favorite */ }) => {
   const user = useSelector((state) => state?.user);
   const favorite = useSelector((state) => state?.wishLists.find((item) => item?.product?.id == cart.id));
   const hasInCart = useSelector((state) => state?.baskets?.find((item) => item?.product?.id == cart.id));
+  const exchangeRate = useSelector((state) => state.app.exchange);
   const addProductToCart = async (e) => {
     e.preventDefault();
     if(!user.isAuth) {
@@ -66,9 +67,9 @@ const Cart = ({ cart/*, favorite */ }) => {
           <div onClick={() => navigate(`/product/${cart.id}`)} className="cart-name">
             { cart.title_ru }
           </div>
-          <div className="rassrochka f-bold text-center">{ cart.installment_plan }</div>
+          <div className="rassrochka f-bold text-center">{ numberWithCommas(cart.installment_plan * exchangeRate) } сум</div>
           <div className="cart-action">
-            <div className="cart-price f-bold">{ numberWithCommas(cart.price) } сум</div>
+            <div className="cart-price f-bold">{ numberWithCommas((cart.price * exchangeRate)) } сум</div>
             <button onClick={addProductToCart} className="cart-basket hover:shadow-lg shadow-none">
               {!hasInCart ? (
                 <HiOutlineShoppingCart stroke="rgb(33, 26, 26)" size={24} />

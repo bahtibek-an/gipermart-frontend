@@ -20,6 +20,7 @@ const Order = () => {
     addBasketsCartToCheckouts(basket, state.user?.user?.checkout));
   const USAcheckouts = useSelector((state) =>
     addUSABasketsCartToCheckouts(basket, state.user?.user?.checkout));
+  const exchangeRate = useSelector((state) => state.app.exchange);
   const location = useLocation();
   const pathName = location.pathname;
   const [value, setValue] = React.useState("1");
@@ -117,7 +118,7 @@ const Order = () => {
                             <span
                               style={{ color: "#828282", marginLeft: "4px" }}
                             >
-                              5
+                              {item.cart.reduce((acc, item) => acc + item.quantity, 0)}
                             </span>
                           </div>
                           <div>
@@ -161,22 +162,24 @@ const Order = () => {
                         </div>
                       </div>
                       {item.cart?.map((cart) => (
-                        <Link to="/" className="department-box" key={cart.id}>
+                        <Link to={`/product/${cart.product?.id}`} className="department-box" key={cart.id}>
                           <div className="department-image relative">
                             {/*<div className="discount">-6%</div>*/}
                             <img
-                              src={API_URL + cart?.product?.media?.[0]?.img_url}
+                              src={cart?.product?.front_image}
                               alt=""
                             />
                           </div>
                           <div className="department-text">
                             <div className="department-name">
-                              {cart?.product?.product?.name}
+                              <strong>
+                                {cart?.product?.title_ru}
+                              </strong>
                             </div>
                             {/* <div className="department-rassrochka">462 000 сум/ 12 мес</div> */}
-                            <div className="department-description">{ cart.product?.product?.description }</div>
+                            <div className="department-description">{ cart.product?.descriptions }</div>
                             <div className="department-price">
-                              <div className="price">{numberWithCommas(cart.total)} Сум</div>
+                              <div className="price">{numberWithCommas(cart.total * exchangeRate)} Сум</div>
                               {/* <div className="price_old">3 474 240 Сум</div> */}
                             </div>
                           </div>
@@ -185,7 +188,7 @@ const Order = () => {
                       <div className="text-end text-lg mt-6">
                         <strong>
                           Стоимость:{" "}
-                          <span className="order-price">{numberWithCommas(item.totalPrice)} Сум</span>
+                          <span className="order-price">{numberWithCommas(item.totalPrice * exchangeRate)} Сум</span>
                         </strong>
                       </div>
                     </div>
@@ -280,22 +283,22 @@ const Order = () => {
                         </div>
                       </div>
                       {item.cart?.map((cart) => (
-                        <Link to="/" className="department-box" key={cart.id}>
+                        <Link to={`/product/${cart.product?.id}`} className="department-box" key={cart.id}>
                           <div className="department-image relative">
                             {/*<div className="discount">-6%</div>*/}
                             <img
-                              src={API_URL + cart.product.media[0]?.img_url}
+                              src={cart?.product?.front_image}
                               alt=""
                             />
                           </div>
                           <div className="department-text">
                             <div className="department-name">
-                            {cart?.product?.product?.name}
+                              {cart?.product?.product?.name}
                             </div>
-                             {/*<div className="department-rassrochka">462 000 сум/ 12 мес</div>*/}
-                            <div className="department-description">{ cart.product?.product?.description }</div>
+                            {/* <div className="department-rassrochka">462 000 сум/ 12 мес</div> */}
+                            <div className="department-description">{ cart.product?.descriptions }</div>
                             <div className="department-price">
-                              <div className="price">{numberWithCommas(cart.total)} Сум</div>
+                              <div className="price">{numberWithCommas(cart.total * exchangeRate)} Сум</div>
                               {/* <div className="price_old">3 474 240 Сум</div> */}
                             </div>
                           </div>
@@ -304,7 +307,7 @@ const Order = () => {
                       <div className="text-end text-lg mt-6">
                         <strong>
                           Стоимость:{" "}
-                          <span className="order-price">{numberWithCommas(item.totalPrice)} Сум</span>
+                          <span className="order-price">{numberWithCommas(item.totalPrice * exchangeRate)} Сум</span>
                         </strong>
                       </div>
                     </div>

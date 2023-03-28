@@ -4,6 +4,7 @@ import {
     CREATE_BASKET_PRODUCT, 
     CREATE_BASKET_TO_LOCAL, 
     CREATE_CHECKOUT_IN_USER, 
+    CREATE_EXCHANGE_RATES, 
     CREATE_MAP_USER, CREATE_USER, 
     CREATE_WISHLIST, 
     DECREMENT_BASKET_COUNTER, 
@@ -184,5 +185,12 @@ export const updateMapUser = (data) => {
     return {
         type: UPDATE_MAP_USER,
         payload: data
+    }
+}
+
+export const createExchangeRates = (data) => {
+    return {
+        type: CREATE_EXCHANGE_RATES,
+        payload: data,
     }
 }

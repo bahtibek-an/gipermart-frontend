@@ -108,8 +108,8 @@ export const updateCart = async (cartId, userId, productId, quantity, totalPrice
 
 export const fetchExchangeRates = async () => {
     try {
-        const { data } = await axios.get("https://nbu.uz/uz/exchange-rates/json");
-        console.log(data);
+        const { data } = await $host.get("outside/exchange-rates/");
+        return data;
     } catch (error) {
         console.log(error);
     }

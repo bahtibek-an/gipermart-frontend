@@ -10,10 +10,10 @@ import { numberWithCommas } from "../../helper";
 
 const BasketCart = ({ cart, deleteCartItem }) => {
     const [ counter, setCounter ] = useState(cart.quantity);
-    const product = useSelector((state) => state.products.find((item) => item.id == cart?.product?.id));
+    const product = cart.product
     const dispatch = useDispatch();
+    const exchangeRate = useSelector((state) => state.app.exchange);
     const totalPrice = counter * +product.price;
-    console.log(product)
     const removeCart = () => {
         dispatch(deleteBasketInLocal(cart.product.id));
         deleteCart(cart.id)
@@ -65,7 +65,7 @@ const BasketCart = ({ cart, deleteCartItem }) => {
                 <Link to="" className="basket-name">
                     {product.title_en}
                 </Link>
-                <div className="basket-price">{numberWithCommas(totalPrice)} Сум</div>
+                <div className="basket-price">{numberWithCommas(totalPrice * exchangeRate)} Сум</div>
                 <div className="basket-action" onClick={(e) => e.preventDefault()}>
                     <div className="basket-remove" onClick={removeCart}>
                         <BiTrash size={16}/>

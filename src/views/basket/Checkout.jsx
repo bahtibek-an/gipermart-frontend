@@ -24,6 +24,7 @@ import CheckoutModal from "./components/CheckoutModal";
 
 const Checkout = ({ user, defaultUserMapId }) => {
   const [selectedValue, setSelectedValue] = React.useState("a");
+  const exchangeRate = useSelector((state) => state.app.exchange);
   const dispatch = useDispatch();
   const defaultUserMap = user.map.find((item) => item.id == defaultUserMapId);
   const [disabledButton, setDisabledButton] = useState(false);
@@ -369,7 +370,7 @@ const Checkout = ({ user, defaultUserMapId }) => {
             <div className="border-t border-b py-6 my-6">
               <div className="flex items-center justify-between">
                 <div>Сумма по товарам</div>
-                <div className="text-xl f-bold">{numberWithCommas(totalPrice)} Сум</div>
+                <div className="text-xl f-bold">{numberWithCommas(totalPrice * exchangeRate)} Сум</div>
               </div>
               <div className="flex items-center justify-between mt-4">
                 <div>Стоимость доставки</div>
@@ -378,7 +379,7 @@ const Checkout = ({ user, defaultUserMapId }) => {
             </div>
             <div className="flex items-center justify-between mt-4">
               <div className="text-xl">Итого:</div>
-              <div className="text-xl f-bold">{numberWithCommas(totalPrice)} Сум</div>
+              <div className="text-xl f-bold">{numberWithCommas(totalPrice * exchangeRate)} Сум</div>
             </div>
           </div>
         </div>

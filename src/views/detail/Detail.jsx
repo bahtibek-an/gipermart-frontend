@@ -28,6 +28,7 @@ const Detail = ({ products, user }) => {
   const favorite = useSelector((state) => state?.wishLists.find((item) => item?.product?.id == productDetail?.id));
   const hasInProduct = useSelector((state) => state.baskets?.find((item) => item?.product?.id == productDetail?.id));
   const [counter, setCounter] = useState(1);
+  const exchangeRate = useSelector((state) => state.app.exchange);
   const productPrice = (+productDetail.price * counter);
   const fetchProduct = async () => {
     const product = await fetchOneProduct(id);
@@ -113,6 +114,7 @@ const Detail = ({ products, user }) => {
   useEffect(() => {
     fetchProduct()
       .then((data) => {
+        console.log(data)
       })
       .finally(() => {
         setLoading(false);
@@ -195,7 +197,7 @@ const Detail = ({ products, user }) => {
           <div className="xl:col-span-3 lg:col-span-4 col-span-6 lg:col-start-4 lg:col-end-10 xl:mt-0 lg:mt-8">
             <div className="detail-payment rounded">
               <div className="p-4 border">
-                <div className="text-4xl f-bold">{numberWithCommas(productPrice)} Сум</div>
+                <div className="text-4xl f-bold">{numberWithCommas(productPrice * exchangeRate)} Сум</div>
                 <div className="detail-counter grid grid-cols-3 my-4">
                   <Button onClick={minusCounter} className="minus">
                     <AiOutlineMinus size={24} fill="#C4C4C4" />
@@ -215,7 +217,7 @@ const Detail = ({ products, user }) => {
                 >
                   {!hasInProduct ? "Добавить в корзину" : "Корзина"}
                 </Button>
-                <div className="text-4xl f-bold my-5">{productDetail.installment_plan}</div>
+                <div className="text-4xl f-bold my-5">{numberWithCommas(productPrice * exchangeRate)} Сум</div>
                 <Button
                   onClick={() => navigate("/basket")}
                   className="yellow-btn-hover !w-full !py-3 !capitalize !text-base"
@@ -254,7 +256,9 @@ const Detail = ({ products, user }) => {
         </Tabs>
         {value === "1" && (
           <div className="p-6">
-            {productDetail.descriptions}
+            <pre className="text-lg" style={{ fontFamily: "unset" }}>
+              {productDetail.descriptions}
+            </pre>
             {/* <div className="f-bold mb-2" style={{ fontSize: "15px" }}>
               Мощный процессор
             </div>

@@ -17,7 +17,8 @@ const Basket = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState(false);
-  const totalPrice = carts.reduce((acc, item) => acc + +item?.total * item.quantity, 0);
+  const totalPrice = carts.reduce((acc, item) => acc + +item?.product?.price * item.quantity, 0);
+  const exchangeRate = useSelector((state) => state.app.exchange);
   const deleteCart = (id) => {
     dispatch(deleteBasketProduct(id));
   }
@@ -53,7 +54,7 @@ const Basket = () => {
                 <div className="px-6">
                   <div className="text-2xl f-bold">В корзине</div>
                   <div className="mt-1">Товаров: {carts.length}</div>
-                  <div className="text-2xl f-bold mt-1">{numberWithCommas(totalPrice)} Сум</div>
+                  <div className="text-2xl f-bold mt-1">{numberWithCommas(totalPrice * exchangeRate)} Сум</div>
                 </div>
                 <Button
                   onClick={() => navigate("/checkout")}
