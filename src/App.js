@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllCategories, fetchAllProducts } from "./http/ProductAPI";
+import { fetchAllCategories, fetchAllProducts, fetchExchangeRates } from "./http/ProductAPI";
 import { checkAuth } from "./http/UserAPI";
 import { fetchCategories, fetchProducts, hideLoader } from "./redux/actions";
 import Router from "./Router";
@@ -14,6 +14,7 @@ const App = () => {
     if(localStorage.getItem("accessToken")) {
       await checkAuth()
     }
+    fetchExchangeRates();
     const products = await fetchAllProducts();
     const categories = await fetchAllCategories();
     dispatch(fetchProducts(products));

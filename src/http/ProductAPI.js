@@ -1,3 +1,4 @@
+import axios from "axios";
 import $host from "./index.js";
 // import { render } from '@testing-library/react';
 // import ServerError from "../views/error/ServerError";
@@ -5,7 +6,7 @@ import $host from "./index.js";
 
 export const fetchAllProducts = async () => {
     try {
-        const { data } = await $host.get("product/api/products/");
+        const { data } = await $host.get("product/api/products/?limit=100&offset=0");
         return data.results;
     } catch (error) {
         // if(error.toJSON().message === 'Network Error'){
@@ -100,6 +101,15 @@ export const updateCart = async (cartId, userId, productId, quantity, totalPrice
             total: totalPrice
         });
         return data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const fetchExchangeRates = async () => {
+    try {
+        const { data } = await axios.get("https://nbu.uz/uz/exchange-rates/json");
+        console.log(data);
     } catch (error) {
         console.log(error);
     }

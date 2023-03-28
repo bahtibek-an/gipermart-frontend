@@ -31,6 +31,7 @@ const Category = () => {
     const fetchAttributes = async (products) => {
       const attributes = [];
       const map = {};
+      console.log(products)
       products.forEach((item, i) => {
         return item.attributes?.forEach((attr, j) => {
           if(map[item.attribute_values[j]] !== undefined) {
@@ -49,13 +50,13 @@ const Category = () => {
         });
       });
       const sortData = sortFilterCategories(attributes || []);
+      console.log(sortData)
       setAttr(sortData);
     }
 
     const fetchProducts = async () => {
       const param = searchParams.map((item) => `attribute_values=${item.id}`).join('&');
       const data = await fetchFilterProducts(param, category.slug, sortType, filterPriceRange);
-      console.log(data);
       const results = data.results;
       setProducts(results);
       const productPrices = results?.map((item) => +(item?.price)) || [0, 0];

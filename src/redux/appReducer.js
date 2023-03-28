@@ -1,8 +1,9 @@
-import { HIDE_LOADER, HIDE_RIGHT_MODAL, SHOW_LOADER, SHOW_RIGHT_MODAL } from "./types";
+import { CREATE_EXCHANGE_RATES, HIDE_LOADER, HIDE_RIGHT_MODAL, SHOW_LOADER, SHOW_RIGHT_MODAL } from "./types";
 
 const initialState = {
     isLoading: true,
-    rightModal: false
+    rightModal: false,
+    exchange: null,
 }
 
 export const appReducer = (state = initialState, action) => {
@@ -15,6 +16,8 @@ export const appReducer = (state = initialState, action) => {
             return { ...state, rightModal: true };
         case HIDE_RIGHT_MODAL:
             return { ...state, rightModal: false };
+        case CREATE_EXCHANGE_RATES:
+            return { ...state, exchange: action.payload };
         default:
             return state;
     }

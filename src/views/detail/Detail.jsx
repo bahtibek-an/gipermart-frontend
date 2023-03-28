@@ -136,11 +136,11 @@ const Detail = ({ products, user }) => {
           <Link to="/">Магазин /</Link>
           <Link to="/">Аксессуары /</Link>
           <div>
-            {productDetail.title_en}
+            {productDetail.title_ru}
           </div>
         </div>
         <div className="laptop-detail-name text-2xl f-medium mb-4">
-          {productDetail.title_en}
+          {productDetail.title_ru}
         </div>
         <div className="flex items-center gap-4 border-b-2">
           <Rating

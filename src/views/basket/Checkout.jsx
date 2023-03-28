@@ -41,6 +41,7 @@ const Checkout = ({ user, defaultUserMapId }) => {
 
   const onButtonClick = async () => {
     const cashStatus = selectedValue === "a";
+    const payStatus = selectedValue === "b";
     try {
       const { data } = await createCheckout(
         fullName,
@@ -50,10 +51,13 @@ const Checkout = ({ user, defaultUserMapId }) => {
         address,
         comment,
         basketProducts.map((item) => item.id),
-        true,
+        payStatus,
         cashStatus,
         user.id
       );
+      if(payStatus) {
+        window.open(data.generate_link, '_blank').focus();
+      }
       dispatch(createCheckoutInUser(data));
       basketProducts.forEach(item => dispatch(deleteBasketInLocal(item.product.id)));
       setModalSuccessData(data);
@@ -63,13 +67,13 @@ const Checkout = ({ user, defaultUserMapId }) => {
     }
   }
 
-  useEffect(() => {
-    return () => {
-      // console.log("hello")
-      // if(showModal)
-      //   basketProducts.forEach(item => store.dispatch(deleteBasketInLocal(item.product)));
-    }
-  }, [])
+  // useEffect(() => {
+  //   return ()   => {
+  //     // console.log("hello")
+  //     // if(showModal)
+  //     //   basketProducts.forEach(item => store.dispatch(deleteBasketInLocal(item.product)));
+  //   }
+  // }, [])
 
   const totalPrice = basketProducts.reduce((acc, item) => (+item.total * item.quantity) + acc, 0);
   const handleChange = (event) => {
