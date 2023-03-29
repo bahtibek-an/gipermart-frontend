@@ -39,6 +39,7 @@ const Checkout = ({ user, defaultUserMapId }) => {
   const [ error, setError ] = useState('');
   const [ showModal, setShowModal ] = useState(false);
   const [ modalSuccessData, setModalSuccessData ] = useState({});
+  const totalPrice = basketProducts.reduce((acc, item) => (+item.total * item.quantity) + acc, 0);
 
   const onButtonClick = async () => {
     const cashStatus = selectedValue === "a";
@@ -54,7 +55,8 @@ const Checkout = ({ user, defaultUserMapId }) => {
         basketProducts.map((item) => item.id),
         payStatus,
         cashStatus,
-        user.id
+        user.id,
+        totalPrice
       );
       if(payStatus) {
         window.open(data.generate_link, '_blank').focus();
@@ -76,7 +78,7 @@ const Checkout = ({ user, defaultUserMapId }) => {
   //   }
   // }, [])
 
-  const totalPrice = basketProducts.reduce((acc, item) => (+item.total * item.quantity) + acc, 0);
+  
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
   };

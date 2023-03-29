@@ -24,20 +24,12 @@ const CheckoutModal = ({ showModal, data }) => {
                 <h2 className="font-medium text-2xl">Заказ № {data?.cart?.[0]} оформлен</h2>
                 <p className="mt-4">Отслеживать статус заказа можно в личном кабинете</p>
                 <div className="mt-8 flex">
-                  <Button
-                    className={`!mr-4 yellow-btn-hover !rounded-none !py-3 !text-base !w-full`}
-                  >
-                    <Link to="/profile/order">
-                      Смотреть заказы
-                    </Link>
-                  </Button>
-                  <Button
-                    className={`yellow-btn-hover !rounded-none !py-3 !text-base !w-full`}
-                  >
-                    <Link to="/">
-                      Продолжить покупки
-                    </Link>
-                  </Button>
+                  <Link to="/profile/order" style={{ fontFamily: "unset" }} className="flex items-center justify-center !mr-4 yellow-btn-hover !rounded-none !py-3 !text-base !w-full">
+                    Смотреть заказы
+                  </Link>
+                  <Link to="/" style={{ fontFamily: "unset" }} className="flex items-center justify-center yellow-btn-hover !rounded-none !text-base !w-full">
+                    Продолжить покупки
+                  </Link>
                 </div>
               </Stack>
             </Paper>
