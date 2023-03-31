@@ -29,6 +29,7 @@ const Detail = ({ products, user }) => {
   const [counter, setCounter] = useState(1);
   const exchangeRate = useSelector((state) => state.app.exchange);
   const productPrice = (+productDetail.price * counter);
+
   const fetchProduct = async () => {
     const product = await fetchOneProduct(id);
     setProductDetail(product);
@@ -111,6 +112,7 @@ const Detail = ({ products, user }) => {
   }
 
   useEffect(() => {
+    setLoading(true);
     fetchProduct()
       .then((data) => {
         console.log(data)
