@@ -118,7 +118,7 @@ const Detail = ({ products, user }) => {
       .finally(() => {
         setLoading(false);
       })
-  }, []);
+  }, [id]);
 
   if(loading) {
     return (
