@@ -29,6 +29,7 @@ const Detail = ({ products, user }) => {
   const [counter, setCounter] = useState(1);
   const exchangeRate = useSelector((state) => state.app.exchange);
   const productPrice = (+productDetail.price * counter);
+  const category = useSelector((state) => state.categories.find(item => item.id === productDetail.category));
 
   const fetchProduct = async () => {
     const product = await fetchOneProduct(id);
@@ -137,7 +138,7 @@ const Detail = ({ products, user }) => {
         
         <div className="pages detail-page !pt-8">
           <Link to="/">Магазин /</Link>
-          <Link to="/">Аксессуары /</Link>
+          <Link to={`/category/${category.id}`}>{category.name} /</Link>
           <div>
             {productDetail.title_ru}
           </div>
