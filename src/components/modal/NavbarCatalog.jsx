@@ -3,10 +3,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import {API_URL} from "../../http";
-// import { categoriesAlgo } from "../../helper";
 
 const NavbarCatalog = ({ openModal, closeModal, categories, closeLeftModal }) => {
-
     const closeAllModals = () => {
         closeModal();
         closeLeftModal();

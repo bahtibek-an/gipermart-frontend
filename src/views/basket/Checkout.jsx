@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import SecondNavbar from "../../layout/navbar/SecondNavbar";
 import "../../assets/scss/_basket.scss";
 import { Container } from "@mui/system";

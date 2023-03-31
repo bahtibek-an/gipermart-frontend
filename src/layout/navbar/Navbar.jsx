@@ -56,7 +56,11 @@ const Navbar = ({ isAuth, basketProductsLength, wishListsLength }) => {
 
   return (
     <>
-      <NavbarCatalog openModal={openModal} closeModal={handleCloseModal} closeLeftModal={() => setLeftModal(false)}/>
+      <NavbarCatalog 
+        openModal={openModal} 
+        closeModal={handleCloseModal} 
+        closeLeftModal={() => setLeftModal(false)}
+      />
       <div>
         <Drawer
           anchor="left"

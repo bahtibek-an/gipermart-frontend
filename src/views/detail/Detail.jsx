@@ -7,7 +7,6 @@ import Rating from "@mui/material/Rating";
 import { Button, Tab, Tabs } from "@mui/material";
 import { BiHeart, BiHeartCircle } from "react-icons/bi";
 import ImageGallery from "./ImageGallery";
-// import Counter from "../../components/counter/Counter";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import { HiOutlineShoppingCart } from "react-icons/hi";
 import { appendProductToUserCart, appendProductToWishList, fetchOneProduct, deleteProductFromWishList } from "../../http/ProductAPI";
@@ -16,7 +15,7 @@ import { craeteWishListProduct, createBasketProduct, createBasketToLocal, delete
 import Spinner from "../../UI/spinner/Spinner";
 import { createRatingProduct } from "./http";
 import { numberWithCommas } from "../../helper";
-// import SimilarCarts from "../../components/similarCarts/SimilarCarts";
+import SimilarCarts from "../../components/similarCarts/SimilarCarts";
 
 const Detail = ({ products, user }) => {
   const navigate = useNavigate();
@@ -305,7 +304,7 @@ const Detail = ({ products, user }) => {
           </div>
         )}
       </Container>
-      {/* <SimilarCarts /> */}
+      <SimilarCarts category={productDetail.category}/>
     </section>
   );
 };

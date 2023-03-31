@@ -5,7 +5,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import { Container } from "@mui/system";
 import "../../assets/scss/_filter.scss";
 import { Link, useParams } from "react-router-dom";
-import {Accordion as AccordionDefault, Box, FormControlLabel, MenuItem, Stack, AccordionDetails, InputAdornment, AccordionSummary as AccordionSummaryDefault} from "@mui/material";
+import {Accordion as AccordionDefault, FormControlLabel, MenuItem, Stack, AccordionDetails, InputAdornment, AccordionSummary as AccordionSummaryDefault, Pagination, PaginationItem} from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import Title from "../../components/title/Title";
 import Cart from "../../components/cart/Cart";
@@ -18,6 +18,7 @@ import Accordion from "../../components/accordion/accordion";
 import AccordionSummary from "../../components/accordion-summary";
 import {CurensyIcon} from "../../components/icons/curensy-icon";
 import Input from "../../components/input";
+
 const Category = () => {
     const { categoryId } = useParams();
     const category = useSelector((state) => state.categories?.find((item) => item?.id == categoryId))
@@ -26,12 +27,11 @@ const Category = () => {
     const [ loading, setLoading ] = useState(true);
     const [ searchParams, setSearchParams ] = useState([]);
     const [ sortType, setSortType ] = useState("price");
-    const productRange = React.useRef({ min: 0, max: 0 });
-    const [ filterPriceRange, setFilterPriceRange ] = useState({ min: productRange.current.min, max: productRange.current.max });
+    const [productRange, setProductRange] = useState({ min: 0, max: 0 });
+    const [ filterPriceRange, setFilterPriceRange ] = useState({ min: productRange.min, max: productRange.max });
     const fetchAttributes = async (products) => {
       const attributes = [];
       const map = {};
-      console.log(products)
       products.forEach((item, i) => {
         return item.attributes?.forEach((attr, j) => {
           if(map[item.attribute_values[j]] !== undefined) {
@@ -50,7 +50,6 @@ const Category = () => {
         });
       });
       const sortData = sortFilterCategories(attributes || []);
-      console.log(sortData)
       setAttr(sortData);
     }
 
@@ -60,22 +59,21 @@ const Category = () => {
       const results = data.results;
       setProducts(results);
       const productPrices = results?.map((item) => +(item?.price)) || [0, 0];
-      productRange.current.min = Math.min(...productPrices);
-      productRange.current.max = Math.max(...productPrices);
+      setProductRange({min: Math.min(...productPrices), max: Math.max(...productPrices)});
       return data.results;
     }
 
     const handleChangePriceFilter = (event, type) => {
         const price = +event.target.value;
         if (type === "min") {
-            if (price < productRange.min || price > productRange.max) {
-                return;
-            }
+            // if (price < productRange.min || price > productRange.max) {
+            //     return;
+            // }
             setFilterPriceRange(prev => ({...prev, min: price}));
         } else if (type === "max") {
-            if(price > productRange.max || price < productRange.min) {
-                return;
-            }
+            // if(price > productRange.max || price < productRange.min) {
+            //     return;
+            // }
             setFilterPriceRange(prev => ({...prev, max: price}));
         }
     }
@@ -106,7 +104,7 @@ const Category = () => {
       }
       return setSearchParams((prev) => prev.filter((item) => item.id != data.id));
     }
-
+    
     return (
     <>
       <SecondNavbar />
@@ -173,7 +171,6 @@ const Category = () => {
                       <Accordion sx={{ border: '1px solid #e5e5e5' }}>
                           <AccordionSummary>
                               <Typography
-                                  // variant="subtitle2"
                               >Цена</Typography>
                           </AccordionSummary>
                           <AccordionDetails>
@@ -209,7 +206,7 @@ const Category = () => {
               </div>
             </div>
             <div className="lg:col-span-9 col-span-6">
-              <Title title={category?.name} style="f-medium mb-4" />
+              <Title title={category.name} style="f-medium mb-4" />
               <div className="grid 2xl:grid-cols-4 xl:grid-cols-3 md:grid-cols-2 lg:grid-cols-2">
                 {loading ? (
                   [1, 2, 3].map((i) => (

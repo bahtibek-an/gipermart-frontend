@@ -6,7 +6,7 @@ import $host from "./index.js";
 
 export const fetchAllProducts = async () => {
     try {
-        const { data } = await $host.get("product/api/products/?limit=100&offset=0");
+        const { data } = await $host.get("product/api/products/?limit=20&offset=0");
         return data.results;
     } catch (error) {
         // if(error.toJSON().message === 'Network Error'){
