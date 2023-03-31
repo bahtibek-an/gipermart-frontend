@@ -4,25 +4,28 @@ import "../../assets/scss/_recommendations.scss";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Link } from "react-router-dom";
-import { BsArrowRight, BsArrowLeft } from "react-icons/bs";
 import { Container } from "@mui/system";
 import Title from "../title/Title";
 import Cart from "../cart/Cart";
-import { connect } from "react-redux";
 import SlickArrowLeft from "../SlickArrow/SlickArrowLeft";
 import SlickArrowRight from "../SlickArrow/SlickArrowRight";
+import $host from "../../http";
+import LoadingCart from "../cart/LoadingCart";
 
 
-const Recommendations = ({ products: productLists, isLoading }) => {
-  const [products, setProducts] = useState((() => {
-    let result = [...productLists];
-    if(result.length > 0) {
-      while(result.length < 6) {
-        result = result.concat(result);
-      }
+const Recommendations = ({ }) => {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const { data } = await $host.get("/product/api/products/?limit=30");
+      setProducts(data.results);
+      return data.results;
     }
-    return result;
-  })());
+    fetchProducts()
+      .then(() => setLoading(false));
+  }, []);
 
   let settings = {
     infinite: true,
@@ -72,20 +75,20 @@ const Recommendations = ({ products: productLists, isLoading }) => {
           <Title title={"Гипермарт Рекомендует"} style="mt-8 mb-4 red" />
         </Link>
         <Slider {...settings} className="recommendations">
-            {products.map((item, i) => (
+          {loading ? (
+            [1, 2, 3, 4, 5, 6].map((item) => (
+              <LoadingCart key={item}/>
+            ))
+          ) : (
+            products.map((item, i) => (
               <Cart cart={item} key={i} />
-            ))}
+            ))
+          )}
         </Slider>
       </Container>
     </div>
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    products: state.products,
-    isLoading: state.app.products
-  }
-} 
 
-export default connect(mapStateToProps, null)(Recommendations);
+export default (Recommendations);

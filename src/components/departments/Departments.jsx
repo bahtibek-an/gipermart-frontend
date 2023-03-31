@@ -3,11 +3,10 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import "../../assets/scss/_departments.scss";
-import { categoriesAlgo } from "../../helper";
+import ProductItem from "./components/ProductItem/ProductItem";
 
 const Departments = () => {
-  const products = useSelector((state) => state.products);
-  const categories = useSelector((state) => (state.categories).slice(0, 3));
+  const categories = useSelector((state) => (state.categories).filter((item) => item.parent).slice(6, 9));
 
   return (
     <Container maxWidth="xl">
@@ -17,27 +16,7 @@ const Departments = () => {
           <Link to={`/category/${category.id}`} className="block pb-4 border-b title red">
             {category.name}
           </Link>
-          {products.filter((product) => product?.product?.category == category?.id).map((product) => (
-          <Link key={product.id} to={`/product/${product.product?.id}/`} className="department-box">
-            <div className="department-image relative">
-              <div className="discount">-6%</div>
-              <img
-                src={"https://yruoebgair.tk/" + product.media[0]?.img_url}
-                alt=""
-              />
-            </div>
-            <div className="department-text">
-              <div className="department-name">
-                {product.product?.name}
-              </div>
-              <div className="department-rassrochka">{product.installment_plan}</div>
-              <div className="department-price">
-                <div className="price">{product.sale_price} Сум</div>
-                <div className="price_old">{product.price} Сум</div>
-              </div>
-            </div>
-          </Link>
-          ))}
+          <ProductItem category={category}/>
         </div>
         ))}
       </div>

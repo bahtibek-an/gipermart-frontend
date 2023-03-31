@@ -11,10 +11,25 @@ import Cart from "../cart/Cart";
 import { connect } from "react-redux";
 import SlickArrowRight from "../SlickArrow/SlickArrowRight";
 import SlickArrowLeft from "../SlickArrow/SlickArrowLeft";
+import $host from "../../http";
+import LoadingCart from "../cart/LoadingCart";
 
 
 
-const Media = ({ products, isLoading }) => {
+const Media = () => {
+  const [ products, setProducts ] = useState([]);
+  const [ loading, setLoading ] = useState(true);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const { data } = await $host.get("product/category/tv-i-media/");
+      setProducts(data);
+      return data;
+    }
+    fetchProducts()
+      .then(() => setLoading(false));
+  }, []);
+
   let settings = {
     dots: false,
     slidesToShow: 6,
@@ -63,20 +78,18 @@ const Media = ({ products, isLoading }) => {
           <Title title={"Телевизоры и Медиа"} style="mt-8 mb-4 red" />
         </Link>
         <Slider {...settings} className="media">
-          {products.map((item) => (
-            <Cart cart={item} key={item.id}/>
-          ))}
+          {loading ? (
+            [1, 2, 3, 4, 5, 6].map((item) => (
+              <LoadingCart key={item}/>
+            ))
+          ) : (
+            products?.map((item) => (
+              <Cart cart={item} key={item.id}/>
+            ))
+          )}
         </Slider>
       </Container>
     </div>
   );
 };
-
-const mapStateToProps = (state) => {
-  return {
-    products: state.products,
-    isLoading: state.app.isLoading
-  }
-}
-
-export default connect(mapStateToProps, null)(Media);
+export default Media;
