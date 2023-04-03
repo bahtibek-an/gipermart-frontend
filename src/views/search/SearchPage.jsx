@@ -55,7 +55,10 @@ const SearchPage = () => {
           )}
         </div>
         {!loading && products.length === 0 && (
-          <div className="mt-8 mb-20 flex justify-center">
+          <div 
+            className="mt-8 mb-20 flex justify-center"
+            style={{ height: "30vh" }}  
+          >
               <h1 className="text-2xl">Ничего не найдено</h1>
           </div>
         )}

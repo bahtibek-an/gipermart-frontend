@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { fetchProducts } from "../../../../redux/actions";
 import $host from "../../../../http";
 import LoadingCart from "../../../cart/LoadingCart";
 import { numberWithCommas } from "../../../../helper";
@@ -26,7 +25,7 @@ const ProductItem = ({ category }) => {
     return products.map((product) => (
         <Link key={product.id} to={`/product/${product?.id}/`} className="department-box">
             <div className="department-image relative">
-                <div className="discount">-6%</div>
+                {/* <div className="discount">-6%</div> */}
                 <img
                     src={product.front_image}
                     alt=""

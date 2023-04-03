@@ -7,18 +7,18 @@ import "../../assets/scss/_favorites.scss";
 import { useSelector } from "react-redux";
 
 const Favorites = () => {
-  const wishLists = useSelector((state) => state.wishLists?.map((item) => item.product.id));
-  const products = useSelector((state) => state.products.filter((item) => wishLists.includes(item.id)));
+  const wishListProducts = useSelector((state) => state.wishLists);
+
   return (
     <>
       <SecondNavbar />
       <Container maxWidth="xl">
         <div style={{minHeight: "70vh"}}>
           <Title title="Избранные товары" style="f-bold mb-6 mt-12" />
-          {products.length > 0 ? (
+          {wishListProducts.length > 0 ? (
             <div className="favorites mb-12">
-              {products.map((item) => (
-                <Cart cart={item} key={item.id} favorite={true}/>
+              {wishListProducts.map((item) => (
+                <Cart cart={item.product} key={item.id} favorite={true}/>
               ))}
             </div>
             ) : (
