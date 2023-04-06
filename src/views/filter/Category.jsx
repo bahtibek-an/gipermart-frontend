@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import { IoIosArrowDown } from "react-icons/io";
 import { Container } from "@mui/system";
 import "../../assets/scss/_filter.scss";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import {Accordion as AccordionDefault, FormControlLabel, MenuItem, Stack, AccordionDetails, InputAdornment, AccordionSummary as AccordionSummaryDefault, Pagination, PaginationItem, Slider, Box, styled} from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import Title from "../../components/title/Title";
@@ -29,6 +29,8 @@ const Category = () => {
     const [ sortType, setSortType ] = useState("price");
     const [productRange, setProductRange] = useState({ min: 0, max: 0 });
     const [ filterPriceRange, setFilterPriceRange ] = useState({ min: productRange.min, max: productRange.max });
+    const navigate = useNavigate();
+
     const fetchAttributes = async (products) => {
       const attributes = [];
       const map = {};
@@ -55,7 +57,7 @@ const Category = () => {
 
     const fetchProducts = async () => {
       const param = searchParams.map((item) => `attribute_values=${item.id}`).join('&');
-      const data = await fetchFilterProducts(param, category.slug, sortType, filterPriceRange);
+      const data = await fetchFilterProducts(param, category?.slug, sortType, filterPriceRange);
       const results = data.results;
       setProducts(results);
       const productPrices = results?.map((item) => +(item?.price)) || [0, 0];
@@ -66,14 +68,8 @@ const Category = () => {
     const handleChangePriceFilter = (event, type) => {
         const price = +event.target.value;
         if (type === "min") {
-            // if (price < productRange.min || price > productRange.max) {
-            //     return;
-            // }
             setFilterPriceRange(prev => ({...prev, min: price}));
         } else if (type === "max") {
-            // if(price > productRange.max || price < productRange.min) {
-            //     return;
-            // }
             setFilterPriceRange(prev => ({...prev, max: price}));
         }
     }
@@ -98,18 +94,16 @@ const Category = () => {
       }
     });
 
-    // useEffect(() => {
-    //     const sortedProducts = () => {
-    //
-    //     }
-    // }, [filterPriceRange]);
-
     const addToSearch = (e, data) => {
       const checked = e.target.checked;
       if(checked) {
         return setSearchParams((prev) => [...prev, data]);
       }
       return setSearchParams((prev) => prev.filter((item) => item.id != data.id));
+    }
+
+    if(!category) {
+      return navigate("/404", { replace: true });
     }
     
     return (
