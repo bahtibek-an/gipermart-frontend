@@ -5,7 +5,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import { Container } from "@mui/system";
 import "../../assets/scss/_filter.scss";
 import { Link, useParams } from "react-router-dom";
-import {Accordion as AccordionDefault, FormControlLabel, MenuItem, Stack, AccordionDetails, InputAdornment, AccordionSummary as AccordionSummaryDefault, Pagination, PaginationItem} from "@mui/material";
+import {Accordion as AccordionDefault, FormControlLabel, MenuItem, Stack, AccordionDetails, InputAdornment, AccordionSummary as AccordionSummaryDefault, Pagination, PaginationItem, Slider, Box, styled} from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import Title from "../../components/title/Title";
 import Cart from "../../components/cart/Cart";
@@ -91,6 +91,13 @@ const Category = () => {
         .then(() => setLoading(false));
     }, [categoryId]);
 
+    const CustomSlider = styled(Slider)({
+      color: "#feee00",
+      '& .MuiSlider-rail': {
+        color: "#ccc"
+      }
+    });
+
     // useEffect(() => {
     //     const sortedProducts = () => {
     //
@@ -168,13 +175,32 @@ const Category = () => {
                   </Select>
                 </Stack>
                   <Stack>
-                      <Accordion sx={{ border: '1px solid #e5e5e5' }}>
+                      <Accordion expanded={true} sx={{ border: '1px solid #e5e5e5' }}>
                           <AccordionSummary>
                               <Typography
                               >Цена</Typography>
                           </AccordionSummary>
                           <AccordionDetails>
-                              <Stack alignItems="center" gap={2} direction="row">
+                              <Box sx={{ width: "100%", padding: "0 20px" }}>
+                                <CustomSlider
+                                  valueLabelDisplay="auto" 
+                                  getAriaLabel={() => 'Temperature range'}
+                                  value={[20, 37]}
+                                  getAriaValueText={(value) => `${value}Сум`}
+                                  // onChange={}
+                                  // marks={[
+                                  //   {
+                                  //     value: 0,
+                                  //     label: '0',
+                                  //   },
+                                  //   {
+                                  //     value: 100,
+                                  //     label: '10032321432',
+                                  //   },
+                                  // ]}
+                                />
+                              </Box>
+                              <Stack alignItems="center" gap={2} direction="row" className="mt-4">
                                   <Input
                                       style={{flex: "1"}}
                                       startAdornment={
@@ -185,7 +211,6 @@ const Category = () => {
                                       value={filterPriceRange.min}
                                       type="number"
                                       onChange={(e) => handleChangePriceFilter(e, "min")}
-                                      // size="small"
                                   />
                                   <Input
                                       style={{flex: "1"}}
@@ -197,7 +222,6 @@ const Category = () => {
                                       value={filterPriceRange.max}
                                       type="number"
                                       onChange={(e) => handleChangePriceFilter(e, "max")}
-                                      // size="small"
                                   />
                               </Stack>
                           </AccordionDetails>
