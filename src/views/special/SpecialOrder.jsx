@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import SecondNavbar from "../../layout/navbar/SecondNavbar";
 import "../../assets/scss/_special_order.scss";
 import { Container } from "@mui/system";
@@ -14,10 +14,22 @@ import Slider from "react-slick";
 // import { Button, Card } from "@mui/material";
 import { useSelector } from "react-redux";
 import Cart from "../../components/cart/Cart";
+import $host from "../../http";
+import LoadingCart from "../../components/cart/LoadingCart";
 
 const SpecialOrder = () => {
-  const products = useSelector((state) => state?.products?.filter((item) => item?.product?.USA_product));
-  
+  const [ loading, setLoading ] = useState(true);
+  const [ products, setProducts ] = useState([]);
+
+  useEffect(() => {
+    const fetchUsaProducts = async () => {
+      const { data } = await $host.get(`product/api/product-usa/?USA_product=true`);
+      setProducts(data.results);
+    }
+    fetchUsaProducts()
+        .then(() => setLoading(false));
+  }, []);
+
   let settings = {
     dots: false,
     infinite: false,
@@ -62,50 +74,18 @@ const SpecialOrder = () => {
           </div>
           <Title title="Товары из Америки" style="f-bold mb-8" />
           <Slider {...settings}>
-            {products.map((item) => (
-              <Cart cart={item} key={item.id}/>
-            ))}
+            {loading ? (
+                [1, 2, 3, 4, 5, 6, 7, 8].map((item, index) => (
+                    <LoadingCart key={index}/>
+                ))
+            ) : (
+                products.map((item) => (
+                    <Cart cart={item} key={item.id}/>
+                ))
+            )}
           </Slider>
-          <div className="grid md:grid-cols-2 mt-8">
-            {/*<div>*/}
-            {/*  <div className="mt-4">Регион/область*</div>*/}
-            {/*  <FormControl fullWidth>*/}
-            {/*    <Select*/}
-            {/*      labelId="demo-simple-select-label"*/}
-            {/*      id="demo-simple-select"*/}
-            {/*    >*/}
-            {/*      <MenuItem value={10}>Ten</MenuItem>*/}
-            {/*      <MenuItem value={20}>Twenty</MenuItem>*/}
-            {/*      <MenuItem value={30}>Thirty</MenuItem>*/}
-            {/*    </Select>*/}
-            {/*  </FormControl>*/}
-            {/*  <div className="mt-4">Город/район*</div>*/}
-            {/*  <FormControl fullWidth>*/}
-            {/*    <Select*/}
-            {/*      labelId="demo-simple-select-label"*/}
-            {/*      id="demo-simple-select"*/}
-            {/*    >*/}
-            {/*      <MenuItem value={10}>Ten</MenuItem>*/}
-            {/*      <MenuItem value={20}>Twenty</MenuItem>*/}
-            {/*      <MenuItem value={30}>Thirty</MenuItem>*/}
-            {/*    </Select>*/}
-            {/*  </FormControl>*/}
-            {/*  <div className="mt-4">Адрес*</div>*/}
-            {/*  <TextField className="w-full" id="outlined-required" />*/}
-            {/*  <div className="mt-4">*/}
-            {/*    Ссылка на Товар{" "}*/}
-            {/*    <span style={{ color: "rgba(51, 51, 51, 0.4)" }}>*/}
-            {/*      (на бренд, увиденную на других сайтах)*/}
-            {/*    </span>*/}
-            {/*  </div>*/}
-            {/*  <TextField className="w-full" id="outlined-required" />*/}
-            {/*  <div className="flex items-center justify-end">*/}
-            {/*    <Button className="yellow-btn-hover !px-4 !py-2 !mt-6 !mb-24 !text-base !rounded-none">*/}
-            {/*      Заказать*/}
-            {/*    </Button>*/}
-            {/*  </div>*/}
-            {/*</div>*/}
-          </div>
+          {/*<div className="grid md:grid-cols-2 mt-8">*/}
+          {/*</div>*/}
         </Container>
       </section>
     </>

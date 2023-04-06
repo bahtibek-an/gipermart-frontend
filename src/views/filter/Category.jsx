@@ -18,12 +18,17 @@ import Accordion from "../../components/accordion/accordion";
 import AccordionSummary from "../../components/accordion-summary";
 import {CurensyIcon} from "../../components/icons/curensy-icon";
 import Input from "../../components/input";
+import $host from "../../http";
 
 const Category = () => {
     const { categoryId } = useParams();
     const category = useSelector((state) => state.categories?.find((item) => item?.id == categoryId))
     const [ products, setProducts ] = useState([]);
-    const [ attr, setAttr ] = useState([]);
+    const [ attr, setAttr ] = useState({});
+    const [ brands, setBrands ] = useState([]);
+    const [ brandParams, setBrandParams ] = useState([]);
+    const [ colors, setColors ] = useState([]);
+    const [ colorParams, setColorParams ] = useState([]);
     const [ loading, setLoading ] = useState(true);
     const [ searchParams, setSearchParams ] = useState([]);
     const [ sortType, setSortType ] = useState("price");
@@ -31,33 +36,31 @@ const Category = () => {
     const [ filterPriceRange, setFilterPriceRange ] = useState({ min: productRange.min, max: productRange.max });
     const navigate = useNavigate();
 
-    const fetchAttributes = async (products) => {
-      const attributes = [];
-      const map = {};
-      products.forEach((item, i) => {
-        return item.attributes?.forEach((attr, j) => {
-          if(map[item.attribute_values[j]] !== undefined) {
-            return;
-          }
-          map[item.attribute_values[j]] = attr;
-          attributes.push({
-            id: item.attribute_values[j],
-            product_attribute: {
-              id: attr.product_attribute.id,
-              name: attr.product_attribute.name,
-              description: attr.product_attribute.description,
-            },
-            attribute_value: attr.attribute_value
-          });
-        });
-      });
-      const sortData = sortFilterCategories(attributes || []);
-      setAttr(sortData);
+    const fetchAttributes = async () => {
+        const { data: filters } = await $host.get(`product/categories-filter/${ categoryId }/`);
+        function groupByAttribute(data) {
+            const result = {};
+            data.forEach((item) => {
+                const attributeName = item.product_attribute__name;
+                const attributeValue = item.attribute_value;
+                const attributeId = item.id;
+                if (!result[attributeName]) {
+                    result[attributeName] = [];
+                }
+                result[attributeName].push({ id: attributeId, value: attributeValue });
+            });
+            return result;
+        }
+        setColors(filters.colors);
+        setBrands(filters.brands);
+        setAttr(groupByAttribute(filters.attribute_values));
     }
 
     const fetchProducts = async () => {
       const param = searchParams.map((item) => `attribute_values=${item.id}`).join('&');
-      const data = await fetchFilterProducts(param, category?.slug, sortType, filterPriceRange);
+      const brand = brandParams.map((item) => `brand=${item.id}`).join('&');
+      const color = colorParams.map((item) => `colors=${item.id}`).join('&');
+      const data = await fetchFilterProducts(param, category?.slug, sortType, filterPriceRange, brand, color);
       const results = data.results;
       setProducts(results);
       const productPrices = results?.map((item) => +(item?.price)) || [0, 0];
@@ -78,7 +81,7 @@ const Category = () => {
       setLoading(true);
       fetchProducts()
         .then(() => setLoading(false));
-    }, [searchParams, sortType]);
+    }, [searchParams, sortType, brandParams, colorParams]);
 
     useEffect(() => {
       setLoading(true)
@@ -99,7 +102,23 @@ const Category = () => {
       if(checked) {
         return setSearchParams((prev) => [...prev, data]);
       }
-      return setSearchParams((prev) => prev.filter((item) => item.id != data.id));
+      return setSearchParams((prev) => prev.filter((item) => item.id !== data.id));
+    }
+
+    const addToBrandParams = (e, data) => {
+        const checked = e.target.checked;
+        if(checked) {
+            return setBrandParams((prev) => [...prev, data]);
+        }
+        return setBrandParams((prev) => prev.filter((item) => item.id !== data.id));
+    }
+
+    const addToColorParams = (e, data) => {
+        const checked = e.target.checked;
+        if(checked) {
+            return setColorParams((prev) => [...prev, data]);
+        }
+        return setColorParams((prev) => prev.filter((item) => item.id !== data.id));
     }
 
     if(!category) {
@@ -128,18 +147,18 @@ const Category = () => {
                       </Link>
                   ))}
                 </AccordionDefault>
-                {attr.map((item, i) => (
+                {Object.keys(attr).map((item, i) => (
                   <AccordionDefault key={i}>
                     <AccordionSummaryDefault
                       expandIcon={<IoIosArrowDown />}
                       aria-controls="panel2a-content"
                       id="panel2a-header"
                     >
-                      <Typography>{item.name}</Typography>
+                      <Typography>{item}</Typography>
                     </AccordionSummaryDefault>
                     <div className="all-category">
-                      {item.children?.map((value) => (
-                        <label className="item" key={value.id}>
+                      {attr[item].map((value, j) => (
+                        <label className="item" key={j}>
                           <FormControlLabel
                             control={
                               <Checkbox
@@ -152,6 +171,50 @@ const Category = () => {
                     </div>
                   </AccordionDefault>
                 ))}
+                  <AccordionDefault>
+                      <AccordionSummaryDefault
+                          expandIcon={<IoIosArrowDown />}
+                          aria-controls="panel2a-content"
+                          id="panel2a-header"
+                      >
+                          <Typography>Бренд</Typography>
+                      </AccordionSummaryDefault>
+                      <div className="all-category">
+                          {brands.map((item, index) => (
+                              <label className="item" key={index}>
+                                  <FormControlLabel
+                                      control={
+                                          <Checkbox
+                                              onClick={(e) => addToBrandParams(e, item)}
+                                          />
+                                      }
+                                      label={item.name} />
+                              </label>
+                          ))}
+                      </div>
+                  </AccordionDefault>
+                  <AccordionDefault>
+                      <AccordionSummaryDefault
+                          expandIcon={<IoIosArrowDown />}
+                          aria-controls="panel2a-content"
+                          id="panel2a-header"
+                      >
+                          <Typography>Цвет</Typography>
+                      </AccordionSummaryDefault>
+                      <div className="all-category">
+                          {colors.map((item, index) => (
+                              <label className="item" key={index}>
+                                  <FormControlLabel
+                                      control={
+                                          <Checkbox
+                                              onClick={(e) => addToColorParams(e, item)}
+                                          />
+                                      }
+                                      label={item.color} />
+                              </label>
+                          ))}
+                      </div>
+                  </AccordionDefault>
                 <Stack sx={{ padding: '1rem 0' }} gap={2}>
                   <Select
                     value={sortType}

@@ -31,7 +31,7 @@ const SimilarCarts = ({ category: categoryId }) => {
     }
     fetchSimilarCarts()
       .then(() => setLoading(false));
-  });
+  }, []);
 
   let settings = {
     dots: false,

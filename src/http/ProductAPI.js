@@ -82,10 +82,10 @@ export const fetchAttributesByCategoryId = async (id) => {
     }
 }
 
-export const fetchFilterProducts = async (params, productSlug, sortType, filterPrice) => {
+export const fetchFilterProducts = async (params, productSlug, sortType, filterPrice, brandParams, colorParams) => {
     try {
         // const { data } = await $host.get(`product/product_filter/?ordering=${sortType}&search=${productSlug}&${params}&min_price=${filterPrice.min}&max_price=${filterPrice.max}`);4
-        const { data } = await $host.get(`product/product_filter/?ordering=${sortType}&search=${productSlug}&${params}`);
+        const { data } = await $host.get(`product/product_filter/?ordering=${sortType}&search=${productSlug}&${params}&${brandParams}&${colorParams}`);
         return data;
     } catch (error) {
         console.log(error);
