@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import SecondNavbar from "../../layout/navbar/SecondNavbar";
 import Typography from "@mui/material/Typography";
 import { IoIosArrowDown } from "react-icons/io";
@@ -11,7 +11,6 @@ import Title from "../../components/title/Title";
 import Cart from "../../components/cart/Cart";
 import { useSelector } from "react-redux";
 import { fetchFilterProducts } from "../../http/ProductAPI";
-import { sortFilterCategories } from "../../helper";
 import LoadingCart from "../../components/cart/LoadingCart";
 import Select from "../../components/select/Select";
 import Accordion from "../../components/accordion/accordion";
@@ -19,6 +18,7 @@ import AccordionSummary from "../../components/accordion-summary";
 import {CurensyIcon} from "../../components/icons/curensy-icon";
 import Input from "../../components/input";
 import $host from "../../http";
+import {numberWithCommas} from "../../helper";
 
 const Category = () => {
     const { categoryId } = useParams();
@@ -33,17 +33,25 @@ const Category = () => {
     const [ searchParams, setSearchParams ] = useState([]);
     const [ sortType, setSortType ] = useState("price");
     const [productRange, setProductRange] = useState({ min: 0, max: 0 });
-    const [ filterPriceRange, setFilterPriceRange ] = useState({ min: productRange.min, max: productRange.max });
+    const [ filterPriceRange, setFilterPriceRange ] = useState([0, 100]);
+    const exchangeRate = useSelector((state) => state.app.exchange);
     const navigate = useNavigate();
+
+    const didMountRef = useRef(false);
 
     const fetchAttributes = async () => {
         const { data: filters } = await $host.get(`product/categories-filter/${ categoryId }/`);
+        const { data: maxPrice } = await $host.get(`product/product_filter/?search=${ category.slug }&ordering=-price&limit=1`);
+        const max = (+maxPrice.results?.[0].price * exchangeRate);
+        if(maxPrice.results?.[0]) {
+            setProductRange({ min: 0, max: max });
+        }
         function groupByAttribute(data) {
             const result = {};
             data.forEach((item) => {
-                const attributeName = item.product_attribute__name;
-                const attributeValue = item.attribute_value;
-                const attributeId = item.id;
+                const attributeName = item.attribute_values__product_attribute__name;
+                const attributeValue = item.attribute_values__attribute_value;
+                const attributeId = item.attribute_values__id;
                 if (!result[attributeName]) {
                     result[attributeName] = [];
                 }
@@ -54,40 +62,49 @@ const Category = () => {
         setColors(filters.colors);
         setBrands(filters.brands);
         setAttr(groupByAttribute(filters.attribute_values));
+        return max;
     }
 
-    const fetchProducts = async () => {
+    const fetchProducts = async (maxPrice) => {
       const param = searchParams.map((item) => `attribute_values=${item.id}`).join('&');
       const brand = brandParams.map((item) => `brand=${item.id}`).join('&');
       const color = colorParams.map((item) => `colors=${item.id}`).join('&');
-      const data = await fetchFilterProducts(param, category?.slug, sortType, filterPriceRange, brand, color);
+      const min = Math.floor(((filterPriceRange[0] / 100) * maxPrice));
+      const max = Math.floor(((filterPriceRange[1] / 100) * maxPrice));
+      const limit = 24;
+      const offset = 0;
+      const data = await fetchFilterProducts(param, category?.slug, sortType, {
+          min,
+          max
+      }, brand, color, limit, offset);
       const results = data.results;
       setProducts(results);
-      const productPrices = results?.map((item) => +(item?.price)) || [0, 0];
-      setProductRange({min: Math.min(...productPrices), max: Math.max(...productPrices)});
       return data.results;
     }
 
-    const handleChangePriceFilter = (event, type) => {
-        const price = +event.target.value;
-        if (type === "min") {
-            setFilterPriceRange(prev => ({...prev, min: price}));
-        } else if (type === "max") {
-            setFilterPriceRange(prev => ({...prev, max: price}));
-        }
+    const handleChangePriceFilter = (event, newValue) => {
+        setFilterPriceRange(newValue);
     }
 
     useEffect(() => {
-      setLoading(true);
-      fetchProducts()
-        .then(() => setLoading(false));
-    }, [searchParams, sortType, brandParams, colorParams]);
+      if (didMountRef.current) {
+        setLoading(true);
+        fetchProducts(productRange.max)
+          .then(() => setLoading(false));
+        return;
+      }
+      didMountRef.current = true;
+    }, [searchParams, sortType, brandParams, colorParams, filterPriceRange]);
+
+    const fetchAttrAndProducts = async () => {
+      setLoading(true)
+      const data = await fetchAttributes();
+      fetchProducts(data);
+      setLoading(false);
+    }
 
     useEffect(() => {
-      setLoading(true)
-      fetchProducts()
-        .then((data) => fetchAttributes(data))
-        .then(() => setLoading(false));
+      fetchAttrAndProducts();
     }, [categoryId]);
 
     const CustomSlider = styled(Slider)({
@@ -124,7 +141,7 @@ const Category = () => {
     if(!category) {
       return navigate("/404", { replace: true });
     }
-    
+
     return (
     <>
       <SecondNavbar />
@@ -238,23 +255,15 @@ const Category = () => {
                               >Цена</Typography>
                           </AccordionSummary>
                           <AccordionDetails>
-                              <Box sx={{ width: "100%", padding: "0 20px" }}>
+                              <Box sx={{ width: "100%", padding: "0 10px" }}>
                                 <CustomSlider
-                                  valueLabelDisplay="auto" 
-                                  getAriaLabel={() => 'Temperature range'}
-                                  value={[20, 37]}
-                                  getAriaValueText={(value) => `${value}Сум`}
-                                  // onChange={}
-                                  // marks={[
-                                  //   {
-                                  //     value: 0,
-                                  //     label: '0',
-                                  //   },
-                                  //   {
-                                  //     value: 100,
-                                  //     label: '10032321432',
-                                  //   },
-                                  // ]}
+                                  valueLabelDisplay="auto"
+                                  scale={(value) => Math.floor(((value / 100) * productRange.max))}
+                                  value={filterPriceRange}
+                                  // getAriaValueText={(value) => `${value}Сум`}
+                                  step={0.0001}
+                                  valueLabelFormat={(value) => `${numberWithCommas(value)} Сум`}
+                                  onChange={handleChangePriceFilter}
                                 />
                               </Box>
                               <Stack alignItems="center" gap={2} direction="row" className="mt-4">
@@ -265,9 +274,11 @@ const Category = () => {
                                               <CurensyIcon />
                                           </InputAdornment>
                                       }
-                                      value={filterPriceRange.min}
+                                      value={Math.floor(((filterPriceRange[0] / 100) * productRange.max))}
                                       type="number"
-                                      onChange={(e) => handleChangePriceFilter(e, "min")}
+                                      onChange={(e) => {
+                                          setFilterPriceRange(prev => [e.target.value / productRange.max, prev[1]])
+                                      }}
                                   />
                                   <Input
                                       style={{flex: "1"}}
@@ -276,9 +287,9 @@ const Category = () => {
                                               <CurensyIcon />
                                           </InputAdornment>
                                       }
-                                      value={filterPriceRange.max}
+                                      value={Math.floor(((filterPriceRange[1] / 100) * productRange.max))}
                                       type="number"
-                                      onChange={(e) => handleChangePriceFilter(e, "max")}
+                                      // onChange={(e) => handleChangePriceFilter(e, "max")}
                                   />
                               </Stack>
                           </AccordionDetails>
