@@ -99,7 +99,7 @@ const Category = () => {
     const fetchAttrAndProducts = async () => {
       setLoading(true)
       const data = await fetchAttributes();
-      fetchProducts(data);
+      await fetchProducts(data);
       setLoading(false);
     }
 
