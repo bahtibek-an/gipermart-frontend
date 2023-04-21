@@ -9,7 +9,6 @@ import Spinner from "./UI/spinner/Spinner";
 const App = () => {
   const dispatch = useDispatch();
   const isLoading = useSelector((state) => state.app.isLoading);
-    
   const fetchData = async () => {
     if(localStorage.getItem("accessToken")) {
       await checkAuth()

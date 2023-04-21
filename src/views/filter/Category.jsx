@@ -59,7 +59,7 @@ const Category = () => {
             });
             return result;
         }
-        setColors(filters.colors);
+        setColors(filters.color);
         setBrands(filters.brands);
         setAttr(groupByAttribute(filters.attribute_values));
         return max;
