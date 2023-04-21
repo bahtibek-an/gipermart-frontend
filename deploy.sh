@@ -2,7 +2,7 @@ echo "Building app..."
 npm run build
 
 echo "Deploying files to server..."
-sshpass -p "asad_Pass!@#4" scp -r build/* root@64.225.106.74:/var/www/Gipermart-frontend/
+sshpass -p "asaD12#a" scp -r build/* root@167.71.236.11:/var/www/gipermart-frontend/
 
 echo "Deleting build files..."
 rm -rf build
