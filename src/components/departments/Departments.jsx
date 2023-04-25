@@ -6,7 +6,7 @@ import "../../assets/scss/_departments.scss";
 import ProductItem from "./components/ProductItem/ProductItem";
 
 const Departments = () => {
-  const categories = useSelector((state) => (state.categories).filter((item) => item.parent).slice(6, 9));
+  const categories = useSelector((state) => (state.categories).filter((item) => item.parent).slice(0, 3));
 
   return (
     <Container maxWidth="xl">

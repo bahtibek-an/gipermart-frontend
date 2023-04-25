@@ -18,7 +18,9 @@ const Basket = () => {
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState(false);
   const totalPrice = carts.reduce((acc, item) => acc + +item?.product?.price * item.quantity, 0);
+  const totalInstallmentPlan = carts.reduce((acc, item) => acc + +item?.product?.installment_plan * item.quantity, 0);
   const exchangeRate = useSelector((state) => state.app.exchange);
+
   const deleteCart = (id) => {
     dispatch(deleteBasketProduct(id));
   }

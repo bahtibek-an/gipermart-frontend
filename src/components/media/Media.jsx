@@ -22,8 +22,8 @@ const Media = () => {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const { data } = await $host.get("product/category/tv-i-media/");
-      setProducts(data);
+      const { data } = await $host.get("product/product_filter/?search=tv-audio-video&ordering=-price");
+      setProducts(data.results);
       return data;
     }
     fetchProducts()

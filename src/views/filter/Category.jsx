@@ -37,15 +37,13 @@ const Category = () => {
     const exchangeRate = useSelector((state) => state.app.exchange);
     const navigate = useNavigate();
 
+
     const didMountRef = useRef(false);
 
     const fetchAttributes = async () => {
         const { data: filters } = await $host.get(`product/categories-filter/${ categoryId }/`);
         const { data: maxPrice } = await $host.get(`product/product_filter/?search=${ category.slug }&ordering=-price&limit=1`);
-        const max = (+maxPrice.results?.[0].price * exchangeRate);
-        if(maxPrice.results?.[0]) {
-            setProductRange({ min: 0, max: max });
-        }
+        console.log(filters)
         function groupByAttribute(data) {
             const result = {};
             data.forEach((item) => {
@@ -62,20 +60,19 @@ const Category = () => {
         setColors(filters.color);
         setBrands(filters.brands);
         setAttr(groupByAttribute(filters.attribute_values));
-        return max;
     }
 
-    const fetchProducts = async (maxPrice) => {
+    const fetchProducts = async () => {
       const param = searchParams.map((item) => `attribute_values=${item.id}`).join('&');
       const brand = brandParams.map((item) => `brand=${item.id}`).join('&');
       const color = colorParams.map((item) => `colors=${item.id}`).join('&');
-      const min = Math.floor(((filterPriceRange[0] / 100) * maxPrice));
-      const max = Math.floor(((filterPriceRange[1] / 100) * maxPrice));
+      // const min = Math.floor(((filterPriceRange[0] / 100) * maxPrice));
+      // const max = Math.floor(((filterPriceRange[1] / 100) * maxPrice));
       const limit = 24;
       const offset = 0;
       const data = await fetchFilterProducts(param, category?.slug, sortType, {
-          min,
-          max
+          // min,
+          // max
       }, brand, color, limit, offset);
       const results = data.results;
       setProducts(results);
@@ -94,7 +91,12 @@ const Category = () => {
         return;
       }
       didMountRef.current = true;
-    }, [searchParams, sortType, brandParams, colorParams, filterPriceRange]);
+    }, [searchParams, 
+      sortType, 
+      brandParams, 
+      colorParams, 
+      // filterPriceRange
+    ]);
 
     const fetchAttrAndProducts = async () => {
       setLoading(true)
