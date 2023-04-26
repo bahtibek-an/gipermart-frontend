@@ -36,7 +36,7 @@ const ProductItem = ({ category }) => {
                 <div className="department-rassrochka">{numberWithCommas(product.installment_plan * exchangeRate)} Сум</div>
                 <div className="department-price">
                 <div className="price">{numberWithCommas(product.sale_price * exchangeRate)} Сум</div>
-                <div className="price_old">{numberWithCommas(product.price * exchangeRate)} Сум</div>
+                {/* <div className="price_old">{numberWithCommas(product.price * exchangeRate)} Сум</div> */}
                 </div>
             </div>
         </Link>
