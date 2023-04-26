@@ -13,13 +13,12 @@ const BasketModal = ({ closeModal, openModal }) => {
 
   const checkNumber = async () => {
       const response = await axios.get("https://gw.alifnasiya.uz/e-commerce/merchants/new/applications/request-otp/", {
-          "phone": numb
+          "phone": number
       }, {
           headers: {
               'Merchant-Token': "puoo12qn7phoaedud9iuoed4fe31qkhhxrsx0pxjrrd"
           }
       });
-      console.log(response);
   }
 
   return (
