@@ -60,7 +60,6 @@ const Recommendations = ({ }) => {
         breakpoint: 767,
         settings: {
           slidesToShow: 2,
-          // slidesPerRow: 3,
           slidesToScroll: 1,
         },
       },
@@ -76,7 +75,7 @@ const Recommendations = ({ }) => {
         </Link>
         <Slider {...settings} className="recommendations">
           {loading ? (
-            [1, 2, 3, 4, 5, 6].map((item) => (
+            new Array(6).fill(1).map((item) => (
               <LoadingCart key={item}/>
             ))
           ) : (

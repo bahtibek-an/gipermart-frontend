@@ -1,8 +1,5 @@
 import React from "react";
 import "../../assets/scss/_cart.scss";
-import { BiHeart } from "react-icons/bi";
-import { HiOutlineShoppingCart, HiOutlineEye } from "react-icons/hi";
-import { Link } from "react-router-dom";
 import { Skeleton } from "@mui/material";
 
 const LoadingCart = ({  }) => {
@@ -11,7 +8,8 @@ const LoadingCart = ({  }) => {
     <div className="cart">
         <div className="">
           <div className="cart-image">
-            <Skeleton variant="rectangular"
+            <Skeleton 
+                variant="rectangular"
                 width="100%"
                 height="100%"
                 animation="wave"

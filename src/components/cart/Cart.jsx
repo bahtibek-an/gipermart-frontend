@@ -5,17 +5,18 @@ import { HiOutlineShoppingCart, HiOutlineEye } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { createBasketProduct, craeteWishListProduct, deleteWishList, showRightModal, deleteBasketProduct, createBasketToLocal } from "../../redux/actions";
-import { appendProductToUserCart, appendProductToWishList, deleteCart, deleteProductFromWishList } from "../../http/ProductAPI";
+import { createBasketProduct, craeteWishListProduct, deleteWishList, showRightModal, createBasketToLocal } from "../../redux/actions";
+import { appendProductToUserCart, appendProductToWishList, deleteProductFromWishList } from "../../http/ProductAPI";
 import { numberWithCommas } from "../../helper";
 
-const Cart = ({ cart/*, favorite */ }) => {
+const Cart = ({ cart }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state?.user);
   const favorite = useSelector((state) => state?.wishLists.find((item) => item?.product?.id == cart.id));
   const hasInCart = useSelector((state) => state?.baskets?.find((item) => item?.product?.id == cart.id));
   const exchangeRate = useSelector((state) => state.app.exchange);
+
   const addProductToCart = async (e) => {
     e.preventDefault();
     if(!user.isAuth) {

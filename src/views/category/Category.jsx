@@ -3,13 +3,13 @@ import Slider from "react-slick";
 import "../../assets/scss/_category.scss";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Container } from "@mui/system";
 import { connect } from "react-redux";
 import SlickArrowRight from "../../components/SlickArrow/SlickArrowRight";
 import SlickArrowLeft from "../../components/SlickArrow/SlickArrowLeft";
-import { categoriesAlgo } from "../../helper";
 import {API_URL} from "../../http";
+import { Skeleton } from "@mui/material";
 
 const Category = ({ categories }) => {
 
@@ -60,19 +60,32 @@ const Category = ({ categories }) => {
           className="category-slider"
           lazyLoad="progressive" 
         >
-          {categories?.map((item, i) => (
-            item.parent && (
-            <div key={i}>
-              <Link to={`/category/${item.id}`} className="category-box">
-                <img
-                  src={API_URL + item.background_image}
-                  alt=""
+          {categories.length === 0 ? (
+            new Array(5).fill(3).map((_, index) => (
+              <div key={index}>
+                <Skeleton
+                  variant="rectangular"
+                  width="220px"
+                  height="96px"
+                  animation="wave"
                 />
-                <div>{ item.name }</div>
-              </Link>
-            </div>
-            )
-          ))}
+              </div>
+            ))
+          ) : (
+            categories?.map((item, i) => (
+              item.parent && (
+              <div key={i}>
+                <Link to={`/category/${item.id}`} className="category-box">
+                  <img
+                    src={API_URL + item.background_image}
+                    alt=""
+                  />
+                  <div>{ item.name }</div>
+                </Link>
+              </div>
+              )
+            ))
+          )}
         </Slider>
       </Container>
     </div>

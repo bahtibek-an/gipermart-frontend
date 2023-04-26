@@ -4,17 +4,13 @@ import "../../assets/scss/_media.scss";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Link } from "react-router-dom";
-import { BsArrowRight, BsArrowLeft } from "react-icons/bs";
 import { Container } from "@mui/system";
 import Title from "../title/Title";
 import Cart from "../cart/Cart";
-import { connect } from "react-redux";
 import SlickArrowRight from "../SlickArrow/SlickArrowRight";
 import SlickArrowLeft from "../SlickArrow/SlickArrowLeft";
 import $host from "../../http";
 import LoadingCart from "../cart/LoadingCart";
-
-
 
 const Media = () => {
   const [ products, setProducts ] = useState([]);
@@ -24,10 +20,9 @@ const Media = () => {
     const fetchProducts = async () => {
       const { data } = await $host.get("product/product_filter/?search=tv-audio-video&ordering=-price");
       setProducts(data.results);
-      return data;
+      setLoading(false);
     }
-    fetchProducts()
-      .then(() => setLoading(false));
+    fetchProducts();
   }, []);
 
   let settings = {

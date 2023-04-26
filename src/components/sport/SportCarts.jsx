@@ -4,7 +4,6 @@ import "../../assets/scss/_sport.scss";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Link } from "react-router-dom";
-import { BsArrowRight, BsArrowLeft } from "react-icons/bs";
 import { Container } from "@mui/system";
 import Title from "../title/Title";
 import Cart from "../cart/Cart";
@@ -12,7 +11,7 @@ import { connect } from "react-redux";
 import SlickArrowRight from "../SlickArrow/SlickArrowRight";
 import SlickArrowLeft from "../SlickArrow/SlickArrowLeft";
 
-const SportCarts = ({ products, isLoading }) => {
+const SportCarts = ({ products }) => {
   
   let settings = {
     dots: false,

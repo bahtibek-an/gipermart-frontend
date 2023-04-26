@@ -14,10 +14,9 @@ const ProductItem = ({ category }) => {
         const fetchProducts = async () => {
             const { data } = await $host.get(`product/product_filter/?search=${category.slug}&limit=3`);
             setProducts(data.results);
-            return data.results;
+            setLoading(false)
         }
-        fetchProducts()
-            .then(() => setLoading(false));
+        fetchProducts();
     }, []);
 
     if(loading) return <LoadingCart/>
@@ -25,7 +24,6 @@ const ProductItem = ({ category }) => {
     return products.map((product) => (
         <Link key={product.id} to={`/product/${product?.id}/`} className="department-box">
             <div className="department-image relative">
-                {/* <div className="discount">-6%</div> */}
                 <img
                     src={product.front_image}
                     alt=""

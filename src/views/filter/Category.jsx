@@ -43,7 +43,6 @@ const Category = () => {
     const fetchAttributes = async () => {
         const { data: filters } = await $host.get(`product/categories-filter/${ categoryId }/`);
         const { data: maxPrice } = await $host.get(`product/product_filter/?search=${ category.slug }&ordering=-price&limit=1`);
-        console.log(filters)
         function groupByAttribute(data) {
             const result = {};
             data.forEach((item) => {

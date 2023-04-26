@@ -33,7 +33,6 @@ export function categoriesAlgo(categories) {
       map[category.parent_id].children.push(category);
     } 
     else {
-      // result.push(category);
       category.parent = true;
     }
     result.push(category);
@@ -75,7 +74,7 @@ export function sortFilterCategories(array) {
 }
 
 export function numberWithCommas(x) {
-  let parts = x.toFixed().toString().split(".");
+  let parts = x.toString().split(".");
   parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g,".");
   return parts.join(",");
 }

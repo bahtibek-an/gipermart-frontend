@@ -67,7 +67,7 @@ const Basket = () => {
                 <div className="px-6">
                   <div className="text-2xl f-bold">12 месяц</div>
                   <div className="mt-1">Товаров: 0</div>
-                  <div className="text-2xl f-bold mt-4">0 Сум</div>
+                  <div className="text-2xl f-bold mt-4">{numberWithCommas(totalInstallmentPlan * exchangeRate)} Сум</div>
                   <div className="mt-1">
                     Рассрочку можно офромить только до 15 000 000 сум
                   </div>
