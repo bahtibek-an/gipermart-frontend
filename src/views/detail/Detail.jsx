@@ -34,7 +34,7 @@ const Detail = ({ products, user }) => {
   const fetchProduct = async () => {
     const product = await fetchOneProduct(id);
     setProductDetail(product);
-    return product;
+    setLoading(false);
   }
 
   const handleChange = (event, newValue) => {
@@ -115,12 +115,6 @@ const Detail = ({ products, user }) => {
   useEffect(() => {
     setLoading(true);
     fetchProduct()
-      .then((data) => {
-        console.log(data)
-      })
-      .finally(() => {
-        setLoading(false);
-      })
   }, [id]);
 
   if(loading) {
@@ -131,6 +125,7 @@ const Detail = ({ products, user }) => {
     );
   }
 
+
   return (
     <section className="detail">
       <SecondNavbar />
@@ -138,7 +133,7 @@ const Detail = ({ products, user }) => {
         
         <div className="pages detail-page !pt-8">
           <Link to="/">Магазин /</Link>
-          <Link to={`/category/${category.id}`}>{category.name} /</Link>
+          <Link to={`/category/${category?.id}`}>{category?.name} /</Link>
           <div>
             {productDetail.title_ru}
           </div>
@@ -307,7 +302,7 @@ const Detail = ({ products, user }) => {
           </div>
         )}
       </Container>
-      <SimilarCarts category={productDetail.category}/>
+      <SimilarCarts category={productDetail?.category}/>
     </section>
   );
 };

@@ -19,7 +19,7 @@ const SimilarCarts = ({ category: categoryId }) => {
   
   useEffect(() => {
     async function fetchSimilarCarts() {
-      const { data } = await $host.get(`product/product_filter/?search=${category.slug}&limit=20`);
+      const { data } = await $host.get(`product/product_filter/?search=${category?.slug}&limit=20`);
       let results = data.results;
       if(results.length > 0) {
         while(results.length < 6) {
