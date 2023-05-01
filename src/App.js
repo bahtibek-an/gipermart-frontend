@@ -1,12 +1,14 @@
-import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchAllCategories, fetchExchangeRates } from "./http/ProductAPI";
 import { checkAuth } from "./http/UserAPI";
 import { createExchangeRates, fetchCategories, hideLoader } from "./redux/actions";
 import Router from "./Router";
+import Spinner from "./UI/spinner/Spinner";
 
 const App = () => {
   const dispatch = useDispatch();
+  const loading = useSelector((state) => state.app.isLoading);
 
   const fetchData = async () => {
     if(localStorage.getItem("accessToken")) {
@@ -16,7 +18,7 @@ const App = () => {
     const categories = await fetchAllCategories();
     dispatch(createExchangeRates(+exchange.at(-1).nbu_buy_price));
     dispatch(fetchCategories(categories));
-    // return dispatch(hideLoader());
+    return dispatch(hideLoader());
   }
 
   useEffect(() => {
@@ -24,6 +26,11 @@ const App = () => {
   }, []);
 
   return (
+    loading ? 
+    <div className="flex items-center justify-center h-screen">
+      <Spinner />
+    </div>
+    :
     <Router />
   );
 };

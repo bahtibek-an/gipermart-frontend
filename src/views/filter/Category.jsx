@@ -47,7 +47,7 @@ const Category = () => {
 
     const fetchProducts = async () => {
       const brand = brandParams.map((item) => `brand=${item.brand_id}`).join('&');
-      const color = colorParams.map((item) => `colors=${item.color_id}`).join('&');
+      const color = colorParams.map((item) => `color=${item.color_id}`).join('&');
       const limit = 24;
       const offset = 0;
       const data = await fetchFilterProducts(category?.slug, sortType, {

@@ -250,12 +250,12 @@ const Navbar = ({ isAuth, basketProductsLength, wishListsLength }) => {
           <div className={`navbar-top ${navbarFixed && "fix"}`}>
             <Container maxWidth="xl">
               <div className="flex justify-end items-center gap-x-6">
-                <a href="tel:+998900511676" className="flex items-center gap-x-3">
+                <a href="tel:+998999190008" className="flex items-center gap-x-3">
                   Поддержка
                 </a>
-                <a href="tel:+998900511676" className="flex items-center gap-x-3">
+                <a href="tel:+998999190008" className="flex items-center gap-x-3">
                   <MdOutlinePhone size={24} />
-                  +998 90 051 16 76
+                  +998 99 919 00 08
                 </a>
               </div>
             </Container>
