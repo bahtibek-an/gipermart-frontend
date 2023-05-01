@@ -68,6 +68,7 @@ const Category = ({ categories }) => {
                   width="220px"
                   height="96px"
                   animation="wave"
+                  style={{maxWidth: "100%"}}
                 />
               </div>
             ))

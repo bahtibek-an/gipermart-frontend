@@ -37,41 +37,20 @@ const Category = () => {
     const exchangeRate = useSelector((state) => state.app.exchange);
     const navigate = useNavigate();
 
-
     const didMountRef = useRef(false);
 
     const fetchAttributes = async () => {
         const { data: filters } = await $host.get(`product/categories-filter/${ categoryId }/`);
-        const { data: maxPrice } = await $host.get(`product/product_filter/?search=${ category.slug }&ordering=-price&limit=1`);
-        function groupByAttribute(data) {
-            const result = {};
-            data.forEach((item) => {
-                const attributeName = item.attribute_values__product_attribute__name;
-                const attributeValue = item.attribute_values__attribute_value;
-                const attributeId = item.attribute_values__id;
-                if (!result[attributeName]) {
-                    result[attributeName] = [];
-                }
-                result[attributeName].push({ id: attributeId, value: attributeValue });
-            });
-            return result;
-        }
         setColors(filters.color);
         setBrands(filters.brands);
-        setAttr(groupByAttribute(filters.attribute_values));
     }
 
     const fetchProducts = async () => {
-      const param = searchParams.map((item) => `attribute_values=${item.id}`).join('&');
-      const brand = brandParams.map((item) => `brand=${item.id}`).join('&');
-      const color = colorParams.map((item) => `colors=${item.id}`).join('&');
-      // const min = Math.floor(((filterPriceRange[0] / 100) * maxPrice));
-      // const max = Math.floor(((filterPriceRange[1] / 100) * maxPrice));
+      const brand = brandParams.map((item) => `brand=${item.brand_id}`).join('&');
+      const color = colorParams.map((item) => `colors=${item.color_id}`).join('&');
       const limit = 24;
       const offset = 0;
-      const data = await fetchFilterProducts(param, category?.slug, sortType, {
-          // min,
-          // max
+      const data = await fetchFilterProducts(category?.slug, sortType, {
       }, brand, color, limit, offset);
       const results = data.results;
       setProducts(results);
@@ -189,7 +168,7 @@ const Category = () => {
                     </div>
                   </AccordionDefault>
                 ))}
-                  <AccordionDefault>
+                  {!category.parent && <AccordionDefault>
                       <AccordionSummaryDefault
                           expandIcon={<IoIosArrowDown />}
                           aria-controls="panel2a-content"
@@ -206,12 +185,12 @@ const Category = () => {
                                               onClick={(e) => addToBrandParams(e, item)}
                                           />
                                       }
-                                      label={item.name} />
+                                      label={item.brand__name} />
                               </label>
                           ))}
                       </div>
-                  </AccordionDefault>
-                  <AccordionDefault>
+                  </AccordionDefault>}
+                 {!category.parent && <AccordionDefault>
                       <AccordionSummaryDefault
                           expandIcon={<IoIosArrowDown />}
                           aria-controls="panel2a-content"
@@ -220,7 +199,7 @@ const Category = () => {
                           <Typography>Цвет</Typography>
                       </AccordionSummaryDefault>
                       <div className="all-category">
-                          {colors.map((item, index) => (
+                          {!category.parent && colors.map((item, index) => (
                               <label className="item" key={index}>
                                   <FormControlLabel
                                       control={
@@ -228,11 +207,11 @@ const Category = () => {
                                               onClick={(e) => addToColorParams(e, item)}
                                           />
                                       }
-                                      label={item.color} />
+                                      label={item.color__color} />
                               </label>
                           ))}
                       </div>
-                  </AccordionDefault>
+                  </AccordionDefault>}
                 <Stack sx={{ padding: '1rem 0' }} gap={2}>
                   <Select
                     value={sortType}

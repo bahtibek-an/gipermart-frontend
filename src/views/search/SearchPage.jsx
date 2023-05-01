@@ -15,23 +15,16 @@ const SearchPage = () => {
   const [ searchParams, setSearchParams] = useSearchParams();
   const searchQuery = searchParams.get("query");
   const [ products, setProducts ] = useState([]);
-  const productsState = useSelector((state) => state.products);
   const [ loading, setLoading ] = useState(true);
 
   const fetchProducts = async () => {
     const response = await fetchProductsBySearch(searchQuery);
-    return response.results;
+    setProducts(response.results);
+    setLoading(false);
   }
   useEffect(() => {
-    fetchProducts()
-      .then((data) => {
-        const searchProd = data.map(item => item.id);
-        productsState.forEach(item => {
-          console.log(item);
-        })
-        setProducts(productsState.filter((item) => searchProd.includes(item.id)));
-        setLoading(false);
-      });
+    setLoading(true);
+    fetchProducts();
   }, [searchQuery]);
   
 
