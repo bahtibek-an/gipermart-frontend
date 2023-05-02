@@ -34,6 +34,8 @@ const Addresses = () => {
   };
 
 
+  console.log(userMap)
+
   return (
     <>
       <SecondNavbar />

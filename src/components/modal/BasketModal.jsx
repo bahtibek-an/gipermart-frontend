@@ -7,14 +7,19 @@ import {useSelector} from "react-redux";
 
 const BasketModal = ({ closeModal, openModal }) => {
   const [step, setStep] = useState(1);
-  const carts = useSelector((state) => state.baskets);
-  const [number, setNumber] = useState('');
+  const carts = useSelector((state) => state.basket);
+  const [number, setNumber] = useState('+998');
   const [error, setError] = useState('');
   const [confirmCode, setConfirmCode] = useState('');
   const exchangeRate = useSelector((state) => state.app.exchange);
 
 
   const checkNumber = async () => {
+      let phone_number = number;
+      if (phone_number.includes("+")) {
+        phone_number = phone_number.replace("+", "");
+      }
+      
       try {
           const response = await axios.post("https://gw.alifnasiya.uz/e-commerce/merchants/new/applications/request-otp/", {
               "phone": number
@@ -61,10 +66,14 @@ const BasketModal = ({ closeModal, openModal }) => {
         setStep(4);
     } catch (e) {
         setError(e.response.data.message);
-        setTimeout(() => setError(''),5000);
+        setTimeout(() => setError(''), 5000);
     }
   }
 
+  const handleChange = (e) => {
+    const newValue = e.target.value;
+    setNumber(newValue);
+  }
 
   return (
     <div>
@@ -101,7 +110,8 @@ const BasketModal = ({ closeModal, openModal }) => {
               <div>Мобилный номер</div>
               <TextField
                   value={number}
-                  onChange={(e) => setNumber(e.target.value)}
+                  onChange={handleChange}
+                  type="number"
                   className="!rounded-none w-full !my-2"
                   id="outlined-required"
                   placeholder="+998 __ ___ __ __"
@@ -120,8 +130,8 @@ const BasketModal = ({ closeModal, openModal }) => {
                     {error && <AlertError error={error} />}
                     <div style={{color: "rgba(0, 0, 0, 0.38)"}}>Мобилный номер</div>
                     <TextField
-                        value={number}
-                        onChange={(e) => setNumber(e.target.value)}
+                        // value={number}
+                        // onChange={(e) => setNumber(e.target.value)}
                         className="!rounded-none w-full !my-2"
                         id="outlined-required"
                         placeholder="+998 __ ___ __ __"

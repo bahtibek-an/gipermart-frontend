@@ -132,20 +132,6 @@ export const createCheckoutInUser = (data) => {
     }
 }
 
-export const createBasketToLocal = (data) => {
-    return {
-        type: CREATE_BASKET_TO_LOCAL,
-        payload: data
-    }
-}
-
-export const deleteBasketInLocal = (productId) => {
-    return {
-        type: DELETE_BASKET_IN_LOCAL,
-        payload: productId
-    }
-}
-
 export const incrementBasketCounter = (cartId) => {
     return {
         type: INCREMENT_BASKET_COUNTER,

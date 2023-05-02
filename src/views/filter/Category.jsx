@@ -20,9 +20,26 @@ import Input from "../../components/input";
 import $host from "../../http";
 import {numberWithCommas} from "../../helper";
 
+function sortCategory(state, categoryId) {
+    const currentCategory = state.categories?.find((item) => item?.id == categoryId);
+    if(!currentCategory.parent) {
+        for(let i = 0;i < state.categories.length;i++) {
+            const item = state.categories[i];
+            if(item.parent) {
+                for(let j = 0;j < item.children.length;j++) {
+                    if(item.children[j].id == categoryId) {
+                        return item;
+                    }
+                }
+            }
+        }
+    }
+    return currentCategory;
+}
+
 const Category = () => {
     const { categoryId } = useParams();
-    const category = useSelector((state) => state.categories?.find((item) => item?.id == categoryId))
+    const category = useSelector((state) => sortCategory(state, categoryId));
     const [ products, setProducts ] = useState([]);
     const [ attr, setAttr ] = useState({});
     const [ brands, setBrands ] = useState([]);
@@ -46,12 +63,21 @@ const Category = () => {
     }
 
     const fetchProducts = async () => {
-      const brand = brandParams.map((item) => `brand=${item.brand_id}`).join('&');
-      const color = colorParams.map((item) => `color=${item.color_id}`).join('&');
+      const brand = brandParams.map((item) => item.brand_id);
+      const color = colorParams.map((item) => item.color_id);
       const limit = 24;
       const offset = 0;
-      const data = await fetchFilterProducts(category?.slug, sortType, {
-      }, brand, color, limit, offset);
+      // const data = await fetchFilterProducts(category?.slug, sortType, {
+      // }, brand, color, limit, offset);
+        const { data } = await $host.get(`product/product_filter/`, {
+            params: {
+                search: category.slug,
+                ordering: sortType,
+                brand: brand,
+                limit: limit,
+                offset: offset
+            }
+        });
       const results = data.results;
       setProducts(results);
       return data.results;
@@ -64,7 +90,7 @@ const Category = () => {
     useEffect(() => {
       if (didMountRef.current) {
         setLoading(true);
-        fetchProducts(productRange.max)
+        fetchProducts()
           .then(() => setLoading(false));
         return;
       }
@@ -138,7 +164,7 @@ const Category = () => {
                   >
                     <Typography>Все категории</Typography>
                   </AccordionSummaryDefault>
-                  {category?.children?.map((item) => (
+                  {category?.children?.map((item) => item.id != categoryId && (
                       <Link to={`/category/${item.id}`} key={item.id} className="item">
                           {item.name}
                       </Link>
@@ -168,7 +194,7 @@ const Category = () => {
                     </div>
                   </AccordionDefault>
                 ))}
-                  {!category.parent && <AccordionDefault>
+                  {<AccordionDefault>
                       <AccordionSummaryDefault
                           expandIcon={<IoIosArrowDown />}
                           aria-controls="panel2a-content"
@@ -190,7 +216,7 @@ const Category = () => {
                           ))}
                       </div>
                   </AccordionDefault>}
-                 {!category.parent && <AccordionDefault>
+                 {<AccordionDefault>
                       <AccordionSummaryDefault
                           expandIcon={<IoIosArrowDown />}
                           aria-controls="panel2a-content"

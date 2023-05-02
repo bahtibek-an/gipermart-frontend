@@ -11,7 +11,7 @@ import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import { HiOutlineShoppingCart } from "react-icons/hi";
 import { appendProductToUserCart, appendProductToWishList, fetchOneProduct, deleteProductFromWishList } from "../../http/ProductAPI";
 import { connect, useDispatch, useSelector } from "react-redux";
-import { craeteWishListProduct, createBasketProduct, createBasketToLocal, deleteWishList, showRightModal } from "../../redux/actions";
+import { craeteWishListProduct, createBasketProduct, deleteWishList, showRightModal } from "../../redux/actions";
 import Spinner from "../../UI/spinner/Spinner";
 import { createRatingProduct } from "./http";
 import { numberWithCommas } from "../../helper";
@@ -77,7 +77,6 @@ const Detail = ({ products, user }) => {
     }
     try {
       const data = await appendProductToUserCart(user?.user?.id, id, counter, productPrice);
-      dispatch(createBasketToLocal(data));
       dispatch(createBasketProduct(data));
     } catch (error) {
       console.log(error);

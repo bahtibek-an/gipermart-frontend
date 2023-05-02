@@ -14,7 +14,7 @@ const Cart = ({ cart }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state?.user);
   const favorite = useSelector((state) => state?.wishLists.find((item) => item?.product?.id == cart.id));
-  const hasInCart = useSelector((state) => state?.baskets?.find((item) => item?.product?.id == cart.id));
+  const hasInCart = useSelector((state) => state?.basket?.find((item) => item?.product?.id == cart.id));
   const exchangeRate = useSelector((state) => state.app.exchange);
 
   const addProductToCart = async (e) => {
@@ -27,7 +27,6 @@ const Cart = ({ cart }) => {
     }
     try {
       const data = await appendProductToUserCart(user?.user?.id, cart.id, 1, cart.price);
-      dispatch(createBasketToLocal(data));
       dispatch(createBasketProduct(data));
     } catch (error) {
       console.log(error);

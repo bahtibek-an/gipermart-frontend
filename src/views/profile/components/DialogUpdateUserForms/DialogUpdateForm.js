@@ -8,6 +8,7 @@ import AlertError from "../../../../UI/Alert/AlertError";
 const DialogUpdateForm = ({ handleCloseModal, openModal }) => {
     const user = useSelector((state) => state.user?.user);
     const [ firstName, setFirstName ] = useState(user.first_name);
+    const [ lastName, setLastName ] = useState(user.last_name);
     const [ email, setEmail ] = useState(user.email);
     const [ number, setNumber ] = useState(user.phone_number);
     const [ password, setPassword ] = useState(user.password);
@@ -24,7 +25,7 @@ const DialogUpdateForm = ({ handleCloseModal, openModal }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if(confirmPassword !== password) return setErrorMessage("Passwords don't match!");
-        await updateUser(user.id, firstName, email, number, password);
+        await updateUser(user.id, firstName, lastName, email, number, password);
         window.location.reload();
         handleCloseModal();
     }
@@ -45,6 +46,9 @@ const DialogUpdateForm = ({ handleCloseModal, openModal }) => {
                 break;
             case "confirm-password":
                 setConfirmPassword(e.target.value);
+                break;
+            case "last_name":
+                setLastName(e.target.value);
                 break;
             default:
                 break;
@@ -69,6 +73,14 @@ const DialogUpdateForm = ({ handleCloseModal, openModal }) => {
                     defaultValue={user.first_name}
                     value={firstName}
                     name="name"
+                    onChange={handleChange}
+                    className="!w-full !my-4" 
+                />
+                <div>Фамилия</div>
+                <TextField 
+                    defaultValue={user.lastName}
+                    value={lastName}
+                    name="last_name"
                     onChange={handleChange}
                     className="!w-full !my-4" 
                 />

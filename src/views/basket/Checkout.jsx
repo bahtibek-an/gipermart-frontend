@@ -3,37 +3,43 @@ import SecondNavbar from "../../layout/navbar/SecondNavbar";
 import "../../assets/scss/_basket.scss";
 import { Container } from "@mui/system";
 import TextField from "@mui/material/TextField";
-import MenuItem from "@mui/material/MenuItem";
 import Radio from "@mui/material/Radio";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import { Button, Dialog, Stack } from "@mui/material";
+import {Button, Dialog, Stack} from "@mui/material";
 import Title from "../../components/title/Title";
 import { useDispatch, useSelector } from "react-redux";
 import { createCheckout } from "../../http/CheckoutAPI";
 import { connect } from "react-redux";
-import { createCheckoutInUser, deleteBasketInLocal, updateDefaultMapUser } from "../../redux/actions";
+import { createCheckoutInUser, deleteBasketProduct, updateDefaultMapUser } from "../../redux/actions";
 import { Link } from "react-router-dom";
-import { countrySource } from "../../helper/countryData";
+import { countrySource, towns } from "../../helper/countryData";
 import BasketProduct from "./components/BasketProduct";
 import styled from "styled-components";
-import { findRegion } from "./helper";
-import Select from "../../components/select/Select";
 import { numberWithCommas } from "../../helper";
 import CheckoutModal from "./components/CheckoutModal";
+import Select from 'react-select';
 
+function findTown(map) {
+  const keys = Object.keys(towns);
+  for(let i = 0;i < keys.length;i++) {
+    const item = towns[keys[i]];
+    for(let j = 0;j < item.length;j++) {
+      if(item[j].value === map.town) {
+        return item[j];
+      }
+    }
+  }
+  return {};
+}
 const Checkout = ({ user, defaultUserMapId }) => {
   const [selectedValue, setSelectedValue] = React.useState("a");
   const exchangeRate = useSelector((state) => state.app.exchange);
   const dispatch = useDispatch();
   const defaultUserMap = user.map.find((item) => item.id == defaultUserMapId);
-  const [disabledButton, setDisabledButton] = useState(false);
-  const { baskets: basketProducts } = useSelector((state) => state);
-  const [ fullName, setFullName ] = useState(defaultUserMap?.title);
-  const [ phone, setPhone ] = useState(defaultUserMap?.phone_number);
-  const [ region, setRegion ] = useState(findRegion(countrySource, defaultUserMap)?.name || "");
-  const regionItem = countrySource.country.find((item) => item.name == region)
-  const [ town, setTown ] = useState(defaultUserMap?.town);
+  const { basket: basketProducts } = useSelector((state) => state);
+  const [ fullName, setFullName ] = useState(`${user.first_name} ${user.last_name}`);
+  const [ phone, setPhone ] = useState(user.phone_number);
+  const [ region, setRegion ] = useState(countrySource.find((item) => item.value === defaultUserMap.region));
+  const [ town, setTown ] = useState(findTown(defaultUserMap));
   const [ address, setAddress ] = useState(defaultUserMap?.address);
   const [ comment, setComment ] = useState('');
   const [ error, setError ] = useState('');
@@ -48,8 +54,8 @@ const Checkout = ({ user, defaultUserMapId }) => {
       const { data } = await createCheckout(
         fullName,
         phone,
-        region,
-        town,
+        region.value,
+        town.value,
         address,
         comment,
         basketProducts.map((item) => item.id),
@@ -62,7 +68,7 @@ const Checkout = ({ user, defaultUserMapId }) => {
         window.open(data.generate_link, '_blank').focus();
       }
       dispatch(createCheckoutInUser(data));
-      basketProducts.forEach(item => dispatch(deleteBasketInLocal(item.product.id)));
+      deleteAllBaskets();
       setModalSuccessData(data);
       setShowModal(true);
     } catch(e) {
@@ -70,15 +76,11 @@ const Checkout = ({ user, defaultUserMapId }) => {
     }
   }
 
-  // useEffect(() => {
-  //   return ()   => {
-  //     // console.log("hello")
-  //     // if(showModal)
-  //     //   basketProducts.forEach(item => store.dispatch(deleteBasketInLocal(item.product)));
-  //   }
-  // }, [])
+  const deleteAllBaskets = () => {
+    basketProducts.forEach(item => dispatch(deleteBasketProduct(item.product.id)));
+  }
 
-  
+
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
   };
@@ -94,10 +96,8 @@ const Checkout = ({ user, defaultUserMapId }) => {
   const updateMapUser = (mapId) => {
     dispatch(updateDefaultMapUser(mapId));
     const defaultUserMap = user.map.find((item) => item.id == mapId);
-    setFullName(defaultUserMap?.title);
-    setPhone(defaultUserMap?.phone_number);
-    setRegion(findRegion(countrySource, defaultUserMap)?.name || "");
-    setTown(defaultUserMap?.town);
+    setRegion(countrySource.find((item) => item.value === defaultUserMap.region));
+    setTown(findTown(defaultUserMap));
     setAddress(defaultUserMap?.address);
   }
   
@@ -153,12 +153,12 @@ const Checkout = ({ user, defaultUserMapId }) => {
             >
               <div>
                 <div className="flex items-baseline gap-4 mb-2 leading-none">
-                  <div className="f-bold text-xl">Имя</div>
-                  <div>{ item.title }</div>
+                  <div className="f-bold text-xl">Регион/область</div>
+                  <div>{ item.region }</div>
                 </div>
                 <div className="flex items-baseline gap-4 mb-2 leading-none">
-                  <div className="f-bold text-xl">Tелефон</div>
-                  <div>{ item.phone_number }</div>
+                  <div className="f-bold text-xl">Город/район</div>
+                  <div>{ item.town }</div>
                 </div>
                 <div className="flex items-baseline gap-4 leading-none">
                   <div className="f-bold text-xl">Адрес</div>
@@ -223,12 +223,12 @@ const Checkout = ({ user, defaultUserMapId }) => {
                   </h2>
                 </div>
                 <div className="flex items-baseline gap-4 mb-2 leading-none">
-                  <div className="f-bold text-xl">Имя</div>
-                  <div>{ defaultUserMap.title }</div>
+                  <div className="f-bold text-xl">Регион/область</div>
+                  <div>{ defaultUserMap.region }</div>
                 </div>
                 <div className="flex items-baseline gap-4 mb-2 leading-none">
-                  <div className="f-bold text-xl">Tелефон</div>
-                  <div>{ defaultUserMap.phone_number }</div>
+                  <div className="f-bold text-xl">Город/район</div>
+                  <div>{ defaultUserMap.town }</div>
                 </div>
                 <div className="flex items-baseline gap-4 mb-2 leading-none">
                   <div className="f-bold text-xl">Адрес</div>
@@ -258,37 +258,33 @@ const Checkout = ({ user, defaultUserMapId }) => {
             <div className="mt-4">Адрес</div>
             <Stack>
               <div className="mt-4 mb-1">Регион/область*</div>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  className="border border-neutral-300"
-                  value={regionItem?.name ?? ''}
-                  onChange={(e) => setRegion(e.target.value)}
-                >
-                  {countrySource.country.map((item) => (
-                    <MenuItem
-                      key={item.id} 
-                      value={item.name} 
-                    >
-                        {item.name}
-                    </MenuItem>
-                  ))}
-                </Select>
+              <Select
+                  onChange={(selectedOption) => setRegion(selectedOption)}
+                  placeholder="Регион/область"
+                  value={region}
+                  styles={{
+                    control: (provided) => ({
+                      ...provided,
+                      height: '55px',
+                    }),
+                  }}
+                  options={countrySource}
+                />
             </Stack>
-
             <Stack>
               <div className="mt-4 mb-1">Город/район*</div>
                 <Select
-                  className="border border-neutral-300"
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={town ?? ''}
-                  onChange={(e) => setTown(e.target.value)}
-                >
-                  {countrySource[regionItem?.id] && countrySource[regionItem?.id].map((i) => (
-                    <MenuItem key={i.name} value={i.name}>{i.name}</MenuItem>
-                  ))}
-                </Select>
+                  onChange={(selectedOption) => setTown(selectedOption)}
+                  placeholder="Город/район"
+                  value={town}
+                  styles={{
+                    control: (provided) => ({
+                      ...provided,
+                      height: '55px',
+                    }),
+                  }}
+                  options={!region.id ? [] : towns[region.id]}
+                />
             </Stack>
 
             <div className="mt-4 mb-1">Адрес*</div>
@@ -347,16 +343,7 @@ const Checkout = ({ user, defaultUserMapId }) => {
                 />
               </label>
             </div>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  onChange={(e) => setDisabledButton(e.target.checked)}
-                />
-              }
-              label="Подтвердить"
-            />
             <Button
-              disabled={!disabledButton}
               onClick={onButtonClick}
               className={`yellow-btn-hover !rounded-none !py-3 !text-base !my-4 !w-full`}
             >

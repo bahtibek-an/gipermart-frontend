@@ -11,18 +11,25 @@ import BasketCart from "./BasketCart";
 import 'react-loading-skeleton/dist/skeleton.css'
 import { deleteBasketProduct } from "../../redux/actions";
 import { numberWithCommas } from "../../helper";
+import { deleteCart } from "../../http/ProductAPI";
 
 const Basket = () => {
-  const carts = useSelector((state) => state.baskets);
+  const carts = useSelector((state) => state.basket);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { basket: basketProducts } = useSelector((state) => state);
   const [openModal, setOpenModal] = useState(false);
   const totalPrice = carts.reduce((acc, item) => acc + +item?.product?.price * item.quantity, 0);
   const totalInstallmentPlan = carts.reduce((acc, item) => acc + +item?.product?.installment_plan * item.quantity, 0);
   const exchangeRate = useSelector((state) => state.app.exchange);
 
-  const deleteCart = (id) => {
+  const deleteCartLocal = (id) => {
     dispatch(deleteBasketProduct(id));
+    deleteCart(id);
+  }
+
+  const deleteAllBaskets = () => {
+    basketProducts.forEach(item => dispatch(deleteBasketProduct(item.product.id)));
   }
 
   const handleClickOpenModal = () => {
@@ -46,7 +53,7 @@ const Basket = () => {
               {carts.map((item) => (
                 <BasketCart 
                   cart={item} 
-                  deleteCartItem={deleteCart} 
+                  deleteCartItem={deleteCartLocal} 
                   key={item.id} 
                   carts={carts}/>
               ))}
@@ -79,6 +86,10 @@ const Basket = () => {
                   Оформить Рассрочку
                 </Button>
               </div>
+              <div 
+                className="text-center mt-4 underline cursor-pointer"
+                onClick={deleteAllBaskets}
+              >Удалить все продукты</div>
             </div>
           </div>
           ) : (

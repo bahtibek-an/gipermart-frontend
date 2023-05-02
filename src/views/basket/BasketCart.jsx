@@ -4,7 +4,7 @@ import { BiTrash } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import { deleteCart } from "../../http/ProductAPI";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteBasketInLocal, updateBasketCounter, incrementBasketCounter, decrementBasketCounter } from "../../redux/actions";
+import { updateBasketCounter, incrementBasketCounter, decrementBasketCounter } from "../../redux/actions";
 import { updateCart } from "../../http/ProductAPI";
 import { numberWithCommas } from "../../helper";
 
@@ -15,11 +15,7 @@ const BasketCart = ({ cart, deleteCartItem }) => {
     const exchangeRate = useSelector((state) => state.app.exchange);
     const totalPrice = counter * +product.price;
     const removeCart = () => {
-        dispatch(deleteBasketInLocal(cart.product.id));
-        deleteCart(cart.id)
-            .then((data) => {
-                deleteCartItem(cart.product.id);
-            });
+        deleteCartItem(cart.product.id);
     }
     const minusCounter = () => {
         if (counter > 1) {

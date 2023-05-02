@@ -18,7 +18,6 @@ const AddressItem = ({ map }) => {
         dispatch(deleteUserMapInState(mapId));
     }
     
-
     return (
         <div className="border-4 border p-5">
             <div className="flex items-center justify-end">
@@ -33,12 +32,12 @@ const AddressItem = ({ map }) => {
             </IconButton>
             </div>
             <div className="flex items-baseline gap-4 mb-2 leading-none">
-            <div className="f-bold text-xl">Имя</div>
-            <div>{map.title}</div>
+            <div className="f-bold text-xl">Регион/область</div>
+            <div>{map.region}</div>
             </div>
             <div className="flex items-baseline gap-4 mb-2 leading-none">
-            <div className="f-bold text-xl">Tелефон</div>
-            <div>{map.phone_number}</div>
+            <div className="f-bold text-xl">Город/район</div>
+            <div>{map.town}</div>
             </div>
             <div className="flex items-baseline gap-4 mb-2 leading-none">
             <div className="f-bold text-xl">Адрес</div>
