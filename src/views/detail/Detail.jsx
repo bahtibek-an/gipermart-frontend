@@ -29,6 +29,7 @@ const Detail = ({ products, user }) => {
   const [counter, setCounter] = useState(1);
   const exchangeRate = useSelector((state) => state.app.exchange);
   const productPrice = (+productDetail.price * counter);
+  const productInstallmentPrice = (+productDetail.installment_plan * counter);
   const category = useSelector((state) => state.categories.find(item => item.id === productDetail.category));
 
   const fetchProduct = async () => {
@@ -213,7 +214,7 @@ const Detail = ({ products, user }) => {
                 >
                   {!hasInProduct ? "Добавить в корзину" : "Корзина"}
                 </Button>
-                <div className="text-4xl f-bold my-5">{numberWithCommas(productPrice * exchangeRate)} Сум</div>
+                <div className="text-4xl f-bold my-5">{numberWithCommas(productInstallmentPrice * exchangeRate)} Сум</div>
                 <Button
                   onClick={() => navigate("/basket")}
                   className="yellow-btn-hover !w-full !py-3 !capitalize !text-base"

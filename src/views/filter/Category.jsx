@@ -10,7 +10,6 @@ import Checkbox from "@mui/material/Checkbox";
 import Title from "../../components/title/Title";
 import Cart from "../../components/cart/Cart";
 import { useSelector } from "react-redux";
-import { fetchFilterProducts } from "../../http/ProductAPI";
 import LoadingCart from "../../components/cart/LoadingCart";
 import Select from "../../components/select/Select";
 import Accordion from "../../components/accordion/accordion";
@@ -40,6 +39,7 @@ function sortCategory(state, categoryId) {
 const Category = () => {
     const { categoryId } = useParams();
     const category = useSelector((state) => sortCategory(state, categoryId));
+    const categoryItem = useSelector((state) => state.categories?.find((item) => item?.id == categoryId));
     const [ products, setProducts ] = useState([]);
     const [ attr, setAttr ] = useState({});
     const [ brands, setBrands ] = useState([]);
@@ -53,6 +53,7 @@ const Category = () => {
     const [ filterPriceRange, setFilterPriceRange ] = useState([0, 100]);
     const exchangeRate = useSelector((state) => state.app.exchange);
     const navigate = useNavigate();
+    const slider = useRef();
 
     const didMountRef = useRef(false);
 
@@ -60,22 +61,29 @@ const Category = () => {
         const { data: filters } = await $host.get(`product/categories-filter/${ categoryId }/`);
         setColors(filters.color);
         setBrands(filters.brands);
+        setProductRange({
+            min: filters.min_price,
+            max: filters.max_price
+        });
     }
 
     const fetchProducts = async () => {
       const brand = brandParams.map((item) => item.brand_id);
       const color = colorParams.map((item) => item.color_id);
+      const min = (filterPriceRange[0] / 100) * productRange.max;
+      const max = (filterPriceRange[1] / 100) * productRange.max;
       const limit = 24;
       const offset = 0;
-      // const data = await fetchFilterProducts(category?.slug, sortType, {
-      // }, brand, color, limit, offset);
         const { data } = await $host.get(`product/product_filter/`, {
             params: {
-                search: category.slug,
+                search: categoryItem.slug,
                 ordering: sortType,
-                brand: brand,
                 limit: limit,
-                offset: offset
+                offset: offset,
+                brand: brand,
+                color: color,
+                min_price: min,
+                max_price: max
             }
         });
       const results = data.results;
@@ -99,8 +107,10 @@ const Category = () => {
       sortType, 
       brandParams, 
       colorParams, 
-      // filterPriceRange
+      filterPriceRange
     ]);
+
+
 
     const fetchAttrAndProducts = async () => {
       setLoading(true)
@@ -113,12 +123,10 @@ const Category = () => {
       fetchAttrAndProducts();
     }, [categoryId]);
 
-    const CustomSlider = styled(Slider)({
-      color: "#feee00",
-      '& .MuiSlider-rail': {
-        color: "#ccc"
-      }
-    });
+    useEffect(() => {
+        slider.current.style.color = '#feee00'
+        slider.current.querySelector('.MuiSlider-rail').style.color = '#ccc'
+    }, []);
 
     const addToSearch = (e, data) => {
       const checked = e.target.checked;
@@ -262,13 +270,13 @@ const Category = () => {
                           </AccordionSummary>
                           <AccordionDetails>
                               <Box sx={{ width: "100%", padding: "0 10px" }}>
-                                <CustomSlider
+                                <Slider
+                                    ref={slider}
                                   valueLabelDisplay="auto"
                                   scale={(value) => Math.floor(((value / 100) * productRange.max))}
                                   value={filterPriceRange}
-                                  // getAriaValueText={(value) => `${value}Сум`}
-                                  step={0.0001}
-                                  valueLabelFormat={(value) => `${numberWithCommas(value)} Сум`}
+                                  getAriaValueText={(value) => `${value}Сум`}
+                                  valueLabelFormat={(value) => `${numberWithCommas(value * exchangeRate)} Сум`}
                                   onChange={handleChangePriceFilter}
                                 />
                               </Box>
