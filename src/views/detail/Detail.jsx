@@ -25,7 +25,7 @@ const Detail = ({ products, user }) => {
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
   const favorite = useSelector((state) => state?.wishLists.find((item) => item?.product?.id == productDetail?.id));
-  const hasInProduct = useSelector((state) => state.baskets?.find((item) => item?.product?.id == productDetail?.id));
+  const hasInProduct = useSelector((state) => state.basket?.find((item) => item?.product?.id == productDetail?.id));
   const [counter, setCounter] = useState(1);
   const exchangeRate = useSelector((state) => state.app.exchange);
   const productPrice = (+productDetail.price * counter);

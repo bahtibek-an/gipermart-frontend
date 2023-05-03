@@ -15,7 +15,7 @@ const BasketCart = ({ cart, deleteCartItem }) => {
     const exchangeRate = useSelector((state) => state.app.exchange);
     const totalPrice = counter * +product.price;
     const removeCart = () => {
-        deleteCartItem(cart.product.id);
+        deleteCartItem(cart.id);
     }
     const minusCounter = () => {
         if (counter > 1) {
