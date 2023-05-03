@@ -29,7 +29,7 @@ const Basket = () => {
   }
 
   const deleteAllBaskets = () => {
-    basketProducts.forEach(item => dispatch(deleteBasketProduct(item.product.id)));
+    basketProducts.forEach(item => dispatch(deleteBasketProduct(item.id)));
   }
 
   const handleClickOpenModal = () => {

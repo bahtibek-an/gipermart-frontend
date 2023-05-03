@@ -7,6 +7,17 @@ import { rootReducer } from "./redux/rootReducer";
 import thunk from "redux-thunk";
 import { Provider } from 'react-redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+
+
+const theme = createTheme({
+    palette: {
+        yellow: {
+            main: '#feee00;',
+        },
+    },
+});
 
 export const store = createStore(rootReducer, compose(
   composeWithDevTools(
@@ -18,7 +29,9 @@ export const store = createStore(rootReducer, compose(
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <Provider store={store}>
-    <App />
-  </Provider>
+    <ThemeProvider theme={theme}>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </ThemeProvider>
 );

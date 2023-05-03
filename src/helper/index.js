@@ -78,3 +78,8 @@ export function numberWithCommas(x) {
   parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g,".");
   return parts.join(",");
 }
+
+export function getBrandsAndColorsParam(brand, color) {
+    return `${brand.map((n) => `brand=${n}`).join('&')}&${color.map((n) => `color=${n}`).join('&')}`
+}
+

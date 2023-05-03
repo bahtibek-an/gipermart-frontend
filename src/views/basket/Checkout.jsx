@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import SecondNavbar from "../../layout/navbar/SecondNavbar";
 import "../../assets/scss/_basket.scss";
 import { Container } from "@mui/system";
@@ -38,8 +38,8 @@ const Checkout = ({ user, defaultUserMapId }) => {
   const { basket: basketProducts } = useSelector((state) => state);
   const [ fullName, setFullName ] = useState(`${user.first_name} ${user.last_name}`);
   const [ phone, setPhone ] = useState(user.phone_number);
-  const [ region, setRegion ] = useState(countrySource.find((item) => item.value === defaultUserMap.region));
-  const [ town, setTown ] = useState(findTown(defaultUserMap));
+  const [ region, setRegion ] = useState({});
+  const [ town, setTown ] = useState({});
   const [ address, setAddress ] = useState(defaultUserMap?.address);
   const [ comment, setComment ] = useState('');
   const [ error, setError ] = useState('');
@@ -77,7 +77,7 @@ const Checkout = ({ user, defaultUserMapId }) => {
   }
 
   const deleteAllBaskets = () => {
-    basketProducts.forEach(item => dispatch(deleteBasketProduct(item.product.id)));
+    basketProducts.forEach(item => dispatch(deleteBasketProduct(item.id)));
   }
 
 
@@ -93,6 +93,13 @@ const Checkout = ({ user, defaultUserMapId }) => {
     setOpenModal2(true);
   };
 
+
+  useEffect(() => {
+    if(defaultUserMap) {
+      setTown(findTown(defaultUserMap));
+      setRegion(countrySource.find((item) => item.value === defaultUserMap.region));
+    }
+  }, [])
   const updateMapUser = (mapId) => {
     dispatch(updateDefaultMapUser(mapId));
     const defaultUserMap = user.map.find((item) => item.id == mapId);
