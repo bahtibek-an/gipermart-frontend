@@ -372,10 +372,10 @@ const Checkout = ({ user, defaultUserMapId }) => {
                 <div>Сумма по товарам</div>
                 <div className="text-xl f-bold">{numberWithCommas(totalPrice * exchangeRate)} Сум</div>
               </div>
-              <div className="flex items-center justify-between mt-4">
-                <div>Стоимость доставки</div>
-                <div className="text-xl f-bold">0</div>
-              </div>
+              {/*<div className="flex items-center justify-between mt-4">*/}
+              {/*  <div>Стоимость доставки</div>*/}
+              {/*  <div className="text-xl f-bold">0</div>*/}
+              {/*</div>*/}
             </div>
             <div className="flex items-center justify-between mt-4">
               <div className="text-xl">Итого:</div>

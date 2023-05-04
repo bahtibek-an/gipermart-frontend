@@ -12,7 +12,7 @@ import {useDispatch, useSelector} from "react-redux";
 import DialogUpdateForm from "./components/DialogUpdateUserForms/DialogUpdateForm";
 import {setCookie} from "../../helper";
 import {store} from "../../index";
-import {deleteBasketProduct, deleteUser} from "../../redux/actions";
+import {deleteBasketProduct, deleteUser, deleteWishList} from "../../redux/actions";
 import {deleteCart} from "../../http/ProductAPI";
 
 const Profile = () => {
@@ -21,7 +21,8 @@ const Profile = () => {
   const location = useLocation();
   const pathName = location.pathname;
   const [openModal, setOpenModal] = useState(false);
-  const basket = useSelector((state) => state.basket)
+  const { basket, wishLists } = useSelector((state) => state.basket)
+
   const dispatch = useDispatch();
 
   const handleClickOpenModal = () => {
@@ -36,17 +37,26 @@ const Profile = () => {
     event.preventDefault();
   };
 
+  const deletaAllWishlists = () => {
+    wishLists.forEach((item) => {
+      dispatch(deleteWishList(item.id));
+    })
+  }
 
   const deleteAllBaskets = () => {
     basket.forEach(item => {
       dispatch(deleteBasketProduct(item.id));
     });
   }
+
+
+
   const logout = () => {
     localStorage.removeItem("accessToken");
     setCookie("refreshToken", "", 0);
     store.dispatch(deleteUser());
     deleteAllBaskets();
+    deletaAllWishlists();
   }
 
   return (

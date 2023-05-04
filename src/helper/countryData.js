@@ -1,8 +1,8 @@
 export const countrySource = [
   {
     id: 1,
-    label: "Ташкент.Ш",
-    value: "Ташкент.Ш"
+    label: "г.Ташкент",
+    value: "г.Ташкент"
   },
   {
     id: 2,
