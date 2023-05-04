@@ -8,9 +8,12 @@ import Title from "../../components/title/Title";
 import {
   Button,
 } from "@mui/material";
-import { logout } from "../../http/UserAPI";
-import { useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import DialogUpdateForm from "./components/DialogUpdateUserForms/DialogUpdateForm";
+import {setCookie} from "../../helper";
+import {store} from "../../index";
+import {deleteBasketProduct, deleteUser} from "../../redux/actions";
+import {deleteCart} from "../../http/ProductAPI";
 
 const Profile = () => {
   const user = useSelector((state) => state.user.user);
@@ -18,6 +21,8 @@ const Profile = () => {
   const location = useLocation();
   const pathName = location.pathname;
   const [openModal, setOpenModal] = useState(false);
+  const basket = useSelector((state) => state.basket)
+  const dispatch = useDispatch();
 
   const handleClickOpenModal = () => {
     setOpenModal(true);
@@ -30,6 +35,19 @@ const Profile = () => {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+
+
+  const deleteAllBaskets = () => {
+    basket.forEach(item => {
+      dispatch(deleteBasketProduct(item.id));
+    });
+  }
+  const logout = () => {
+    localStorage.removeItem("accessToken");
+    setCookie("refreshToken", "", 0);
+    store.dispatch(deleteUser());
+    deleteAllBaskets();
+  }
 
   return (
     <>

@@ -50,8 +50,3 @@ export const checkAuth = async () => {
     }
 }
   
-export const logout = () => {
-    localStorage.removeItem("accessToken");
-    setCookie("refreshToken", "", 0);
-    store.dispatch(deleteUser());
-}

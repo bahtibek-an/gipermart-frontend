@@ -7,7 +7,6 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import { useSelector } from "react-redux";
 import { addBasketsCartToCheckouts, addUSABasketsCartToCheckouts } from "./helper";
-import { API_URL } from "../../http";
 import { numberWithCommas } from "../../helper";
 import moment from "moment-timezone";
 import 'moment/locale/ru'

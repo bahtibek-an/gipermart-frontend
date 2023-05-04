@@ -14,7 +14,7 @@ const Cart = ({ cart }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state?.user);
   const favorite = useSelector((state) => state?.wishLists.find((item) => item?.product?.id == cart.id));
-  const hasInCart = useSelector((state) => state?.basket?.find((item) => item?.product?.id == cart.id));
+  const hasInCart = useSelector((state) => state?.basket?.filter(item => !item.cart_status).find((item) => item?.product?.id == cart.id));
   const exchangeRate = useSelector((state) => state.app.exchange);
 
   const addProductToCart = async (e) => {

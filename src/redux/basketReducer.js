@@ -13,7 +13,13 @@ export const basketReducer = (state = initialState, action) => {
         case FETCH_BASKET_PRODUCTS:
             return [...action.payload];
         case DELETE_BASKET_PRODUCT:
-            return [...state.filter((item) => item?.id !== action.payload)];
+            return state.map((item) => {
+                if(item.id === action.payload) {
+                    item.cart_status = true;
+                    return item;
+                }
+                return item;
+            });
         case CREATE_BASKET_PRODUCT:
             return [...state, action.payload];
         case DECREMENT_BASKET_COUNTER:

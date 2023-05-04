@@ -17,6 +17,7 @@ import styled from "styled-components";
 import { numberWithCommas } from "../../helper";
 import CheckoutModal from "./components/CheckoutModal";
 import Select from 'react-select';
+import {deleteCart} from "../../http/ProductAPI";
 
 function findTown(map) {
   const keys = Object.keys(towns);
@@ -35,7 +36,7 @@ const Checkout = ({ user, defaultUserMapId }) => {
   const exchangeRate = useSelector((state) => state.app.exchange);
   const dispatch = useDispatch();
   const defaultUserMap = user.map.find((item) => item.id == defaultUserMapId);
-  const { basket: basketProducts } = useSelector((state) => state);
+  const basketProducts = useSelector((state) => state.basket.filter(item => !item.cart_status));
   const [ fullName, setFullName ] = useState(`${user.first_name} ${user.last_name}`);
   const [ phone, setPhone ] = useState(user.phone_number);
   const [ region, setRegion ] = useState({});
@@ -77,7 +78,10 @@ const Checkout = ({ user, defaultUserMapId }) => {
   }
 
   const deleteAllBaskets = () => {
-    basketProducts.forEach(item => dispatch(deleteBasketProduct(item.id)));
+    basketProducts.forEach(item => {
+      dispatch(deleteBasketProduct(item.id));
+      // deleteCart(item.id);
+    });
   }
 
 

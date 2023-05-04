@@ -102,6 +102,7 @@
 }
 .checkout-cart {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   position: relative;
@@ -123,21 +124,21 @@
   .checkout-name {
     line-height: 1.57;
     margin-left: 1rem;
-    @media (max-width: 767px) {
-      margin-left: 0;
-    }
   }
   .checkout-price {
     display: flex;
     align-items: center;
     white-space: nowrap;
+    margin-left: 1rem;
     @media (max-width: 767px) {
-      position: absolute;
-      top: 5px;
-      right: 5px;
     }
     .price {
       font-size: 20px;
     }
   }
+  //.checkout-text {
+  //  @media  {
+  //
+  //  }
+  //}
 }

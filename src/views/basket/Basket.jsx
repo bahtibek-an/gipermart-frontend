@@ -14,7 +14,7 @@ import { numberWithCommas } from "../../helper";
 import { deleteCart } from "../../http/ProductAPI";
 
 const Basket = () => {
-  const carts = useSelector((state) => state.basket);
+  const carts = useSelector((state) => state.basket.filter((item) => !item.cart_status));
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { basket: basketProducts } = useSelector((state) => state);
@@ -29,7 +29,10 @@ const Basket = () => {
   }
 
   const deleteAllBaskets = () => {
-    basketProducts.forEach(item => dispatch(deleteBasketProduct(item.id)));
+    basketProducts.forEach(item => {
+      dispatch(deleteBasketProduct(item.id));
+      deleteCart(item.id);
+    });
   }
 
   const handleClickOpenModal = () => {
@@ -51,11 +54,12 @@ const Basket = () => {
           <div className="grid lg:grid-cols-12 grid-cols-6 gap-4 mb-12">
             <div className="xl:col-span-9 lg:col-span-8 col-span-6">
               {carts.map((item) => (
-                <BasketCart 
-                  cart={item} 
-                  deleteCartItem={deleteCartLocal} 
-                  key={item.id} 
-                  carts={carts}/>
+                  <BasketCart
+                    cart={item}
+                    deleteCartItem={deleteCartLocal}
+                    key={item.id}
+                    carts={carts}
+                  />
               ))}
             </div>
             <div className="xl:col-span-3 lg:col-span-4 col-span-6">

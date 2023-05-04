@@ -21,10 +21,9 @@ const DialogCreateAddressForm = ({ openModal, handleCloseModal }) => {
         setError(message);
         setTimeout(() => setError(''), 4000);
     }
-
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if(!town.value?.trim() || !address.trim() || !region.value?.trim()) {
+        if (!town.value?.trim() || !address.trim() || !region.value?.trim()) {
             return setErrorMessage("Все поля должны быть заполнены!");
         }
         const { data } = await $host.post("user/map/", {
@@ -96,7 +95,7 @@ const DialogCreateAddressForm = ({ openModal, handleCloseModal }) => {
                 autoFocus
                 type="submit"
             >
-                Добавлять
+                Добавить
             </Button>
             </div>
         </form>

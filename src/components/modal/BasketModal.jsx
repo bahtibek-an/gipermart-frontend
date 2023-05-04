@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import Dialog from "@mui/material/Dialog";
 import {Alert, Button, TextField} from "@mui/material";
 import axios from "axios";
@@ -14,15 +14,16 @@ const BasketModal = ({ closeModal, openModal }) => {
   const exchangeRate = useSelector((state) => state.app.exchange);
 
 
-  const checkNumber = async () => {
+  const checkNumber = async (e) => {
+      e.preventDefault();
       let phone_number = number;
       if (phone_number.includes("+")) {
         phone_number = phone_number.replace("+", "");
       }
-      
+
       try {
           const response = await axios.post("https://gw.alifnasiya.uz/e-commerce/merchants/new/applications/request-otp/", {
-              "phone": number
+              "phone": phone_number
           }, {
               headers: {
                   'Merchant-Token': "puoo12qn7phoaedud9iuoed4fe31qkhhxrsx0pxjrrd"
@@ -38,8 +39,14 @@ const BasketModal = ({ closeModal, openModal }) => {
       }
   }
 
-  const sendConfirmCode = async () => {
-    try {
+  const sendConfirmCode = async (e) => {
+      e.preventDefault();
+      let phone_number = number;
+      if (phone_number.includes("+")) {
+          phone_number = phone_number.replace("+", "");
+      }
+
+      try {
         const products = carts.map((item) => {
             return {
                 good: item?.product?.title_ru,
@@ -51,7 +58,7 @@ const BasketModal = ({ closeModal, openModal }) => {
         });
 
         const response = await axios.post("https://gw.alifnasiya.uz/e-commerce/merchants/new/applications/store", {
-            phone: number,
+            phone: phone_number,
             otp: confirmCode,
             condition: {
                 commission: 38,
@@ -70,9 +77,13 @@ const BasketModal = ({ closeModal, openModal }) => {
     }
   }
 
+
   const handleChange = (e) => {
-    const newValue = e.target.value;
-    setNumber(newValue);
+      const value = e.target.value.charAt(e.target.value.length - 1);;
+      const regex = /^[0-9\b]+$/; // regular expression to match only numeric characters
+      if (regex.test(value)) {
+          setNumber(e.target.value);
+      }
   }
 
   return (
@@ -86,80 +97,84 @@ const BasketModal = ({ closeModal, openModal }) => {
         <div className="!p-8">
           {step === 1 && (
             <>
-              <div className="text-center text-2xl">ДОБРО ПОЖАЛОВАТЬ</div>
-              <div className="my-6">
-                Чтобы продолжить оформление рассрочки "Giper-Mart" пожалуеста
-                введите номер телефона с которого регистрировались в сиситеме
-                  {" "}<a href="https://alifnasiya.uz/auth/registration" className="link-dark">Alifnasiya</a>. Если вы не регистрировались то пожалуйста регистрируйтесь на сайте!
-              </div>
-              <Button
-                className="yellow-btn-hover !w-full !rounded-none !py-3 !text-base"
-                onClick={() => {
-                  setStep(2);
-                }}
-                autoFocus
-              >
-                Далее
-              </Button>
+                  <div className="text-center text-2xl">ДОБРО ПОЖАЛОВАТЬ</div>
+                  <div className="my-6">
+                    Чтобы продолжить оформление рассрочки "Giper-Mart" пожалуеста
+                    введите номер телефона с которого регистрировались в сиситеме
+                      {" "}<a href="https://alifnasiya.uz/auth/registration" className="link-dark">Alifnasiya</a>. Если вы не регистрировались то пожалуйста регистрируйтесь на сайте!
+                  </div>
+                  <Button
+                    className="yellow-btn-hover !w-full !rounded-none !py-3 !text-base"
+                    autoFocus
+                    onClick={() => {
+                        setStep(2);
+                    }}
+                  >
+                    Далее
+                  </Button>
             </>
           )}
           {step === 2 && (
             <>
-              <div style={{maxWidth: "100%", width: "400px"}} className="text-2xl f-medium mb-2">Купить в рассрочку</div>
-                {error && <AlertError error={error} />}
-              <div>Мобилный номер</div>
-              <TextField
-                  value={number}
-                  onChange={handleChange}
-                  type="number"
-                  className="!rounded-none w-full !my-2"
-                  id="outlined-required"
-                  placeholder="+998 __ ___ __ __"
-              />
-              <Button
-                  onClick={checkNumber}
-                  className="yellow-btn-hover !py-3 !w-full !rounded-none"
-              >
-                Далее
-              </Button>
+                <form onSubmit={checkNumber}>
+                  <div style={{maxWidth: "100%", width: "400px"}} className="text-2xl f-medium mb-2">Купить в рассрочку</div>
+                    {error && <AlertError error={error} />}
+                  <div>Мобилный номер</div>
+                  <TextField
+                      value={number}
+                      onChange={handleChange}
+                      type="text"
+                      className="!rounded-none w-full !my-2"
+                      id="outlined-required"
+                      placeholder="+998 __ ___ __ __"
+                  />
+                  <Button
+                      type="submit"
+                      className="yellow-btn-hover !py-3 !w-full !rounded-none"
+                  >
+                    Далее
+                  </Button>
+                </form>
             </>
           )}
             {step === 3 && (
                 <>
-                    <div style={{maxWidth: "100%", width: "400px"}} className="text-2xl f-medium mb-2">Купить в рассрочку</div>
-                    {error && <AlertError error={error} />}
-                    <div style={{color: "rgba(0, 0, 0, 0.38)"}}>Мобилный номер</div>
-                    <TextField
-                        // value={number}
-                        // onChange={(e) => setNumber(e.target.value)}
-                        className="!rounded-none w-full !my-2"
-                        id="outlined-required"
-                        placeholder="+998 __ ___ __ __"
-                        disabled={true}
-                    />
-                    <div>Код подтверждения</div>
-                    <TextField
-                        value={confirmCode}
-                        onChange={(e) => {
-                            if (e.target.value.length > 4) return;
-                            setConfirmCode(e.target.value);
-                        }}
-                        className="!rounded-none w-full !mt-2"
-                        id="outlined-required"
-                        placeholder="+998 __ ___ __ __"
-                    />
-                    <div className="flex justify-end my-2">
-                        <button
-                            onClick={() => setStep(2)}
-                            className="text-blue-600"
-                        >Изменить номер телофона</button>
-                    </div>
-                    <Button
-                        onClick={sendConfirmCode}
-                        className="yellow-btn-hover !py-3 !w-full !rounded-none"
-                    >
-                        Далее
-                    </Button>
+                    <form onSubmit={sendConfirmCode}>
+                        <div style={{maxWidth: "100%", width: "400px"}} className="text-2xl f-medium mb-2">Купить в рассрочку</div>
+                        {error && <AlertError error={error} />}
+                        <div style={{color: "rgba(0, 0, 0, 0.38)"}}>Мобилный номер</div>
+                        <TextField
+                            value={number}
+                            className="!rounded-none w-full !my-2"
+                            id="outlined-required"
+                            placeholder="+998 __ ___ __ __"
+                            disabled={true}
+                        />
+                        <div>Код подтверждения</div>
+                        <TextField
+                            value={confirmCode}
+                            onChange={(e) => {
+                                if (e.target.value.length > 4) return;
+                                setConfirmCode(e.target.value);
+                            }}
+                            className="!rounded-none w-full !mt-2"
+                            id="outlined-required"
+                            placeholder="____"
+                        />
+                        <div className="flex justify-end my-2">
+                            <button
+                                type="button"
+                                onClick={() => setStep(2)}
+                                className="text-blue-600"
+                            >Изменить номер телофона</button>
+                        </div>
+                        <Button
+                            type="submit"
+                            className="yellow-btn-hover !py-3 !w-full !rounded-none"
+                        >
+                            Далее
+                        </Button>
+                    </form>
                 </>
             )}
             {step === 4 && (

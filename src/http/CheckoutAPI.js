@@ -24,7 +24,7 @@ export const createCheckout = async (
             PAY_STATUS: pay_status,
             NAXT_STATUS: naxt_status,
             user: userId,
-            total_price,
+            amount: total_price,
         });
 
         return data;
