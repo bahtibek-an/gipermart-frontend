@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import { createUser, hideRightModal } from "../../../redux/actions";
 import { setCookie } from "../../../helper";
 import AlertError from "../../../UI/Alert/AlertError";
+import PhoneNumberInput from "../../../components/phoneNumberInput/phoneNumberInput";
 
 const SignUp = ({ setRightModalStep, setRightModal }) => {
     const [showPassword, setShowPassword] = useState(false);
@@ -77,12 +78,10 @@ const SignUp = ({ setRightModalStep, setRightModal }) => {
                 Войти или создать профиль
             </div>
             <div className="my-4">Номер телефона</div>
-            <TextField
-                className="!w-full mb-4"
-                type="number"
-                placeholder="+998 (__) ___ __ __"
-                value={number}
-                onChange={(e) => setNumber(e.target.value)}
+            <PhoneNumberInput
+                className="mb-4"
+                onChange={(phone) => setNumber(phone)}
+                withoutPlus={true}
             />
             <div className="my-4">Имя</div>
             <TextField 

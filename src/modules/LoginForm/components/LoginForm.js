@@ -12,6 +12,9 @@ import AlertError from "../../../UI/Alert/AlertError";
 import LoaderButton from "../../../UI/LoaderButton";
 import PasswordInput from "../../../UI/passwordInput/PasswordInput";
 import { checkValidityForm } from "../helpers/checkValidityForm";
+import {PhoneInput} from "react-international-phone";
+import 'react-international-phone/style.css';
+import PhoneNumberInput from "../../../components/phoneNumberInput/phoneNumberInput";
 
 const LoginForm = ({ setRightModalStep }) => {
     const [ number, setNumber ] = useState('');
@@ -57,15 +60,13 @@ const LoginForm = ({ setRightModalStep }) => {
                 error={error}
             />
             <div className="my-4">Номер телефона</div>
-            <TextField
-                className="!w-full mb-4"
-                type="number"
-                placeholder="+998 (__) ___ __ __"
-                value={number}
-                onChange={(e) => setNumber(e.target.value)}
-            />
+           <PhoneNumberInput
+                className="mb-4"
+                onChange={(phone) => setNumber(phone)}
+                withoutPlus={true}
+           />
             <div className="my-4">Пароль</div>
-            <PasswordInput  
+            <PasswordInput
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
             />

@@ -23,7 +23,7 @@ const MobileNavbar = () => {
         <BiHeart size={24} />
       </Link>
       <Link
-        to="/profile/order"
+        to="/special-order"
         className={`mobile-plane ${pathname === "/profile/order" && "router-active"}`}
       >
         <SlPlane className="dis" size={24} />

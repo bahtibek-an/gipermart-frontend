@@ -9711,6 +9711,11 @@ react-inlinesvg@^3.0.1:
     exenv "^1.2.2"
     react-from-dom "^0.6.2"
 
+react-international-phone@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.npmjs.org/react-international-phone/-/react-international-phone-2.2.1.tgz"
+  integrity sha512-Wno3ndnJ81tZhNko1HiUENERrcEq4RkfTqUKpwvReSvtdSTC/hzE8IXgYPbLOfyYkbXac+uE3DP17pyoin/pIw==
+
 react-is@^16.13.1:
   version "16.13.1"
   resolved "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"

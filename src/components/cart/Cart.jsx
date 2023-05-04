@@ -5,7 +5,7 @@ import { HiOutlineShoppingCart, HiOutlineEye } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { createBasketProduct, craeteWishListProduct, deleteWishList, showRightModal, createBasketToLocal } from "../../redux/actions";
+import { createBasketProduct, craeteWishListProduct, deleteWishList, showRightModal } from "../../redux/actions";
 import { appendProductToUserCart, appendProductToWishList, deleteProductFromWishList } from "../../http/ProductAPI";
 import { numberWithCommas } from "../../helper";
 

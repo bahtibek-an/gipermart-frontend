@@ -21,7 +21,7 @@ const Profile = () => {
   const location = useLocation();
   const pathName = location.pathname;
   const [openModal, setOpenModal] = useState(false);
-  const { basket, wishLists } = useSelector((state) => state.basket)
+  const { basket, wishLists } = useSelector((state) => state)
 
   const dispatch = useDispatch();
 
@@ -39,7 +39,7 @@ const Profile = () => {
 
   const deletaAllWishlists = () => {
     wishLists.forEach((item) => {
-      dispatch(deleteWishList(item.id));
+      dispatch(deleteWishList(item.product.id));
     })
   }
 
@@ -49,15 +49,12 @@ const Profile = () => {
     });
   }
 
-
-
   const logout = () => {
     localStorage.removeItem("accessToken");
     setCookie("refreshToken", "", 0);
     store.dispatch(deleteUser());
     deleteAllBaskets();
     deletaAllWishlists();
-    window.location.reload();
   }
 
   return (
