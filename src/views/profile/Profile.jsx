@@ -57,6 +57,7 @@ const Profile = () => {
     store.dispatch(deleteUser());
     deleteAllBaskets();
     deletaAllWishlists();
+    window.location.reload();
   }
 
   return (
