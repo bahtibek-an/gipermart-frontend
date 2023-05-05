@@ -16,6 +16,7 @@ const DialogCreateAddressForm = ({ openModal, handleCloseModal }) => {
     const [ region, setRegion ] = useState({});
     const [ town, setTown ] = useState({});
     const [ error, setError ] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const setErrorMessage = (message) => {
         setError(message);
@@ -26,6 +27,7 @@ const DialogCreateAddressForm = ({ openModal, handleCloseModal }) => {
         if (!town.value?.trim() || !address.trim() || !region.value?.trim()) {
             return setErrorMessage("Все поля должны быть заполнены!");
         }
+        setLoading(true);
         const { data } = await $host.post("user/map/", {
             address: address,
             region: region.value,
@@ -33,6 +35,7 @@ const DialogCreateAddressForm = ({ openModal, handleCloseModal }) => {
             user: user.id
         });
         dispatch(createMapUser(data));
+        setLoading(false);
         handleCloseModal();
     }
 
@@ -91,6 +94,7 @@ const DialogCreateAddressForm = ({ openModal, handleCloseModal }) => {
                 onChange={(e) => setAddress(e.target.value)}
             />
             <Button
+                disabled={loading}
                 className="yellow-btn-hover !w-full !rounded-none !py-3 !text-base"
                 autoFocus
                 type="submit"

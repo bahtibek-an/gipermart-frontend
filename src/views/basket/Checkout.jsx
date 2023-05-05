@@ -18,6 +18,7 @@ import { numberWithCommas } from "../../helper";
 import CheckoutModal from "./components/CheckoutModal";
 import Select from 'react-select';
 import {deleteCart} from "../../http/ProductAPI";
+import {IoMdClose} from "react-icons/io";
 
 function findTown(map) {
   const keys = Object.keys(towns);
@@ -80,7 +81,6 @@ const Checkout = ({ user, defaultUserMapId }) => {
   const deleteAllBaskets = () => {
     basketProducts.forEach(item => {
       dispatch(deleteBasketProduct(item.id));
-      // deleteCart(item.id);
     });
   }
 
@@ -155,6 +155,13 @@ const Checkout = ({ user, defaultUserMapId }) => {
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
+          <div className="absolute right-3 top-3 cursor-pointer" onClick={handleCloseModal2}>
+            <IoMdClose
+              style={{
+                fontSize: "24px"
+              }}
+            />
+          </div>
           <div className="!p-8">
             <Title title="Выбрать другой адрес" style="f-medium mb-4"/>
             {user.map.map((item) => (
@@ -266,7 +273,6 @@ const Checkout = ({ user, defaultUserMapId }) => {
               id="outlined-required"
             />
             <div className="text-2xl f-medium">Доставка</div>
-            <div className="mt-4">Адрес</div>
             <Stack>
               <div className="mt-4 mb-1">Регион/область*</div>
               <Select

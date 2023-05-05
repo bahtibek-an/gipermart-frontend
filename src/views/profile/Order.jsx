@@ -128,6 +128,22 @@ const Order = () => {
                               {item.full_name}
                             </span>
                           </div>
+                          <div>
+                            <strong>Регион/Область:</strong>
+                            <span
+                                style={{ color: "#828282", marginLeft: "4px" }}
+                            >
+                              {item.region}
+                            </span>
+                          </div>
+                          <div>
+                            <strong>Город/Район:</strong>
+                            <span
+                                style={{ color: "#828282", marginLeft: "4px" }}
+                            >
+                              {item.town}
+                            </span>
+                          </div>
                         </div>
                         <div className="flex flex-col gap-y-2 media-pt">
                           <div>

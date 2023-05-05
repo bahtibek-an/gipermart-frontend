@@ -13,7 +13,6 @@ import DialogUpdateForm from "./components/DialogUpdateUserForms/DialogUpdateFor
 import {setCookie} from "../../helper";
 import {store} from "../../index";
 import {deleteBasketProduct, deleteUser, deleteWishList} from "../../redux/actions";
-import {deleteCart} from "../../http/ProductAPI";
 
 const Profile = () => {
   const user = useSelector((state) => state.user.user);

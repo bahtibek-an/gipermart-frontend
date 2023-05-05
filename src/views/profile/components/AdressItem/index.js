@@ -14,8 +14,8 @@ const AddressItem = ({ map }) => {
     const handleClickOpenModal = () => setOpenModal(true);
 
     const deleteUserMap = async (mapId) => {
-        const data = await deleteUserMapById(mapId);
         dispatch(deleteUserMapInState(mapId));
+        await deleteUserMapById(mapId);
     }
     
     return (
