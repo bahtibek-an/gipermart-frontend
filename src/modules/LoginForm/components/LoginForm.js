@@ -5,7 +5,7 @@ import {
   } from "@mui/material";
 import { getUserById } from "../../../http/UserAPI";
 import { useDispatch } from "react-redux";
-import { createUser, hideRightModal } from "../../../redux/actions";
+import { createUser, fetchUserBasket, fetchUserWishLists, hideRightModal } from "../../../redux/actions";
 import { signIn } from "../api/signInRequest";
 import { setTokens } from "../../../helper/UserSignHelper";
 import AlertError from "../../../UI/Alert/AlertError";
@@ -43,6 +43,8 @@ const LoginForm = ({ setRightModalStep }) => {
             const user = await getUserById(data.token.id);
             dispatch(createUser(user.data[0]));    
             dispatch(hideRightModal());
+            dispatch(fetchUserBasket(data.token.id));
+            dispatch(fetchUserWishLists(data.token.id));
             setLoading(false);
         } catch (error) {
             setError(error);

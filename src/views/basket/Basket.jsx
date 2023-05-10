@@ -43,6 +43,8 @@ const Basket = () => {
     setOpenModal(false);
   };
 
+  console.log(carts)
+
   return (
     <>
       <SecondNavbar />
@@ -66,7 +68,7 @@ const Basket = () => {
               <div className="price-box">
                 <div className="px-6">
                   <div className="text-2xl f-bold">В корзине</div>
-                  <div className="mt-1">Товаров: {carts.length}</div>
+                  <div className="mt-1">Товаров: {carts.reduce((acc, item) => acc + item.quantity, 0)}</div>
                   <div className="text-2xl f-bold mt-1">{numberWithCommas(totalPrice * exchangeRate)} Сум</div>
                 </div>
                 <Button
