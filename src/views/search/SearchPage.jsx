@@ -19,7 +19,7 @@ const SearchPage = () => {
 
   const fetchProducts = async () => {
     const response = await fetchProductsBySearch(searchQuery);
-    setProducts(response.results);
+    setProducts(response);
     setLoading(false);
   }
   useEffect(() => {
