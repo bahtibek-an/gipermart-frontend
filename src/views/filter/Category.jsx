@@ -67,9 +67,10 @@ const Category = () => {
       const max = (filterPriceRange[1] / 100) * productRange.current.max;
       const limit = 24;
         const offset = (currentPage - 1) * limit;
+        console.log(categoryItem)
         const { data } = await $host.get(`product/product_filter/`, {
             params: {
-                search: categoryItem.slug,
+                category: categoryItem.name,
                 ordering: sortType,
                 limit: limit,
                 offset: offset,
@@ -333,7 +334,7 @@ const Category = () => {
               </div>
             </div>
             <div className="lg:col-span-9 col-span-6">
-              <Title title={category.name} style="f-medium mb-4" />
+              <Title title={categoryItem.name} style="f-medium mb-4" />
               <div className="grid 2xl:grid-cols-4 xl:grid-cols-3 md:grid-cols-2 lg:grid-cols-2">
                 {loading ? (
                     [1, 2, 3].map((i) => (
