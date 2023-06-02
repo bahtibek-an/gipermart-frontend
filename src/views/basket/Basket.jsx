@@ -43,7 +43,6 @@ const Basket = () => {
     setOpenModal(false);
   };
 
-  console.log(carts)
 
   return (
     <>

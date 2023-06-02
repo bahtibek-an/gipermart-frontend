@@ -7,11 +7,13 @@ import {useSelector} from "react-redux";
 
 const BasketModal = ({ closeModal, openModal }) => {
   const [step, setStep] = useState(1);
-  const carts = useSelector((state) => state.basket);
+  const carts = useSelector((state) => state.basket.filter((item) => !item.cart_status));
   const [number, setNumber] = useState('+998');
   const [error, setError] = useState('');
   const [confirmCode, setConfirmCode] = useState('');
   const exchangeRate = useSelector((state) => state.app.exchange);
+
+  console.log(carts)
 
 
   const checkNumber = async (e) => {
@@ -22,20 +24,20 @@ const BasketModal = ({ closeModal, openModal }) => {
       }
 
       try {
-          const response = await axios.post("https://gw.alifnasiya.uz/e-commerce/merchants/new/applications/request-otp/", {
-              "phone": phone_number
-          }, {
-              headers: {
-                  'Merchant-Token': "puoo12qn7phoaedud9iuoed4fe31qkhhxrsx0pxjrrd"
-              }
-          });
-          setStep(3);
+            const response = await axios.post("https://gw.alifnasiya.uz/e-commerce/merchants/new/applications/request-otp/", {
+                "phone": phone_number
+            }, {
+                headers: {
+                    'Merchant-Token': "puoo12qn7phoaedud9iuoed4fe31qkhhxrsx0pxjrrd"
+                }
+            });
+            setStep(3);
       } catch (e) {
           if (e.response.status === 400 && e.response.data.code !== 'limit_exceeded') {
-              window.open('https://alifnasiya.uz/auth/registration','_blank');
+              window.open('https://alifnasiya.uz/auth/registration', '_blank');
           }
           setError(e.response.data.message);
-          setTimeout(() => setError(''),5000);
+          setTimeout(() => setError(''), 5000);
       }
   }
 
@@ -50,10 +52,10 @@ const BasketModal = ({ closeModal, openModal }) => {
         const products = carts.map((item) => {
             return {
                 good: item?.product?.title_ru,
-                good_type: "Smartfon",
+                good_type: item.product?.category_name,
                 price: (item?.product?.price * exchangeRate) * 100,
-                sku: `${item?.product?.id}`,
-                ikpu: "11111111111111111"
+                sku: `${item?.product?.sku}`,
+                ikpu: "08471001001000000"
             }
         });
 

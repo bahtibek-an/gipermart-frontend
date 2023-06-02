@@ -16,7 +16,7 @@ const App = () => {
     }
     const exchange = await fetchExchangeRates();
     const categories = await fetchAllCategories();
-    dispatch(createExchangeRates(+exchange.at(-1).nbu_buy_price));
+    dispatch(createExchangeRates(exchange));
     dispatch(fetchCategories(categories));
     return dispatch(hideLoader());
   }
