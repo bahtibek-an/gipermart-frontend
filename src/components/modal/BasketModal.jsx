@@ -13,9 +13,6 @@ const BasketModal = ({ closeModal, openModal }) => {
   const [confirmCode, setConfirmCode] = useState('');
   const exchangeRate = useSelector((state) => state.app.exchange);
 
-  console.log(carts)
-
-
   const checkNumber = async (e) => {
       e.preventDefault();
       let phone_number = number;
@@ -82,7 +79,7 @@ const BasketModal = ({ closeModal, openModal }) => {
 
   const handleChange = (e) => {
       const value = e.target.value.charAt(e.target.value.length - 1);;
-      const regex = /^[0-9\b]+$/; // regular expression to match only numeric characters
+      const regex = /^[0-9\b]+$/;
       if (regex.test(value)) {
           setNumber(e.target.value);
       }

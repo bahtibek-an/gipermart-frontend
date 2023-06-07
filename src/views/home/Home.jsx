@@ -3,7 +3,6 @@ import Departments from "../../components/departments/Departments";
 import Media from "../../components/media/Media";
 import Brands from "../../components/popular/Brands";
 import Recommendations from "../../components/recommendations/Recommendations";
-import SportCarts from "../../components/sport/SportCarts";
 import Stock from "../../components/stock/Stock";
 import Category from "../category/Category";
 import HomeSlider from "../slider/Slider";
@@ -18,7 +17,6 @@ const Home = () => {
       <Stock />
       <Departments />
       <Media />
-      <SportCarts />
       <Brands />
     </>
   );

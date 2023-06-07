@@ -214,13 +214,10 @@ const Detail = ({ products, user }) => {
                 >
                   {!hasInProduct ? "Добавить в корзину" : "Корзина"}
                 </Button>
-                <div className="text-4xl f-bold my-5">{numberWithCommas(productInstallmentPrice * exchangeRate)} Сум</div>
-                <Button
-                  onClick={() => navigate("/basket")}
-                  className="yellow-btn-hover !w-full !py-3 !capitalize !text-base"
-                >
-                  Купить В Рассрочку
-                </Button>
+                <div className="mt-5 text-2xl">
+                  Цена рассрочки:
+                </div>
+                <div className="text-4xl f-bold mb-4">{numberWithCommas(productInstallmentPrice * exchangeRate)} Сум</div>
               </div>
               <div className="grid grid-cols-3">
                 {/* {rassrochkaArray.map((item) => (
@@ -248,57 +245,13 @@ const Detail = ({ products, user }) => {
           className="!mt-10"
           aria-label="secondary tabs example"
         >
-          <Tab value="1" label="Oписание" />
-          <Tab value="2" label="Характеристики" />
+          <Tab value="1" label="Характеристики" />
         </Tabs>
         {value === "1" && (
           <div className="p-6">
             <pre className="text-lg" style={{ fontFamily: "unset" }}>
               {productDetail.descriptions}
             </pre>
-            {/* <div className="f-bold mb-2" style={{ fontSize: "15px" }}>
-              Мощный процессор
-            </div>
-            <div className="mb-2" style={{ fontSize: "15px" }}>
-              Воспроизводите видео быстро и без задержек, просматривайте
-              веб-страницы или выполняйте рабочие задачи благодаря процессору и
-              видеокарте от Intel®. Такое сочетание и память гарантируют более
-              высокую скорость загрузки приложений, качественную графику и
-              эффективную работу в режиме многозадачности.
-            </div>
-            <div className="f-bold mb-2" style={{ fontSize: "15px" }}>
-              Мощный процессор
-            </div>
-            <div className="mb-2" style={{ fontSize: "15px" }}>
-              Воспроизводите видео быстро и без задержек, просматривайте
-              веб-страницы или выполняйте рабочие задачи благодаря процессору и
-              видеокарте от Intel®. Такое сочетание и память гарантируют более
-              высокую скорость загрузки приложений, качественную графику и
-              эффективную работу в режиме многозадачности.
-            </div> */}
-          </div>
-        )}
-        {value === "2" && (
-          <div className="p-6">
-            {/* <div className="mb-4" style={{ fontSize: "15px" }}>
-              Процессор: Intel® Pentium N5030
-            </div>
-            <div className="mb-4" style={{ fontSize: "15px" }}>
-              Тех. процесс: 10 нм
-            </div>
-            <div className="mb-4" style={{ fontSize: "15px" }}>
-              Количество ядер: 4
-            </div>
-            <div className="mb-4" style={{ fontSize: "15px" }}>
-              Частота процессора: 1.10-3.30 ГГц
-            </div> */}
-            {productDetail.attribute_values.map((item, i) => (
-              <div className="mb-4" style={{ fontSize: "15px" }} key={i}>
-                {/* Процессор: Intel® Pentium N5030 */}
-                {item.product_attribute?.name}: {item.attribute_value}
-              </div>
-            ))}
-            {/* {product.detail} */}
           </div>
         )}
       </Container>
