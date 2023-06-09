@@ -19,7 +19,7 @@ const Recommendations = ({ }) => {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const { data } = await $host.get("/product/api/products/?limit=30");
+      const { data } = await $host.get("/product/product_filter/?price=&is_recommend=true");
       setProducts(data.results);
       return data.results;
     }
