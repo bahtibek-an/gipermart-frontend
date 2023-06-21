@@ -103,12 +103,17 @@ const AuthSidebar = ({ rightModalStep, setRightModalStep }) => {
                     className="!w-full !mb-4"
                     type="number"
                     placeholder="+998 (__) ___ __ __"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        sendPhoneNumber()
+                      }
+                    }}
                   />
                   <Button
                     onClick={sendPhoneNumber}
                     className="!w-full !py-3 yellow-btn-hover !capitalize !text-base !my-3"
                   >
-                    Войти
+                    Отправить смс
                   </Button>
                 </>
               )}
@@ -120,6 +125,11 @@ const AuthSidebar = ({ rightModalStep, setRightModalStep }) => {
                     value={otpCode}
                     type="number"
                     onChange={(e) => setOtpCode(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        sendOtpCode()
+                      }
+                    }}
                   />
 
                   <div className="my-4">Новый пароль</div>
@@ -127,13 +137,18 @@ const AuthSidebar = ({ rightModalStep, setRightModalStep }) => {
                     className="!w-full !mb-4"
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        sendOtpCode()
+                      }
+                    }}
                   />
 
                   <Button 
                     className="!w-full !py-3 yellow-btn-hover !capitalize !text-base !my-3"
                     onClick={sendOtpCode}  
                   >
-                    Далее
+                    Отправить
                   </Button>
                 </>
               )}

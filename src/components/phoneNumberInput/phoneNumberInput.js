@@ -41,6 +41,7 @@ const PhoneNumberInput = (props) => {
             onChange={handleChange}
             defaultCountry="uz"
             className={props.className}
+            inputProps={{ onKeyDown: props.onKeyDown }}
         />
     )
 };
