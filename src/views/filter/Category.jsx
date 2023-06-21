@@ -5,7 +5,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import { Container } from "@mui/system";
 import "../../assets/scss/_filter.scss";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import {Accordion as AccordionDefault, FormControlLabel, MenuItem, Stack, AccordionDetails, InputAdornment, AccordionSummary as AccordionSummaryDefault, Pagination, PaginationItem, Slider, Box, styled} from "@mui/material";
+import {Accordion as AccordionDefault, FormControlLabel, MenuItem, Stack, AccordionDetails, AccordionSummary as AccordionSummaryDefault, Pagination, Slider, Box} from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import Title from "../../components/title/Title";
 import Cart from "../../components/cart/Cart";
@@ -16,7 +16,7 @@ import Accordion from "../../components/accordion/accordion";
 import AccordionSummary from "../../components/accordion-summary";
 import Input from "../../components/input";
 import $host from "../../http";
-import {getBrandsAndColorsParam, numberWithCommas} from "../../helper";
+import {numberWithCommas} from "../../helper";
 import useEffectAfterMount from "../../hooks/useEffectAfterMount";
 import qs from "qs";
 
@@ -193,7 +193,7 @@ const Category = () => {
     <>
       <SecondNavbar />
       <Container maxWidth="xl">
-        <div style={{minHeight: "70vh"}}>
+        <div style={{minHeight: "150vh"}}>
           <div className="grid lg:grid-cols-12 grid-cols-6 gap-4 filter my-12" >
             <div className="lg:col-span-3 col-span-6">
               <div>
@@ -334,7 +334,7 @@ const Category = () => {
               </div>
             </div>
             <div className="lg:col-span-9 col-span-6">
-              <Title title={categoryItem.name} style="f-medium mb-4" />
+              <Title title={categoryItem.name} className="f-medium mb-4" />
               <div className="grid 2xl:grid-cols-4 xl:grid-cols-3 md:grid-cols-2 lg:grid-cols-2">
                 {loading ? (
                     [1, 2, 3].map((i) => (
@@ -358,7 +358,12 @@ const Category = () => {
                             count={Math.ceil(totalPages / 24)}
                             color="yellow"
                             shape="rounded"
-                            onChange={(event, value) => setCurrentPage(value)}
+                            onChange={
+                              (event, value) => {
+                                window.scrollTo(0, 0);
+                                setCurrentPage(value);
+                              }
+                            }
                         />
                     </div>
                 )}

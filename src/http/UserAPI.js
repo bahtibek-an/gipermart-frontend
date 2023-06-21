@@ -1,7 +1,7 @@
 import jwtDecode from "jwt-decode";
 import $host from "."
 import { store } from "..";
-import { getCookie, setCookie } from "../helper";
+import { getCookie} from "../helper";
 import { createUser, deleteUser, fetchUserBasket, fetchUserWishLists } from "../redux/actions";
 
 export const getUserById = async (id) => {

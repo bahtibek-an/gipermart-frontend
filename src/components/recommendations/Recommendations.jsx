@@ -13,7 +13,7 @@ import $host from "../../http";
 import LoadingCart from "../cart/LoadingCart";
 
 
-const Recommendations = ({ }) => {
+const Recommendations = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -71,7 +71,7 @@ const Recommendations = ({ }) => {
     <div className="my-4">
       <Container maxWidth="xl">
         <Link to="">
-          <Title title={"Гипермарт Рекомендует"} style="mt-8 mb-4 red" />
+          <Title title={"Гипермарт Рекомендует"} className="mt-8 mb-4 red" />
         </Link>
         <Slider {...settings} className="recommendations">
           {loading ? (

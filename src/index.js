@@ -9,8 +9,6 @@ import { Provider } from 'react-redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-
-
 const theme = createTheme({
     palette: {
         yellow: {

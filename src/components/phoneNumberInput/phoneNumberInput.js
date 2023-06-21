@@ -3,7 +3,7 @@ import {PhoneInput} from "react-international-phone";
 
 const PhoneNumberInput = (props) => {
     const [ value, setValue ] = useState('');
-
+    
     const handleChange = (phone) => {
         if(props.withoutPlus) {
             const newValue = phone
@@ -20,15 +20,17 @@ const PhoneNumberInput = (props) => {
         }
     }
 
+    const inputStyle = {
+        height: "56px",
+        fontSize: "16px",
+        fontFamily: '"Roboto","Helvetica","Arial",sans-serif',
+        borderRadius: "4px"
+    }
+
     return (
         <PhoneInput
             inputClassName="w-full"
-            inputStyle={{
-                height: "56px",
-                fontSize: "16px",
-                fontFamily: '"Roboto","Helvetica","Arial",sans-serif',
-                borderRadius: "4px"
-            }}
+            inputStyle={props.inputStyle || inputStyle}
             value={value}
             hideDropdown={true}
             countrySelectorStyleProps={{
