@@ -109,8 +109,9 @@ export const fetchExchangeRates = async () => {
     try {
         const { data } = await $host.get("outside/exchange-rates/");
         const price = data.find((item) => item.code === "USD");
-        if(!price) {}
-        return 1;
+        if(!price) {
+            return 1;
+        }
         return +(price.nbu_buy_price);
     } catch (error) {
         console.log(error);
