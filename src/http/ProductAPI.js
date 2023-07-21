@@ -108,7 +108,10 @@ export const updateCart = async (cartId, userId, productId, quantity, totalPrice
 export const fetchExchangeRates = async () => {
     try {
         const { data } = await $host.get("outside/exchange-rates/");
-        return +(data.at(-1).nbu_buy_price);
+        const price = data.find((item) => item.code === "USD");
+        if(!price) {}
+        return 1;
+        return +(price.nbu_buy_price);
     } catch (error) {
         console.log(error);
         return 1;
